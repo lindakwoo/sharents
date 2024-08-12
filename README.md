@@ -42,11 +42,11 @@ We're committed to clean, efficient code. Our toolkit includes:
 - **Notifications**: Keep everyone in the loop with real-time updates
 - **Cross-Platform**: Access Sharents on web, iOS, and Android
 
-## 👩‍💻 Meet the Dream Team
+## 👀 Meet the Dream Team
 
-- **Clarissa Lopez**: Full-stack wizard, turning coffee into code
-- **Caleb Saunders**: UX/UI virtuoso, making Sharents a joy to use
-- **Linda Woo**: Backend sorceress, ensuring our data flows like magic
+- **Clarissa Lopez**
+- **Caleb Saunders**
+- **Linda Woo**
 
 ## 🤝 Contributing
 
@@ -62,13 +62,12 @@ Sharents is open-source software licensed under the [MIT license](LICENSE.md).
 
 ## 💖 Support Sharents
 
-Love Sharents? Give us a star on GitHub and spread the word!
+Love Sharents? Give us a star on Gitlab and spread the word!
 
 ---
 
-Built with ❤️ in San Francisco by parents, for parents.
+Built with ❤️ by Next Chapter / Hack Reactor Cohort Attendees Summer 2024
 
 ```
 
-Feel free to copy and paste this Markdown content into your README file!
 ```
