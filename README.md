@@ -40,7 +40,6 @@ We're committed to clean, efficient code. Our toolkit includes:
 - **Family Circles**: Create private groups for sharing with select loved ones
 - **Timeline View**: Chronological display of your child's journey
 - **Notifications**: Keep everyone in the loop with real-time updates
-- **Cross-Platform**: Access Sharents on web, iOS, and Android
 
 ## 👀 Meet the Dream Team
 
