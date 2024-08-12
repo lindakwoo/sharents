@@ -70,5 +70,3 @@ Built with ❤️ by Next Chapter / Hack Reactor Cohort Attendees Summer 2024
 ```
 
 ```
-
-add for test
