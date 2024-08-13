@@ -1,8 +1,7 @@
 # from motor.motor_asyncio import AsyncIOMotorClient
 # from bson import ObjectId
-# from .core.config import DATABASE_URL
 # import os
-# DATABASE_URL = os.getenv("DATABASE_URL", "mongodb://localhost:27017/user_management")
+# DATABASE_URL = os.getenv("DATABASE_URL", "mongodb://localhost:27017/milestones_media_service")
 # client: AsyncIOMotorClient = None
 # db = None
 

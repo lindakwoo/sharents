@@ -1,0 +1,62 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Poetry specific files
+.poetry/
+
+# Virtual environment (created by Poetry or otherwise)
+# If Poetry is set to create virtual environments inside the project
+# Uncomment the line below if you want to ignore the .venv directory
+# .venv/
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Django stuff:
+*.log
+*.pot
+*.pyc
+*.so
+*.mo
+*.sqlite3
+
+# Docker-related files
+*.log
+docker-compose.override.yml
+docker-compose.override.*.yml
+.dockerignore
+Dockerfile
+docker-compose.yml
+
+# Database files
+*.db
+*.sqlite3
+
+# Node.js
+node_modules/
+
+# JetBrains IDEs
+.idea/
+
+# VS Code
+.vscode/
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+*.swp
+
+# Poetry's lock file
+# Lock file should generally be included but can be ignored if you want
+# to ensure a completely clean install every time. Uncomment below if needed.
+# poetry.lock

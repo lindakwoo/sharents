@@ -1,11 +1,11 @@
-# from fastapi import APIRouter, HTTPException, Depends
-# from typing import List
-# from bson import ObjectId
-# from ..models.user import User
-# from ..schemas.user_schema import UserCreateSchema, UserResponseSchema
-# from ..database import db
+from fastapi import APIRouter, HTTPException, Depends
+from typing import List
+from bson import ObjectId
+from .models import Media, Milestone, Category, Comment
+from .schemas import MediaCreateSchema, MediaResponseSchema, MilestoneCreateSchema, MilestoneResponseSchema, CommentCreateSchema, CommentResponseSchema
+from .database import db
 
-# router = APIRouter()
+router = APIRouter()
 
 # @router.post("/", response_model=UserResponseSchema)
 # async def create_user(user: UserCreateSchema):
