@@ -1,11 +1,9 @@
 from fastapi import FastAPI
-from .routes import milestones, media
-from .database import connect_db, close_db
+from . import routes
 
 app = FastAPI()
 
-app.include_router(milestones.router, prefix="children/{child_id}/milestones", tags=["milestones"])
-app.include_router(media.router, prefix="children/{child_id}/media", tags=["media"])
+app.include_router(routes.router, prefix="/milestones_media", tags=["milestones_media"])
 # need to implement for members access --- gets
 #  posting and comenting as well
 

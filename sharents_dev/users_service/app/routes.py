@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 from bson import ObjectId
 from .models import User, Guardian, Member
-from .schemas import UserResponseSchema
+from .schemas import GuardianCollection
 from .database import db
 
 router = APIRouter()
@@ -16,13 +16,13 @@ router = APIRouter()
 
 @router.get(
     "/guardians/",
-    response_description="List all user",
-    response_model=UserResponseSchema,
+    response_description="List all guardians",
+    response_model=GuardianCollection,
     response_model_by_alias=False,
 )
-async def get_guardians():
+async def list_guardians():
     guardian_collection = db.get_collection("guardians")
-    return UserResponseSchema(guardians=await guardian_collection.find().to_list(1000))
+    return GuardianCollection(guardians=await guardian_collection.find().to_list(1000))
 
 # @app.get(
 #     "/users/",

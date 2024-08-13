@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 from bson import ObjectId
 from .models import Media, Milestone, Category, Comment
-from .schemas import MediaCreateSchema, MediaResponseSchema, MilestoneCreateSchema, MilestoneResponseSchema, CommentCreateSchema, CommentResponseSchema
+from .schemas import MediaCollection, MilestoneCollection, CategoryCollection, CommentCollection
 from .database import db
 
 router = APIRouter()

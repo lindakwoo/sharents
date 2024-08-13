@@ -1,55 +1,57 @@
-from pydantic import BaseModel
+from typing import List, Optional
+from pydantic import BaseModel, Field, EmailStr
+from pydantic.functional_validators import BeforeValidator
+from typing_extensions import Annotated
 
-class MediaCreateSchema(BaseModel):
-    date: str
-    name: str
-    category_id: str
-    description: str
-    child_id: str
-    comments: list
+PyObjectId = Annotated[str, BeforeValidator(str)]
 
-class MediaResponseSchema(BaseModel):
-    id: str
-    date: str
-    name: str
-    category_id: str
-    description: str
-    child_id: str
-    comments: list
+class MediaModelCreate(BaseModel):
+    name: str = Field(...)
+    description: str = Field(...)
+    category: Optional[str] = Field(default=None)
+    child: str = Field(...)
+    date: str = Field(...)
 
-    class Config:
-        orm_mode = True
+class MediaModel(BaseModel):
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    name: str = Field(...)
+    description: str = Field(...)
+    category: Optional[str] = Field(default=None)
+    child: str = Field(...)
+    date: str = Field(...)
 
-class MilestoneCreateSchema(BaseModel):
-    date: str
-    name: str
-    category_id: str
-    description: str
-    child_id: str
-    comments: list
+class MediaCollection(BaseModel):
+    media: List[MediaModel]
 
-class MilestoneResponseSchema(BaseModel):
-    id: str
-    date: str
-    name: str
-    category_id: str
-    description: str
-    child_id: str
-    comments: list
 
-    class Config:
-        orm_mode = True
+class MilestoneModelCreate(BaseModel):
+    name: str = Field(...)
+    description: str = Field(...)
+    category: str = Field(...)
+    child: str = Field(...)
+    date: str = Field(...)
 
-class CommentCreateSchema(BaseModel):
-    media_id: str
-    milestone_id: str
-    text: str
+class MilestoneModel(BaseModel):
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    name: str = Field(...)
+    description: str = Field(...)
+    category: str = Field(...)
+    child: str = Field(...)
+    date: str = Field(...)
 
-class CommentResponseSchema(BaseModel):
-    id: str
-    media_id: str
-    milestone_id: str
-    text: str
+class MilestoneCollection(BaseModel):
+    milestones: List[MilestoneModel]
 
-    class Config:
-        orm_mode = True
+class CommentModelCreate(BaseModel):
+    media: Optional[str] = Field( default=None)
+    milestone: Optional[str] = Field( default=None)
+    text: str = Field(...)
+
+class CommentModel(BaseModel):
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    media: Optional[str] = Field( default=None)
+    milestone: Optional[str] = Field( default=None)
+    text: str = Field(...)
+
+class CommentCollection(BaseModel):
+    comments: List[CommentModel]
