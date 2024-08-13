@@ -1,3 +1,4 @@
+from bson import ObjectId
 from pydantic import BaseModel, EmailStr
 from typing import Optional
 
@@ -10,6 +11,7 @@ class User(BaseModel):
         orm_mode = True
 
 class Guardian(BaseModel):
+    id: str
     name: str
     email: str
     relationship: str

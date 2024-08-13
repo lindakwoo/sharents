@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 from bson import ObjectId
 from .models import User, Guardian, Member
-from .schemas import UserCreateSchema, UserResponseSchema
+from .schemas import UserResponseSchema
 from .database import db
 
 router = APIRouter()
@@ -15,7 +15,7 @@ router = APIRouter()
 #     return user_dict
 
 @router.get(
-    "/guardians",
+    "/guardians/",
     response_description="List all user",
     response_model=UserResponseSchema,
     response_model_by_alias=False,
