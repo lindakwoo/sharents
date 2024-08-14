@@ -3,7 +3,7 @@ from . import routes
 
 app = FastAPI()
 
-app.include_router(routes.router, prefix="/milestones_media", tags=["milestones_media"])
+app.include_router(routes.router, prefix="", tags=["milestones_media"])
 # need to implement for members access --- gets
 #  posting and comenting as well
 
