@@ -1,8 +1,9 @@
 from fastapi import FastAPI
 from . import routes
+
 app = FastAPI()
 
-app.include_router(routes.router, prefix="/", tags=["guardians"])
+app.include_router(routes.router, prefix="", tags=["users"])
 
 if __name__ == "__main__":
     import uvicorn

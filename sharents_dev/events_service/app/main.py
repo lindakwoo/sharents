@@ -3,7 +3,7 @@ from .routes import event_routes
 
 app = FastAPI()
 
-app.include_router(event_routes.router, prefix="/events", tags=["events"])
+app.include_router(event_routes.router, prefix="", tags=["events"])
 # need some additional routes for members access --- gets
 
 if __name__ == "__main__":

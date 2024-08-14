@@ -1,15 +1,21 @@
-from pydantic import BaseModel, EmailStr
+from typing import List, Optional
+from pydantic import BaseModel, Field, EmailStr
+from pydantic.functional_validators import BeforeValidator
+from typing_extensions import Annotated
 
-class UserCreateSchema(BaseModel):
-    name: str
-    email: EmailStr
-    relationship: str
+PyObjectId = Annotated[str, BeforeValidator(str)]
 
-class UserResponseSchema(UserCreateSchema):
-    id: str
-    name: str
-    email: EmailStr
-    relationship: str
 
-    class Config:
-        orm_mode = True
+class GuardianModelCreate(BaseModel):
+    name: str = Field(...)
+    email: EmailStr = Field(...)
+
+
+class GuardianModel(BaseModel):
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    name: str = Field(...)
+    email: EmailStr = Field(...)
+
+
+class GuardianCollection(BaseModel):
+    guardians: List[GuardianModel]
