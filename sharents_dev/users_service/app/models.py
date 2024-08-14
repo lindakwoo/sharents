@@ -3,14 +3,6 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 
-# class User(BaseModel):
-#     name: str
-#     email: EmailStr
-
-#     class Config:
-#         orm_mode = True
-
-
 class Guardian(BaseModel):
     id: str
     name: str

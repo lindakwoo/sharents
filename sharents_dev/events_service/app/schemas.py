@@ -1,49 +1,51 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+
 
 class WishlistCreateSchema(BaseModel):
-  child: str
-  event: str
-  properties: list
+    child: str = Field(...)
+    event: str = Field(...)
+
 
 class WishlistResponseSchema(BaseModel):
-  id: str
-  child: str
-  event: str
-  properties: list
+    id: str = Field(...)
+    child: str = Field(...)
+    event: str = Field(...)
 
-  class Config:
-    orm_mode = True
+    class Config:
+        orm_mode = True
+
 
 class WishListItemCreateSchema(BaseModel):
-  description: str
-  isPusrcahsed: bool
-  wishList: str
-  url: str
-  price: float
+    description: str = Field(...)
+    is_purchased: bool = Field(...)
+    wishList: str = Field(...)
+    url: str = Field(...)
+    price: float = Field(...)
+
 
 class WishListItemResponseSchema(BaseModel):
-  id: str
-  description: str
-  isPusrcahsed: bool
-  wishList: str
-  url: str
-  price: float
+    id: str = Field(...)
+    description: str = Field(...)
+    is_purchased: bool = Field(...)
+    wishList: str = Field(...)
+    url: str = Field(...)
+    price: float = Field(...)
 
-  class Config:
-    orm_mode = True
+    class Config:
+        orm_mode = True
+
 
 class EventCreateSchema(BaseModel):
-  child: str
-  date: str
-  time: str
-  description: str
+    child: str = Field(...)
+    datetime: str = Field(...)
+    description: str = Field(...)
+
 
 class EventResponseSchema(BaseModel):
-  id: str
-  child: str
-  date: str
-  time: str
-  description: str
+    id: str = Field(...)
+    child: str = Field(...)
+    datetime: str = Field(...)
+    description: str = Field(...)
 
-  class Config:
-    orm_mode = True
+    class Config:
+        orm_mode = True
