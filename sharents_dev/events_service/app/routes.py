@@ -1,27 +1,24 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, status
 from typing import List
 from bson import ObjectId
 from .models import Event, Wishlist, WishListItem
 from .schemas import EventCreateSchema, EventResponseSchema, WishlistCreateSchema, WishlistResponseSchema, WishListItemCreateSchema, WishListItemResponseSchema
 from .database import db
+from .utils import check_for_none, check_list_not_empty
+
 
 router = APIRouter()
 
-# @router.post("/", response_model=UserResponseSchema)
-# async def create_user(user: UserCreateSchema):
-#     user_dict = user.dict()
-#     result = await db["users"].insert_one(user_dict)
-#     user_dict["_id"] = str(result.inserted_id)
-#     return user_dict
 
-# @router.get("/", response_model=List[UserResponseSchema])
-# async def get_users():
-#     users = await db["users"].find().to_list(100)
-#     return [UserResponseSchema(id=str(user["_id"]), **user) for user in users]
-
-# @router.get("/{user_id}", response_model=UserResponseSchema)
-# async def get_user(user_id: str):
-#     user = await db["users"].find_one({"_id": ObjectId(user_id)})
-#     if not user:
-#         raise HTTPException(status_code=404, detail="User not found")
-#     return UserResponseSchema(id=str(user["_id"]), **user)
+@router.get(
+    "/children/{child_id}/events/",
+    response_description="Get all",
+    response_model=GuardianCollection,
+    response_model_by_alias=False,
+)
+async def list_guardians():
+    guardian_collection = db.get_collection("guardians")
+    check_for_none(guardian_collection, "guardian collections not found")
+    guardians = await guardian_collection.find().to_list(1000)
+    check_list_not_empty(guardians, "no guardians found")
+    return GuardianCollection(guardians=guardians)
