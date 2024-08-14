@@ -1,14 +1,11 @@
 from motor.motor_asyncio import AsyncIOMotorClient
-from bson import ObjectId
 import os
-DATABASE_URL = os.getenv("DATABASE_URL", "mongodb://localhost:27017/events_service")
-client: AsyncIOMotorClient = None
-db = None
+from dotenv import load_dotenv
 
-async def connect_db():
-    global client, db
-    client = AsyncIOMotorClient(DATABASE_URL)
-    db = client.get_database()
+load_dotenv()
 
-async def close_db():
-    client.close()
+DATABASE_URL = os.getenv("ATLAS_URI")
+print("url", DATABASE_URL)
+client = AsyncIOMotorClient(DATABASE_URL)
+
+db = client.get_database("events")
