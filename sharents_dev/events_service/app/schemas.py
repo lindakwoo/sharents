@@ -7,14 +7,17 @@ PyObjectId = Annotated[str, BeforeValidator(str)]
 
 
 class WishlistModelCreate(BaseModel):
-    child: str = Field(...)
-    event: str = Field(...)
+    name: str = Field(...)
+
+
+class WishlistModelUpdate(BaseModel):
+    name: Optional[str] = Field(default=None)
 
 
 class WishlistModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
-    child: str = Field(...)
     event: str = Field(...)
+    name: str = Field(...)
 
     class Config:
         orm_mode = True
@@ -24,7 +27,7 @@ class WishlistCollection(BaseModel):
     wishlists: List[WishlistModel]
 
 
-class WishListItemModelCreate(BaseModel):
+class WishlistItemModelCreate(BaseModel):
     description: str = Field(...)
     is_purchased: bool = Field(...)
     wishList: str = Field(...)
@@ -32,7 +35,15 @@ class WishListItemModelCreate(BaseModel):
     price: float = Field(...)
 
 
-class WishListItemModel(BaseModel):
+class WishlistItemModelUpdate(BaseModel):
+    description: Optional[str] = Field(default=None)
+    is_purchased: Optional[bool] = Field(default=None)
+    wishList: Optional[str] = Field(default=None)
+    url: Optional[str] = Field(default=None)
+    price: Optional[float] = Field(default=None)
+
+
+class WishlistItemModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     description: str = Field(...)
     is_purchased: bool = Field(...)
@@ -45,20 +56,29 @@ class WishListItemModel(BaseModel):
 
 
 class WishlistItemCollection(BaseModel):
-    wishlistItems: List[WishListItemModel]
+    wishlistItems: List[WishlistItemModel]
 
 
 class EventModelCreate(BaseModel):
-    child: str = Field(...)
     datetime: str = Field(...)
     description: str = Field(...)
+    child: str = Field(...)
+    title: str = Field(...)
+
+
+class EventModelUpdate(BaseModel):
+    datetime: Optional[str] = Field(default=None)
+    description: Optional[str] = Field(default=None)
+    child:  Optional[str] = Field(default=None)
+    title: Optional[str] = Field(default=None)
 
 
 class EventModel(BaseModel):
-    id: str = Field(...)
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
     child: str = Field(...)
     datetime: str = Field(...)
     description: str = Field(...)
+    title: str = Field(...)
 
     class Config:
         orm_mode = True
