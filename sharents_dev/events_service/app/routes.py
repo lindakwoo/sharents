@@ -26,70 +26,87 @@ router = APIRouter()
 # Event CRUD operations
 
 
-@router.get(
+@ router.get(
     "/children/{child_id}/events/",
-    response_description="List all events",
+    response_description="Get all child events",
     response_model=EventCollection,
     response_model_by_alias=False,
 )
-async def list_events(child_id: str):
-    events = await db.get_collection("events").find({'child': child_id}).to_list(1000)
-    check_list_not_empty(events, "No events found")
+async def get_events(child_id: str):
+    event_collection = db.get_collection("events")
+    check_for_none(event_collection, "event collections not found")
+    events_cursor = event_collection.find({"child": child_id})
+    events = await events_cursor.to_list(length=1000)
+    check_list_not_empty(events, "no events found for this child")
     return EventCollection(events=events)
 
 
-@router.post(
-    "/events/",
+# create an event for a child
+
+
+@ router.post(
+    "/children/{child_id}/events/",
     response_description="Create a new event",
     response_model=EventModel,
     response_model_by_alias=False,
-    status_code=status.HTTP_201_CREATED,
+    status_code=status.HTTP_201_CREATED
 )
-async def create_event(event: EventModelCreate):
-    event_data = event.dict()
-    new_event = await db.get_collection("events").insert_one(event_data)
-    created_event = await db.get_collection("events").find_one({"_id": new_event.inserted_id})
-    check_for_none(created_event, "Event not found after creation")
-    return EventModel(**created_event)
+async def create_event(event: EventModelCreate, child_id: str):
+    event_collection = db.get_collection("events")
+    check_for_none(event_collection, "event collections not found")
+    event_data = event.model_dump()
+    event_data['child'] = child_id
+    result = await event_collection.insert_one(event_data)
+    new_event = await event_collection.find_one({"_id": result.inserted_id})
+    check_for_none(new_event, "Event not found after creation")
+    return EventModel(**new_event)
 
 
-@router.get(
-    "/events/{event_id}",
-    response_description="Get a single event",
+# get one event
+
+
+@ router.get(
+    "/events/{id}",
+    response_description="Get an event",
     response_model=EventModel,
     response_model_by_alias=False,
 )
-async def get_event(event_id: str):
-    event = await db.get_collection("events").find_one({"_id": ObjectId(event_id)})
-    check_for_none(event, "Event not found")
+async def get_event(id: str):
+    event = await db.get_collection("events").find_one({"_id": ObjectId(id)})
+    check_for_none(event, "event  not found")
     return EventModel(**event)
 
 
-@router.put(
-    "/events/{event_id}",
+# update one event
+
+
+@ router.put(
+    "/events/{id}",
     response_description="Update an event",
     response_model=EventModel,
     response_model_by_alias=False,
 )
-async def update_event(event_id: str, event_update: EventModelUpdate):
+async def update_event(id: str, event_update: EventModelUpdate):
     update_result = await db.get_collection("events").update_one(
-        {"_id": ObjectId(event_id)},
-        {"$set": event_update.dict(exclude_unset=True)},
+        {"_id": ObjectId(id)},
+        {"$set": event_update.dict(exclude_unset=True)}
     )
-    check_update_result(update_result, "Event not found")
-    updated_event = await db.get_collection("events").find_one({"_id": ObjectId(event_id)})
+    check_update_result(update_result, "Updated event not found")
+    updated_event = await db.get_collection("events").find_one({"_id": ObjectId(id)})
     check_for_none(updated_event, "Event not found after update")
     return EventModel(**updated_event)
 
+# delete one event
 
-@router.delete(
-    "/events/{event_id}",
+
+@ router.delete(
+    "/events/{id}",
     response_description="Delete an event",
-    status_code=status.HTTP_204_NO_CONTENT,
 )
-async def delete_event(event_id: str):
-    delete_result = await db.get_collection("events").delete_one({"_id": ObjectId(event_id)})
-    check_delete_result(delete_result, "Event not found")
+async def delete_event(id: str):
+    delete_result = await db.get_collection("events").delete_one({"_id": ObjectId(id)})
+    check_delete_result(delete_result, "No deleted event found")
+    return {"message": "Event successfully deleted"}
 # Wishlist CRUD operations
 
 
