@@ -15,7 +15,7 @@ from .schemas import (
     WishlistItemModelUpdate,
     WishlistItemCollection,
 )
-from .utils import (
+from ...utils import (
     check_for_none,
     check_list_not_empty,
     check_update_result,
