@@ -8,7 +8,7 @@ services:
     volumes:
       - ./sharents_dev/children_service:/app
     ports:
-      - "8002:8000"
+      - "8002:8002"
     environment:
       - MONGODB_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/children_db?retryWrites=true&w=majority&appName=Sharents
 
@@ -19,7 +19,7 @@ services:
     volumes:
       - ./sharents_dev/events_service:/app
     ports:
-      - "8003:8000"
+      - "8003:8003"
     environment:
       - MONGODB_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/events_db?retryWrites=true&w=majority&appName=Sharents
 
@@ -30,7 +30,7 @@ services:
     volumes:
       - ./sharents_dev/milestones_media_service:/app
     ports:
-      - "8004:8000"
+      - "8004:8004"
     environment:
       - MONGODB_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/milestones_media_db?retryWrites=true&w=majority&appName=Sharents
 
@@ -41,6 +41,6 @@ services:
     volumes:
       - ./sharents_dev/users_service:/app
     ports:
-      - "8001:8000"
+      - "8001:8001"
     environment:
       - MONGODB_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/users_db?retryWrites=true&w=majority&appName=Sharents
