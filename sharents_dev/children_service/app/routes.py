@@ -1,12 +1,20 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 from bson import ObjectId
-from .schemas import ChildrenCollection, ChildModel
+from .schemas import ChildrenCollection, ChildModel, ChildModelCreate
 from .database import db, db_invites
+from ...utils import (
+    check_for_none,
+    check_list_not_empty,
+    check_update_result,
+    check_delete_result,
+)
 
 router = APIRouter()
 
 # get all children for the member
+
+
 @router.get(
     "/members/{member_id}/children/",
     response_description="List all children for memeber",
@@ -28,26 +36,16 @@ async def list_children_for_member(member_id: str):
         children.append(child_model)
     return ChildrenCollection(children=children)
 
+# get child
 
 
-
-
-
-# @router.post("/", response_model=UserResponseSchema)
-# async def create_user(user: UserCreateSchema):
-#     user_dict = user.dict()
-#     result = await db["users"].insert_one(user_dict)
-#     user_dict["_id"] = str(result.inserted_id)
-#     return user_dict
-
-# @router.get("/", response_model=List[UserResponseSchema])
-# async def get_users():
-#     users = await db["users"].find().to_list(100)
-#     return [UserResponseSchema(id=str(user["_id"]), **user) for user in users]
-
-# @router.get("/{user_id}", response_model=UserResponseSchema)
-# async def get_user(user_id: str):
-#     user = await db["users"].find_one({"_id": ObjectId(user_id)})
-#     if not user:
-#         raise HTTPException(status_code=404, detail="User not found")
-#     return UserResponseSchema(id=str(user["_id"]), **user)
+@router.get(
+    "/children/{child_id}",
+    response_description="Get a child",
+    response_model=ChildModel,
+    response_model_by_alias=False,
+)
+async def get_event(event_id: str):
+    event = await db.get_collection("children").find_one({"_id": ObjectId(event_id)})
+    check_for_none(event, "Event not found")
+    return EventModel(**event)
