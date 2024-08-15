@@ -1,7 +1,6 @@
 from fastapi import APIRouter, HTTPException, Depends
 from typing import List
 from bson import ObjectId
-from .models import Child
 from .schemas import ChildrenCollection, ChildModel
 from .database import db, db_invites
 
