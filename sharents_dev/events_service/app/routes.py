@@ -27,13 +27,13 @@ router = APIRouter()
 
 
 @router.get(
-    "/events/",
+    "/children/{child_id}/events/",
     response_description="List all events",
     response_model=EventCollection,
     response_model_by_alias=False,
 )
-async def list_events():
-    events = await db.get_collection("events").find().to_list(1000)
+async def list_events(child_id: str):
+    events = await db.get_collection("events").find({'child': child_id}).to_list(1000)
     check_list_not_empty(events, "No events found")
     return EventCollection(events=events)
 
