@@ -3,7 +3,6 @@ from .database import db
 from fastapi import APIRouter, HTTPException, Depends, status
 from typing import List
 from bson import ObjectId
-from .models import Event, Wishlist, WishListItem
 from .schemas import (
     EventCollection,
     EventModel,
