@@ -6,28 +6,31 @@ from typing_extensions import Annotated
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
 
-class WishlistModelCreate(BaseModel):
+class BaseModelWithConfig(BaseModel):
+    class Config:
+        from_attributes = True
+        populate_by_name = True
+
+
+class WishlistModelCreate(BaseModelWithConfig):
     name: str = Field(...)
 
 
-class WishlistModelUpdate(BaseModel):
+class WishlistModelUpdate(BaseModelWithConfig):
     name: Optional[str] = Field(default=None)
 
 
-class WishlistModel(BaseModel):
+class WishlistModel(BaseModelWithConfig):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     event: str = Field(...)
     name: str = Field(...)
 
-    class Config:
-        orm_mode = True
 
-
-class WishlistCollection(BaseModel):
+class WishlistCollection(BaseModelWithConfig):
     wishlists: List[WishlistModel]
 
 
-class WishlistItemModelCreate(BaseModel):
+class WishlistItemModelCreate(BaseModelWithConfig):
     description: str = Field(...)
     is_purchased: bool = Field(...)
     wishList: str = Field(...)
@@ -35,7 +38,7 @@ class WishlistItemModelCreate(BaseModel):
     price: float = Field(...)
 
 
-class WishlistItemModelUpdate(BaseModel):
+class WishlistItemModelUpdate(BaseModelWithConfig):
     description: Optional[str] = Field(default=None)
     is_purchased: Optional[bool] = Field(default=None)
     wishList: Optional[str] = Field(default=None)
@@ -43,7 +46,7 @@ class WishlistItemModelUpdate(BaseModel):
     price: Optional[float] = Field(default=None)
 
 
-class WishlistItemModel(BaseModel):
+class WishlistItemModel(BaseModelWithConfig):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     description: str = Field(...)
     is_purchased: bool = Field(...)
@@ -51,38 +54,32 @@ class WishlistItemModel(BaseModel):
     url: str = Field(...)
     price: float = Field(...)
 
-    class Config:
-        orm_mode = True
 
-
-class WishlistItemCollection(BaseModel):
+class WishlistItemCollection(BaseModelWithConfig):
     wishlistItems: List[WishlistItemModel]
 
 
-class EventModelCreate(BaseModel):
+class EventModelCreate(BaseModelWithConfig):
     datetime: str = Field(...)
     description: str = Field(...)
     child: str = Field(...)
     title: str = Field(...)
 
 
-class EventModelUpdate(BaseModel):
+class EventModelUpdate(BaseModelWithConfig):
     datetime: Optional[str] = Field(default=None)
     description: Optional[str] = Field(default=None)
-    child:  Optional[str] = Field(default=None)
+    child: Optional[str] = Field(default=None)
     title: Optional[str] = Field(default=None)
 
 
-class EventModel(BaseModel):
+class EventModel(BaseModelWithConfig):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     child: str = Field(...)
     datetime: str = Field(...)
     description: str = Field(...)
     title: str = Field(...)
 
-    class Config:
-        orm_mode = True
 
-
-class EventCollection(BaseModel):
+class EventCollection(BaseModelWithConfig):
     events: List[EventModel]

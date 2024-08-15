@@ -2,7 +2,7 @@ from pydantic import BaseModel
 from typing import Optional
 
 
-class child(BaseModel):
+class Child(BaseModel):
     name: str
     birthdate: str
     profile_picture: str
