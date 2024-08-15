@@ -6,74 +6,65 @@ from typing_extensions import Annotated
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
 
-class BaseModelWithConfig(BaseModel):
-    class Config:
-        from_attributes = True
-        populate_by_name = True
-
-
-class WishlistModelCreate(BaseModelWithConfig):
+class WishlistModelCreate(BaseModel):
     name: str = Field(...)
 
 
-class WishlistModelUpdate(BaseModelWithConfig):
+class WishlistModelUpdate(BaseModel):
     name: Optional[str] = Field(default=None)
 
 
-class WishlistModel(BaseModelWithConfig):
+class WishlistModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     event: str = Field(...)
     name: str = Field(...)
 
 
-class WishlistCollection(BaseModelWithConfig):
+class WishlistCollection(BaseModel):
     wishlists: List[WishlistModel]
 
 
-class WishlistItemModelCreate(BaseModelWithConfig):
+class WishlistItemModelCreate(BaseModel):
     description: str = Field(...)
-    is_purchased: bool = Field(...)
-    wishList: str = Field(...)
     url: str = Field(...)
     price: float = Field(...)
 
 
-class WishlistItemModelUpdate(BaseModelWithConfig):
+class WishlistItemModelUpdate(BaseModel):
     description: Optional[str] = Field(default=None)
     is_purchased: Optional[bool] = Field(default=None)
-    wishList: Optional[str] = Field(default=None)
     url: Optional[str] = Field(default=None)
     price: Optional[float] = Field(default=None)
 
 
-class WishlistItemModel(BaseModelWithConfig):
+class WishlistItemModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     description: str = Field(...)
     is_purchased: bool = Field(...)
-    wishList: str = Field(...)
+    wishlist: str = Field(...)
     url: str = Field(...)
     price: float = Field(...)
 
 
-class WishlistItemCollection(BaseModelWithConfig):
+class WishlistItemCollection(BaseModel):
     wishlistItems: List[WishlistItemModel]
 
 
-class EventModelCreate(BaseModelWithConfig):
+class EventModelCreate(BaseModel):
     datetime: str = Field(...)
     description: str = Field(...)
     child: str = Field(...)
     title: str = Field(...)
 
 
-class EventModelUpdate(BaseModelWithConfig):
+class EventModelUpdate(BaseModel):
     datetime: Optional[str] = Field(default=None)
     description: Optional[str] = Field(default=None)
     child: Optional[str] = Field(default=None)
     title: Optional[str] = Field(default=None)
 
 
-class EventModel(BaseModelWithConfig):
+class EventModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     child: str = Field(...)
     datetime: str = Field(...)
@@ -81,5 +72,5 @@ class EventModel(BaseModelWithConfig):
     title: str = Field(...)
 
 
-class EventCollection(BaseModelWithConfig):
+class EventCollection(BaseModel):
     events: List[EventModel]
