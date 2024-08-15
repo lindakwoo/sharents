@@ -15,7 +15,7 @@ from .schemas import (
     WishlistItemModelUpdate,
     WishlistItemCollection,
 )
-from ...utils import (
+from .utils import (
     check_for_none,
     check_list_not_empty,
     check_update_result,
@@ -107,9 +107,9 @@ async def delete_event(id: str):
     delete_result = await db.get_collection("events").delete_one({"_id": ObjectId(id)})
     check_delete_result(delete_result, "No deleted event found")
     return {"message": "Event successfully deleted"}
-# Wishlist CRUD operations
 
 
+# Get all wishlists for an event
 @router.get(
     "/events/{event_id}/wishlists/",
     response_description="Get all wishlists for an event",
@@ -124,13 +124,14 @@ async def get_wishlists(event_id: str):
     check_list_not_empty(wishlists, "No wishlists found for this event")
     return WishlistCollection(wishlists=wishlists)
 
+# Create a wishlist for an event
+
 
 @router.post(
     "/events/{event_id}/wishlists/",
     response_description="Create a new wishlist",
     response_model=WishlistModel,
     response_model_by_alias=False,
-    status_code=status.HTTP_201_CREATED,
 )
 async def create_wishlist(wishlist: WishlistModelCreate, event_id: str):
     wishlist_collection = db.get_collection("wishlists")
@@ -142,6 +143,8 @@ async def create_wishlist(wishlist: WishlistModelCreate, event_id: str):
     check_for_none(new_wishlist, "Wishlist not found after creation")
     return WishlistModel(**new_wishlist)
 
+# Get one wishlist
+
 
 @router.get(
     "/wishlists/{wishlist_id}",
@@ -150,9 +153,13 @@ async def create_wishlist(wishlist: WishlistModelCreate, event_id: str):
     response_model_by_alias=False,
 )
 async def get_wishlist(wishlist_id: str):
-    wishlist = await db.get_collection("wishlists").find_one({"_id": ObjectId(wishlist_id)})
+    wishlist = await db.get_collection("wishlists").find_one(
+        {"_id": ObjectId(wishlist_id)}
+    )
     check_for_none(wishlist, "Wishlist not found")
     return WishlistModel(**wishlist)
+
+# Update a wishlist
 
 
 @router.put(
@@ -167,84 +174,109 @@ async def update_wishlist(wishlist_id: str, wishlist_update: WishlistModelUpdate
         {"$set": wishlist_update.dict(exclude_unset=True)},
     )
     check_update_result(update_result, "Updated wishlist not found")
-    updated_wishlist = await db.get_collection("wishlists").find_one({"_id": ObjectId(wishlist_id)})
+    updated_wishlist = await db.get_collection("wishlists").find_one(
+        {"_id": ObjectId(wishlist_id)}
+    )
     check_for_none(updated_wishlist, "Wishlist not found after update")
     return WishlistModel(**updated_wishlist)
+
+# Delete a wishlist
 
 
 @router.delete(
     "/wishlists/{wishlist_id}",
     response_description="Delete a wishlist",
-    status_code=status.HTTP_204_NO_CONTENT,
 )
 async def delete_wishlist(wishlist_id: str):
-    delete_result = await db.get_collection("wishlists").delete_one({"_id": ObjectId(wishlist_id)})
+    delete_result = await db.get_collection("wishlists").delete_one(
+        {"_id": ObjectId(wishlist_id)}
+    )
     check_delete_result(delete_result, "No deleted wishlist found")
-# Wishlist Item CRUD operations
+    return {"message": "Wishlist successfully deleted"}
+
+# get all items in a wishlist
 
 
 @router.get(
-    "/wishlists/{wishlist_id}/items/",
+    "/wishlists/{wishlist_id}/wishlistItems/",
     response_description="Get all items in a wishlist",
     response_model=WishlistItemCollection,
     response_model_by_alias=False,
 )
 async def get_wishlist_items(wishlist_id: str):
-    items = await db.get_collection("wishlist_items").find({"wishList": wishlist_id}).to_list(1000)
-    check_list_not_empty(items, "No items found in this wishlist")
-    return WishlistItemCollection(wishlistItems=items)
+    wishlistItems_collection = db.get_collection("wishlist_items")
+    check_for_none(wishlistItems_collection,
+                   "WishlistItems collection not found")
+    wishlistItems_cursor = wishlistItems_collection.find(
+        {"wishlist": wishlist_id})
+    wishlists = await wishlistItems_cursor.to_list(length=1000)
+    print(wishlists)
+    check_list_not_empty(wishlists, "No wishlists found for this event")
+    return WishlistItemCollection(wishlistItems=wishlists)
+
+# create wishlistItem
 
 
 @router.post(
-    "/wishlists/{wishlist_id}/items/",
+    "/wishlists/{wishlist_id}/wishListItems/",
     response_description="Create a new wishlist item",
     response_model=WishlistItemModel,
     response_model_by_alias=False,
     status_code=status.HTTP_201_CREATED,
 )
-async def create_wishlist_item(wishlist_id: str, item: WishlistItemModelCreate):
-    item_data = item.dict()
-    item_data["wishList"] = wishlist_id
-    result = await db.get_collection("wishlist_items").insert_one(item_data)
-    new_item = await db.get_collection("wishlist_items").find_one({"_id": result.inserted_id})
-    check_for_none(new_item, "Wishlist item not found after creation")
-    return WishlistItemModel(**new_item)
+async def create_wishlistItem(wishlist_id: str, wisthlistItem: WishlistItemModelCreate):
+    wishlistItems_collection = db.get_collection("wishlist_items")
+    check_for_none(wishlistItems_collection,
+                   "WishlistItems collections not found")
+    wishlistItem_data = wisthlistItem.model_dump()
+    wishlistItem_data["wishlist"] = wishlist_id
+    wishlistItem_data["is_purchased"] = False
+    result = await wishlistItems_collection.insert_one(wishlistItem_data)
+    new_wishlistItem = await wishlistItems_collection.find_one(
+        {"_id": result.inserted_id})
+    check_for_none(new_wishlistItem, "Wishlist item not found after creation")
+    return WishlistItemModel(**new_wishlistItem)
 
 
+# get a wishlist item
 @router.get(
-    "/wishlist-items/{item_id}",
+    "/wishlistItems/{wishlistItem_id}",
     response_description="Get a wishlist item",
     response_model=WishlistItemModel,
     response_model_by_alias=False,
 )
-async def get_wishlist_item(item_id: str):
-    item = await db.get_collection("wishlist_items").find_one({"_id": ObjectId(item_id)})
+async def get_wishlist_item(wishlistItem_id: str):
+    item = await db.get_collection("wishlist_items").find_one({"_id": ObjectId(wishlistItem_id)})
     check_for_none(item, "Wishlist item not found")
     return WishlistItemModel(**item)
 
 
+# update a wishlist item
 @router.put(
-    "/wishlist-items/{item_id}",
+    "/wishlistItems/{wishlistItem_id}",
     response_description="Update a wishlist item",
     response_model=WishlistItemModel,
     response_model_by_alias=False,
 )
-async def update_wishlist_item(item_id: str, item_update: WishlistItemModelUpdate):
+async def update_wishlist_item(wishlistItem_id: str, wishlistItem_update: WishlistItemModelUpdate):
     update_result = await db.get_collection("wishlist_items").update_one(
-        {"_id": ObjectId(item_id)},
-        {"$set": item_update.dict(exclude_unset=True)},
+        {"_id": ObjectId(wishlistItem_id)},
+        {"$set": wishlistItem_update.model_dump(exclude_unset=True)},
     )
     check_update_result(update_result, "Wishlist item not found")
-    updated_item = await db.get_collection("wishlist_items").find_one({"_id": ObjectId(item_id)})
+    updated_item = await db.get_collection("wishlist_items").find_one({"_id": ObjectId(wishlistItem_id)})
     check_for_none(updated_item, "Wishlist item not found after update")
     return WishlistItemModel(**updated_item)
 
+#  delete a wishlist item
+
 
 @router.delete(
-    "/wishlist-items/{item_id}",
+    "/wishlistItems/{wishlistItem_id}",
     response_description="Delete a wishlist item",
     status_code=status.HTTP_204_NO_CONTENT,
 )
-async def delete_wishlist_item(item_id: str):
-    delete_result = await db.get_collection("wishlist_items").delete_one({"_id": ObjectId(item_id)})
+async def delete_wishlist_item(wishlistItem_id: str):
+    delete_result = await db.get_collection("wishlist_items").delete_one({"_id": ObjectId(wishlistItem_id)})
     check_delete_result(delete_result, "Wishlist item not found")
+    return {"message": "Wishlist item successfully deleted"}
