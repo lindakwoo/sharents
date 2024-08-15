@@ -53,14 +53,12 @@ class WishlistItemCollection(BaseModel):
 class EventModelCreate(BaseModel):
     datetime: str = Field(...)
     description: str = Field(...)
-    child: str = Field(...)
     title: str = Field(...)
 
 
 class EventModelUpdate(BaseModel):
     datetime: Optional[str] = Field(default=None)
     description: Optional[str] = Field(default=None)
-    child: Optional[str] = Field(default=None)
     title: Optional[str] = Field(default=None)
 
 
