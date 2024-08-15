@@ -61,7 +61,6 @@ async def post_comment_on_media(media_id: str, comment: CommentModelCreate):
     inserted_comment = await db.get_collection("comments").find_one({"media": media_id, "_id": result.inserted_id})
     return inserted_comment
 
-# /media/{media_id}/comments/{comment_id} (get, delete, update)(update or delete a comment on a media )
 
 
 # get a specific comment on a media
