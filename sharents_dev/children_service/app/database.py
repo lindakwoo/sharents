@@ -9,3 +9,4 @@ print("url", DATABASE_URL)
 client = AsyncIOMotorClient(DATABASE_URL)
 
 db = client.get_database("children")
+db_invites = client.get_database("users")

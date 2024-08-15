@@ -28,6 +28,16 @@ class MediaModel(BaseModel):
 class MediaCollection(BaseModel):
     media: List[MediaModel]
 
+class ChildModel(BaseModel):
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
+    name: str = Field(...)
+    birthdate: str = Field(...)
+    profile_picture: str = Field(...)
+    guardian: str = Field(...)
+
+
+class ChildrenCollection(BaseModel):
+    children: List[ChildModel]
 
 class MilestoneModelCreate(BaseModel):
     name: str = Field(...)
@@ -51,8 +61,6 @@ class MilestoneCollection(BaseModel):
 
 
 class CommentModelCreate(BaseModel):
-    media: Optional[str] = Field(default=None)
-    milestone: Optional[str] = Field(default=None)
     text: str = Field(...)
 
 

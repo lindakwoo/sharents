@@ -1,10 +1,9 @@
 from fastapi import FastAPI
-from .routes import children_routes
-from .database import connect_db, close_db
+from . import routes
 
 app = FastAPI()
 
-app.include_router(children_routes.router, prefix="/children", tags=["children"])
+app.include_router(routes.router, prefix="", tags=["children"])
 
 if __name__ == "__main__":
     import uvicorn
