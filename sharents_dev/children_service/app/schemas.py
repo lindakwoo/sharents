@@ -10,7 +10,12 @@ class ChildModelCreate(BaseModel):
     name: str = Field(...)
     birthdate: str = Field(...)
     profile_picture: str = Field(...)
-    guardian: str = Field(...)
+
+
+class ChildModelUpdate(BaseModel):
+    name: Optional[str] = Field(default=None)
+    birthdate: Optional[str] = Field(default=None)
+    profile_picture: Optional[str] = Field(default=None)
 
 
 class ChildModel(BaseModel):
