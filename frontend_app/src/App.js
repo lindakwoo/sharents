@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Box } from "@mui/material";
 import Navbar from './components/Navbar';
+import Login from './components/Login';
 import './App.css';
 
 function App() {
@@ -10,6 +11,7 @@ function App() {
       <main>
         <Box sx={{ mx: "64px", mt: "32px" }}>
           <h1>Sharents Landing Page</h1>
+          <Login />
           {/* <Routes>
             <Route path='/' element={<MainPage />} />
             <Route path='inventory/manufacturers'>
