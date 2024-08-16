@@ -6,11 +6,20 @@ from typing_extensions import Annotated
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
 
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
+
+
 class GuardianModelCreate(BaseModel):
     name: str = Field(...)
     email: EmailStr = Field(...)
     username: str = Field(...)
-    hashed_password: str = Field(...)
+    password: str = Field(...)
 
 
 class GuardianModel(BaseModel):
