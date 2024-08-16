@@ -2,6 +2,13 @@
 FROM python:3.9-slim
 
 # Set environment variables
+ENV MAIL_USERNAME="lindakwoo"
+ENV MAIL_PASSWORD="fpzn olgi iybc ixwo"
+ENV MAIL_FROM="lindakwoo@gmail.com"
+ENV MAIL_PORT=587
+ENV MAIL_SERVER="smtp.gmail.com"
+ENV MAIL_FROM_NAME="Sharents"
+ENV DOMAIN=localhost:8000
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV ATLAS_URI="mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/?retryWrites=true&w=majority&appName=Sharents"
