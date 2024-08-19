@@ -1,16 +1,42 @@
-version: "3.8"
+name: sharents-dev
 
 services:
+  traefik:
+    image: traefik:v2.5
+    command:
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--providers.file.directory=/etc/traefik/conf"
+      - "--providers.file.watch=true"
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./traefik/conf:/etc/traefik/conf
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dashboard.rule=Host(`traefik.docker.localhost`)"
+      - "traefik.http.routers.dashboard.service=api@internal"
+      - "traefik.http.routers.dashboard.entrypoints=web"
+      - "traefik.http.services.dashboard.loadbalancer.server.port=8080"
+
   users_service:
     build:
       context: ./sharents_dev/users_service
       dockerfile: Dockerfile.dev
     volumes:
       - ./sharents_dev/users_service:/app
-    ports:
-      - "8001:8001"
     environment:
       - ATLAS_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/users_db?retryWrites=true&w=majority&appName=Sharents
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.users.rule=PathPrefix(`/auth`) && !PathPrefix(`/auth/docs`) && !PathPrefix(`/auth/openapi.json`)"
+      - "traefik.http.routers.users-docs.rule=PathPrefix(`/auth/docs`) || PathPrefix(`/auth/openapi.json`)"
+      - "traefik.http.services.users.loadbalancer.server.port=8001"
 
   children_service:
     build:
@@ -18,10 +44,13 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./sharents_dev/children_service:/app
-    ports:
-      - "8002:8002"
     environment:
       - ATLAS_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/children_db?retryWrites=true&w=majority&appName=Sharents
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.children.rule=PathPrefix(`/api/children`) && !PathPrefix(`/api/children/docs`) && !PathPrefix(`/api/children/openapi.json`)"
+      - "traefik.http.routers.children-docs.rule=PathPrefix(`/api/children/docs`) || PathPrefix(`/api/children/openapi.json`)"
+      - "traefik.http.services.children.loadbalancer.server.port=8002"
 
   events_service:
     build:
@@ -29,10 +58,13 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./sharents_dev/events_service:/app
-    ports:
-      - "8003:8003"
     environment:
       - ATLAS_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/events_db?retryWrites=true&w=majority&appName=Sharents
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.events.rule=PathPrefix(`/api/events`) && !PathPrefix(`/api/events/docs`) && !PathPrefix(`/api/events/openapi.json`)"
+      - "traefik.http.routers.events-docs.rule=PathPrefix(`/api/events/docs`) || PathPrefix(`/api/events/openapi.json`)"
+      - "traefik.http.services.events.loadbalancer.server.port=8003"
 
   milestones_media_service:
     build:
@@ -40,10 +72,13 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./sharents_dev/milestones_media_service:/app
-    ports:
-      - "8004:8004"
     environment:
       - ATLAS_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/milestones_media_db?retryWrites=true&w=majority&appName=Sharents
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.milestones.rule=PathPrefix(`/api/milestones`) && !PathPrefix(`/api/milestones/docs`) && !PathPrefix(`/api/milestones/openapi.json`)"
+      - "traefik.http.routers.milestones-docs.rule=PathPrefix(`/api/milestones/docs`) || PathPrefix(`/api/milestones/openapi.json`)"
+      - "traefik.http.services.milestones.loadbalancer.server.port=8004"
 
   frontend_service:
     build:
