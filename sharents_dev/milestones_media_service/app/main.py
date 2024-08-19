@@ -10,7 +10,7 @@ app = FastAPI(
 )
 
 
-app.include_router(routes.router, prefix="", tags=["milestones_media"])
+app.include_router(routes.router, prefix="/api", tags=["milestones_media"])
 
 if __name__ == "__main__":
     import uvicorn

@@ -1,0 +1,106 @@
+api:
+  dashboard: true
+  insecure: true # Only use this for development; secure it in production
+
+entryPoints:
+  web:
+    address: ":80"
+
+providers:
+  docker:
+    exposedByDefault: false
+  file:
+    directory: "/etc/traefik"
+    watch: true
+
+http:
+  middlewares:
+    auth-middleware:
+      forwardAuth:
+        address: "http://users_service:8001/auth/verify"
+        authResponseHeaders:
+          - "X-User-ID"
+
+  routers:
+    auth:
+      rule: "PathPrefix(`/auth`) && !PathPrefix(`/auth/docs`) && !PathPrefix(`/auth/openapi.json`)"
+      service: users
+      entryPoints:
+        - web
+
+    auth-docs:
+      rule: "PathPrefix(`/auth/docs`) || PathPrefix(`/auth/openapi.json`)"
+      service: users
+      entryPoints:
+        - web
+
+    children:
+      rule: "PathPrefix(`/api/children`) && !PathPrefix(`/api/children/docs`) && !PathPrefix(`/api/children/openapi.json`)"
+      service: children
+      middlewares:
+        - auth-middleware
+      entryPoints:
+        - web
+
+    children-docs:
+      rule: "PathPrefix(`/api/children/docs`) || PathPrefix(`/api/children/openapi.json`)"
+      service: children
+      entryPoints:
+        - web
+
+    events:
+      rule: "PathPrefix(`/api/events`) && !PathPrefix(`/api/events/docs`) && !PathPrefix(`/api/events/openapi.json`)"
+      service: events
+      middlewares:
+        - auth-middleware
+      entryPoints:
+        - web
+
+    events-docs:
+      rule: "PathPrefix(`/api/events/docs`) || PathPrefix(`/api/events/openapi.json`)"
+      service: events
+      entryPoints:
+        - web
+
+    milestones:
+      rule: "PathPrefix(`/api/milestones`) && !PathPrefix(`/api/milestones/docs`) && !PathPrefix(`/api/milestones/openapi.json`)"
+      service: milestones
+      middlewares:
+        - auth-middleware
+      entryPoints:
+        - web
+
+    milestones-docs:
+      rule: "PathPrefix(`/api/milestones/docs`) || PathPrefix(`/api/milestones/openapi.json`)"
+      service: milestones
+      entryPoints:
+        - web
+
+    dashboard:
+      rule: "Host(`traefik.docker.localhost`)"
+      service: api@internal
+      entryPoints:
+        - web
+
+  services:
+    users:
+      loadBalancer:
+        servers:
+          - url: "http://users_service:8001"
+    children:
+      loadBalancer:
+        servers:
+          - url: "http://children_service:8002"
+    events:
+      loadBalancer:
+        servers:
+          - url: "http://events_service:8003"
+    milestones:
+      loadBalancer:
+        servers:
+          - url: "http://milestones_media_service:8004"
+
+log:
+  level: INFO # You can change this to DEBUG for more detailed logs
+
+accessLog: {} # This enables access logs

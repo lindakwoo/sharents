@@ -149,6 +149,111 @@ async def verify_token(current_user: GuardianModel = Depends(get_current_user)):
     return {"X-User-ID": str(current_user.id)}
 
 
+from fastapi import APIRouter, HTTPException, Depends, status
+
+# ... (keep your existing imports)
+
+# ... (keep your existing code)
+
+
+@router.get(
+    "/guardians/{guardian_id}",
+    response_description="Get a single guardian",
+    response_model=GuardianModel,
+    response_model_by_alias=False,
+)
+async def get_guardian(
+    guardian_id: str, current_user: GuardianModel = Depends(get_current_user)
+):
+    guardian_collection = db.get_collection("guardians")
+    check_for_none(guardian_collection, "guardian collection not found")
+
+    guardian = await guardian_collection.find_one({"_id": ObjectId(guardian_id)})
+    if guardian is None:
+        raise HTTPException(status_code=404, detail="Guardian not found")
+
+    return GuardianModel(**guardian)
+
+
+@router.delete(
+    "/guardians/{guardian_id}",
+    response_description="Delete a guardian",
+    status_code=status.HTTP_204_NO_CONTENT,
+)
+async def delete_guardian(
+    guardian_id: str, current_user: GuardianModel = Depends(get_current_user)
+):
+    guardian_collection = db.get_collection("guardians")
+    check_for_none(guardian_collection, "guardian collection not found")
+
+    delete_result = await guardian_collection.delete_one({"_id": ObjectId(guardian_id)})
+
+    if delete_result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Guardian not found")
+
+    return None  # 204 No Content
+
+
+@router.put(
+    "/guardians/{guardian_id}",
+    response_description="Update a guardian",
+    response_model=GuardianModel,
+    response_model_by_alias=False,
+)
+async def update_guardian(
+    guardian_id: str,
+    guardian_update: GuardianModelCreate,
+    current_user: GuardianModel = Depends(get_current_user),
+):
+    guardian_collection = db.get_collection("guardians")
+    check_for_none(guardian_collection, "guardian collection not found")
+
+    # Check if the guardian exists
+    existing_guardian = await guardian_collection.find_one(
+        {"_id": ObjectId(guardian_id)}
+    )
+    if existing_guardian is None:
+        raise HTTPException(status_code=404, detail="Guardian not found")
+
+    # Prepare update data
+    update_data = guardian_update.dict(exclude_unset=True)
+
+    # If password is being updated, hash it
+    if "password" in update_data:
+        update_data["hashed_password"] = get_password_hash(update_data["password"])
+        del update_data["password"]
+
+    # Check if username is being updated and if it's already taken
+    if (
+        "username" in update_data
+        and update_data["username"] != existing_guardian["username"]
+    ):
+        existing_user = await guardian_collection.find_one(
+            {"username": update_data["username"]}
+        )
+        if existing_user:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="Username already taken",
+            )
+
+    # Perform the update
+    result = await guardian_collection.update_one(
+        {"_id": ObjectId(guardian_id)}, {"$set": update_data}
+    )
+
+    if result.modified_count == 0:
+        raise HTTPException(
+            status_code=404, detail="Guardian not found or no changes made"
+        )
+
+    # Fetch and return the updated guardian
+    updated_guardian = await guardian_collection.find_one(
+        {"_id": ObjectId(guardian_id)}
+    )
+    return GuardianModel(**updated_guardian)
+
+
 @router.get(
     "/guardians/",
     response_description="List all guardians",

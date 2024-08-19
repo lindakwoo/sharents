@@ -2,15 +2,15 @@ from fastapi import FastAPI
 from . import routes
 
 app = FastAPI(
-    title="Milestones Media Service",
-    description="API for managing milestones and media",
+    title="Children's Service",
+    description="API for managing childrens",
     version="1.0.0",
     openapi_url="/api/children/openapi.json",
     docs_url="/api/children/docs",
 )
 
 
-app.include_router(routes.router, prefix="", tags=["children"])
+app.include_router(routes.router, prefix="/api", tags=["children"])
 
 if __name__ == "__main__":
     import uvicorn

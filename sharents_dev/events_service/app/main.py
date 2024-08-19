@@ -10,7 +10,7 @@ app = FastAPI(
 )
 
 
-app.include_router(routes.router, prefix="", tags=["events"])
+app.include_router(routes.router, prefix="/api", tags=["events"])
 # need some additional routes for members access --- gets
 
 if __name__ == "__main__":
