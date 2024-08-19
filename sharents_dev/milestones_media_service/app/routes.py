@@ -8,8 +8,10 @@ from .database import db
 router = APIRouter()
 
 #  get all media for a child
+
+
 @router.get(
-    "/children/{child_id}/media/",
+    "/media/children/{child_id}/",
     response_description="List all media for a child",
     response_model=MediaCollection,
     response_model_by_alias=False,
@@ -20,8 +22,10 @@ async def list_media_for_child(child_id: str):
     return MediaCollection(media=media_collection)
 
 # post media for a child
+
+
 @router.post(
-    "/children/{child_id}/media/",
+    "/media/children/{child_id}/",
     response_description="Post media for a child",
     response_model=MediaModel,
     response_model_by_alias=False,
@@ -34,8 +38,10 @@ async def post_media_for_child(child_id: str, media: MediaModelCreate):
     return MediaModel(**inserted_media)
 
 # post a milestone for a child
+
+
 @router.post(
-    "/children/{child_id}/milestones/",
+    "/milestones/children/{child_id}/",
     response_description="Post a milestone for a child",
     response_model=MilestoneModel,
     response_model_by_alias=False,
@@ -48,8 +54,10 @@ async def post_milestone_for_child(child_id: str, milestone: MilestoneModelCreat
     return MilestoneModel(**inserted_milestone)
 
 #  get all milestones for a child
+
+
 @router.get(
-    "/children/{child_id}/milestones/",
+    "/milestones/children/{child_id}/",
     response_description="List all milestones for a child",
     response_model=MilestoneCollection,
     response_model_by_alias=False,
@@ -59,6 +67,8 @@ async def list_milestones_for_child(child_id: str):
     return MilestoneCollection(milestones=milestones_collection)
 
 # get a specific media
+
+
 @router.get(
     "/media/{media_id}",
     response_description="Get a specific media",
@@ -71,6 +81,8 @@ async def get_media(media_id: str):
     return MediaModel(**media)
 
 # update a specific media
+
+
 @router.put(
     "/media/{media_id}",
     response_description="Update a specific media",
@@ -86,6 +98,8 @@ async def update_media(media_id: str, media: MediaModelUpdate):
     return MediaModel(**updated_media)
 
 # delete a specific media
+
+
 @router.delete(
     "/media/{media_id}",
     response_description="Delete a specific media",
@@ -96,6 +110,8 @@ async def delete_media(media_id: str):
     return {"message": "media successfully deleted"}
 
 # get a specific milestone
+
+
 @router.get(
     "/milestones/{milestone_id}/",
     response_description="Get a specific milestone",
@@ -107,6 +123,8 @@ async def get_milestone(milestone_id: str):
     return MilestoneModel(**milestone)
 
 # update a specific milestone
+
+
 @router.put(
     "/milestones/{milestone_id}/",
     response_description="Update a specific milestone",
@@ -122,6 +140,8 @@ async def update_milestone(milestone_id: str, milestone: MilestoneModelUpdate):
     return MilestoneModel(**updated_milestone)
 
 # delete a specific milestone
+
+
 @router.delete(
     "/milestones/{milestone_id}/",
     response_description="Delete a specific milestone",
@@ -132,6 +152,8 @@ async def delete_milestone(milestone_id: str):
     return {"message": "milestone successfully deleted"}
 
 # get all comments on a media
+
+
 @router.get(
     "/media/{media_id}/comments/",
     response_description="List all comments on a media",
@@ -147,6 +169,8 @@ async def list_comments_on_media(media_id: str):
     return CommentCollection(comments=comments)
 
 # get all comments on a milestone
+
+
 @router.get(
     "/milestones/{milestone_id}/comments/",
     response_description="List all comments on a milestone",
@@ -162,6 +186,8 @@ async def list_comments_on_milestone(milestone_id: str):
     return CommentCollection(comments=comments)
 
 # post a comment on a media
+
+
 @router.post(
     "/media/{media_id}/comments/",
     response_description="Post a comment",
@@ -171,11 +197,13 @@ async def list_comments_on_milestone(milestone_id: str):
 async def post_comment_on_media(media_id: str, comment: CommentModelCreate):
     comment_dict = comment.model_dump()
     comment_dict["media"] = media_id
-    result =  await db.get_collection("comments").insert_one(comment_dict)
+    result = await db.get_collection("comments").insert_one(comment_dict)
     inserted_comment = await db.get_collection("comments").find_one({"media": media_id, "_id": result.inserted_id})
     return inserted_comment
 
 # post a comment on milestone
+
+
 @router.post(
     "/milestone/{milestone_id}/comments/",
     response_description="Post a comment",
@@ -185,11 +213,13 @@ async def post_comment_on_media(media_id: str, comment: CommentModelCreate):
 async def post_comment_on_milestone(milestone_id: str, comment: CommentModelCreate):
     comment_dict = comment.model_dump()
     comment_dict["milestone"] = milestone_id
-    result =  await db.get_collection("comments").insert_one(comment_dict)
+    result = await db.get_collection("comments").insert_one(comment_dict)
     inserted_comment = await db.get_collection("comments").find_one({"milestone": milestone_id, "_id": result.inserted_id})
     return inserted_comment
 
 # update a specific comment
+
+
 @router.put(
     "/comments/{comment_id}/",
     response_description="Update a specific comment",
@@ -205,6 +235,8 @@ async def update_comment(comment_id: str, comment: CommentModelCreate):
     return CommentModel(**updated_comment)
 
 # delete a specific comment
+
+
 @router.delete(
     "/comments/{comment_id}/",
     response_description="Delete a specific comment",

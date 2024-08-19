@@ -27,7 +27,7 @@ router = APIRouter()
 
 
 @ router.get(
-    "/children/{child_id}/events/",
+    "/events/children/{child_id}/",
     response_description="Get all child events",
     response_model=EventCollection,
     response_model_by_alias=False,
@@ -45,7 +45,7 @@ async def get_events(child_id: str):
 
 
 @ router.post(
-    "/children/{child_id}/events/",
+    "/events/children/{child_id}/",
     response_description="Create a new event",
     response_model=EventModel,
     response_model_by_alias=False,
