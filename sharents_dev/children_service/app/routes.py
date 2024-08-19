@@ -29,8 +29,8 @@ async def list_children():
 
 
 # list all of a guardian's children
-@ router.get(
-    "/guardians/{guardian_id}/children/",
+@router.get(
+    "/guardians/{guardian_id}/",
     response_description="Get all child events",
     response_model=ChildrenCollection,
     response_model_by_alias=False,
@@ -43,6 +43,7 @@ async def get_guardian_children(guardian_id: str):
     check_list_not_empty(children, "no children found for this child")
     return ChildrenCollection(children=children)
 
+
 #  create a child
 
 
@@ -51,7 +52,7 @@ async def get_guardian_children(guardian_id: str):
     response_description="Create a child",
     response_model=ChildModel,
     response_model_by_alias=False,
-    status_code=status.HTTP_201_CREATED
+    status_code=status.HTTP_201_CREATED,
 )
 async def create_child(child: ChildModelCreate, guardian_id: str):
     children_collection = db.get_collection("children")
@@ -65,6 +66,7 @@ async def create_child(child: ChildModelCreate, guardian_id: str):
 
 
 # get all children for the member
+
 
 @router.get(
     "/members/{member_id}/children/",
@@ -87,6 +89,7 @@ async def list_children_for_member(member_id: str):
         children.append(child_model)
     return ChildrenCollection(children=children)
 
+
 # get child
 
 
@@ -104,7 +107,8 @@ async def get_child(child_id: str):
 
 # update a child
 
-@ router.put(
+
+@router.put(
     "/children/{id}",
     response_description="Update an child",
     response_model=ChildModel,
@@ -112,8 +116,7 @@ async def get_child(child_id: str):
 )
 async def update_child(id: str, child_update: ChildModelUpdate):
     update_result = await db.get_collection("children").update_one(
-        {"_id": ObjectId(id)},
-        {"$set": child_update.model_dump(exclude_unset=True)}
+        {"_id": ObjectId(id)}, {"$set": child_update.model_dump(exclude_unset=True)}
     )
     check_update_result(update_result, "Updated event not found")
     updated_child = await db.get_collection("children").find_one({"_id": ObjectId(id)})
@@ -124,11 +127,13 @@ async def update_child(id: str, child_update: ChildModelUpdate):
 # delete a child
 
 
-@ router.delete(
+@router.delete(
     "/children/{id}",
     response_description="Delete a child",
 )
 async def delete_child(id: str):
-    delete_result = await db.get_collection("children").delete_one({"_id": ObjectId(id)})
+    delete_result = await db.get_collection("children").delete_one(
+        {"_id": ObjectId(id)}
+    )
     check_delete_result(delete_result, "No deleted child found")
     return {"message": "Child successfully deleted"}

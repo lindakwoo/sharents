@@ -35,7 +35,7 @@ http:
         - web
 
     children:
-      rule: "PathPrefix(`/api/children`) && !PathPrefix(`/api/children/docs`) && !PathPrefix(`/api/children/openapi.json`)"
+      rule: "PathPrefix(`/api/children`) || PathPrefix(`/api/guardians`) || PathPrefix(`/api/members`) || PathPrefix(`/api/invites`)"
       service: children
       #middlewares:
       #  - auth-middleware
