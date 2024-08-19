@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Box } from "@mui/material";
 import Navbar from './components/Navbar';
 import Login from './components/forms/Login';
+import Home from "./components/Home";
+import Landing from "./components/Landing";
 import './App.css';
 
 function App() {
@@ -10,11 +12,11 @@ function App() {
       <Navbar />
       <main>
         <Box sx={{ mx: "64px", mt: "32px" }}>
-          <h1>Sharents Landing Page</h1>
-          <Login />
-          {/* <Routes>
-            <Route path='/' element={<MainPage />} />
-            <Route path='inventory/manufacturers'>
+          <Routes>
+            <Route path='/' element={<Landing />} />
+            <Route path='/home' element={<Home />} />
+            <Route path='/login' element={<Login />} />
+            {/* <Route path='inventory/manufacturers'>
               <Route index element={<Manufacturers />} />
               <Route path='create' element={<CreateManufacturerForm />} />
             </Route>
@@ -49,8 +51,8 @@ function App() {
             <Route path='sales/records'>
               <Route index element={<ListSaleHistory />} />
               <Route path='create' element={<CreateSalesRecord />} />
-            </Route>
-          </Routes> */}
+            </Route> */}
+          </Routes>
         </Box>
       </main>
     </BrowserRouter>
