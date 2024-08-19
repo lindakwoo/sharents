@@ -62,8 +62,8 @@ http:
       entryPoints:
         - web
 
-    milestones:
-      rule: "PathPrefix(`/api/milestones`) && !PathPrefix(`/api/milestones/docs`) && !PathPrefix(`/api/milestones/openapi.json`)"
+   milestones:
+      rule: "PathPrefix(`/api/milestones`) || PathPrefix(`/api/categories`) || PathPrefix(`/api/media`) || PathPrefix(`/api/comments`)"
       service: milestones
       # middlewares:
       #  - auth-middleware

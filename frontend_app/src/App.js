@@ -4,7 +4,7 @@ import Navbar from './components/Navbar';
 import Login from './components/forms/Login';
 import Home from "./components/homepage/Home";
 import Landing from "./components/Landing";
-import './App.css';
+import MilestoneExpandedView from "./components/milestones/MilestoneExpandedView";
 
 function App() {
   return (
@@ -16,6 +16,7 @@ function App() {
             <Route path='/' element={<Landing />} />
             <Route path='/home' element={<Home />} />
             <Route path='/login' element={<Login />} />
+            <Route path='/milestone' element={<MilestoneExpandedView />} />
             {/* <Route path='inventory/manufacturers'>
               <Route index element={<Manufacturers />} />
               <Route path='create' element={<CreateManufacturerForm />} />
