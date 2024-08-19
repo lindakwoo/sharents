@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Box } from "@mui/material";
 import Navbar from './components/Navbar';
-import Login from './components/Login';
+import Login from './components/forms/Login';
 import './App.css';
 
 function App() {

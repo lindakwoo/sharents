@@ -2,12 +2,11 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
-
-function Login() {
-  const [user, setUser] = useState({ username: "", password: "", name: "", email: "" });
-  const [message, setMessage] = useState("");
+function Signup() {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
+  const [user, setUser] = useState({ username: "", password: "", confirmPassword: "" });
+  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,28 +14,30 @@ function Login() {
   };
 
   const handleSubmit = async (e) => {
-    console.log(user);
     e.preventDefault();
+    if (user.password !== user.confirmPassword) {
+      setMessage("Passwords do not match");
+      return;
+    }
     try {
-      const response = await axios.post("http://localhost:8001/auth/register/", user, {
+      const response = await axios.post("http://localhost:8000/signup/", user, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      login(response.data.access_token, response.data.user);
-      setMessage("Login successful!");
+      login(response.data.access, response.data.refresh);
+      setMessage("User created successfully!");
       navigate("/");
     } catch (error) {
-      setMessage("Error logging in: " + error.response.data.detail);
+      const errorMessage = error.response && error.response.data ? error.response.data : error.message;
+      setMessage("Error creating user: " + JSON.stringify(errorMessage));
     }
   };
 
   return (
     <div>
-      <h2>Login</h2>
+      <h2>Signup</h2>
       <form onSubmit={handleSubmit}>
-        <input type='text' name='name' value={user.name} onChange={handleChange} placeholder='Name' required />
-        <input type='email' name='email' value={user.email} onChange={handleChange} placeholder='Email' required />
         <input
           type='text'
           name='username'
@@ -53,11 +54,19 @@ function Login() {
           placeholder='Password'
           required
         />
-        <button type='submit'>Login</button>
+        <input
+          type='password'
+          name='confirmPassword'
+          value={user.confirmPassword}
+          onChange={handleChange}
+          placeholder='Confirm Password'
+          required
+        />
+        <button type='submit'>Signup</button>
       </form>
       {message && <p>{message}</p>}
     </div>
   );
 }
 
-export default Login;
+export default Signup;
