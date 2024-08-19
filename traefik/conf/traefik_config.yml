@@ -37,8 +37,8 @@ http:
     children:
       rule: "PathPrefix(`/api/children`) && !PathPrefix(`/api/children/docs`) && !PathPrefix(`/api/children/openapi.json`)"
       service: children
-      middlewares:
-        - auth-middleware
+      #middlewares:
+      #  - auth-middleware
       entryPoints:
         - web
 
@@ -51,8 +51,8 @@ http:
     events:
       rule: "PathPrefix(`/api/events`) && !PathPrefix(`/api/events/docs`) && !PathPrefix(`/api/events/openapi.json`)"
       service: events
-      middlewares:
-        - auth-middleware
+      #middlewares:
+      #  - auth-middleware
       entryPoints:
         - web
 
@@ -65,8 +65,8 @@ http:
     milestones:
       rule: "PathPrefix(`/api/milestones`) && !PathPrefix(`/api/milestones/docs`) && !PathPrefix(`/api/milestones/openapi.json`)"
       service: milestones
-      middlewares:
-        - auth-middleware
+      # middlewares:
+      #  - auth-middleware
       entryPoints:
         - web
 
