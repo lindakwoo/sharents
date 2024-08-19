@@ -40,7 +40,6 @@ const customFetch = async (url, options = {}) => {
 
     console.log(fetchOptions)
     try {
-        console.log("inside the fetch")
         let response = await fetch(url, fetchOptions);
 
         // if (response.status === 401) {

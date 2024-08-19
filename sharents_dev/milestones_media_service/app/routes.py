@@ -326,11 +326,11 @@ def list_categories():
     return CategoryCollection(categories=categories)
 
 
-#  get category by id
+# #  get category by id
 
 
 @router.get(
-    "/milestones/categories/{category_id}/",
+    "/categories/{category_id}/",
     response_description="Get a specific category",
     response_model=CategoryModel,
     response_model_by_alias=False,

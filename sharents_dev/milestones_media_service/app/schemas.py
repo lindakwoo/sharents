@@ -31,7 +31,7 @@ class MediaModel(BaseModel):
     date: str = Field(...)
     type: str = Field(...)
     url: str = Field(...)
-    created_at: datetime = Field(default_factory=datetime.now)
+    # created_at: datetime = Field(default_factory=datetime.now)
 
 
 class MediaCollection(BaseModel):
