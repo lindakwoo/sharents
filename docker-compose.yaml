@@ -49,8 +49,11 @@ services:
     build:
       context: ./frontend_app
       dockerfile: Dockerfile.dev  # Specify Dockerfile here if it's not named 'Dockerfile'
+    volumes:
+      - ./frontend_app:/app
+      - /app/node_modules
     ports:
-      - "3000:80" # Map port 3000 on host to port 80 in the container where Nginx serves the app
+      - "3000:3000" # Map port 3000 on host to port 80 in the container where Nginx serves the app
     depends_on:
       - users_service
       - children_service

@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Copy the package.json and package-lock.json to install dependencies
 COPY package*.json ./
+COPY package-lock.json ./
 
 # Install the dependencies
 RUN npm install
@@ -13,17 +14,8 @@ RUN npm install
 # Copy the rest of the application code to the container
 COPY . .
 
-# Build the React app for production
-RUN npm run build
+# Expose the port on which the app will run
+EXPOSE 3000
 
-# Use an official Nginx image to serve the build
-FROM nginx:stable-alpine
-
-# Copy the build output to the Nginx web server directory
-COPY --from=0 /app/build /usr/share/nginx/html
-
-# Expose the port on which Nginx will serve the app
-EXPOSE 80
-
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start the React development server
+CMD ["npm", "start"]
