@@ -83,7 +83,7 @@ services:
   frontend_service:
     build:
       context: ./frontend_app
-      dockerfile: Dockerfile.dev  # Specify Dockerfile here if it's not named 'Dockerfile'
+      dockerfile: Dockerfile.dev # Specify Dockerfile here if it's not named 'Dockerfile'
     volumes:
       - ./frontend_app:/app
       - /app/node_modules
@@ -94,3 +94,5 @@ services:
       - children_service
       - events_service
       - milestones_media_service
+    environment:
+      - CHOKIDAR_USEPOLLING=true
