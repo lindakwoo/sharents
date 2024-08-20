@@ -56,6 +56,7 @@ async def list_media_for_child(child_id: str):
 async def post_media_for_child(child_id: str, media: MediaModelCreate):
     media_dict = media.model_dump()
     media_dict["child"] = child_id
+    media_dict["created_at"] = datetime.now()
     result = await db.get_collection("media").insert_one(media_dict)
     inserted_media = await db.get_collection("media").find_one(
         {"child": child_id, "_id": result.inserted_id}
@@ -75,6 +76,7 @@ async def post_media_for_child(child_id: str, media: MediaModelCreate):
 async def post_milestone_for_child(child_id: str, milestone: MilestoneModelCreate):
     milestone_dict = milestone.model_dump()
     milestone_dict["child"] = child_id
+    milestone_dict["created_at"] = datetime.now()
     result = await db.get_collection("milestones").insert_one(milestone_dict)
     inserted_milestone = await db.get_collection("milestones").find_one(
         {"child": child_id, "_id": result.inserted_id}
@@ -315,28 +317,28 @@ async def delete_comment(comment_id: str):
 
 
 #  get all the categories
-@router.get(
-    "/categories/",
-    response_description="List all categories",
-    response_model=CategoryCollection,
-    response_model_by_alias=False,
-)
-def list_categories():
-    categories = db.get_collection("categories")
-    return CategoryCollection(categories=categories)
+# @router.get(
+#     "/categories/",
+#     response_description="List all categories",
+#     response_model=CategoryCollection,
+#     response_model_by_alias=False,
+# )
+# def list_categories():
+#     categories = db.get_collection("categories")
+#     return CategoryCollection(categories=categories)
 
 
-# #  get category by id
+# # #  get category by id
 
 
-@router.get(
-    "/categories/{category_id}/",
-    response_description="Get a specific category",
-    response_model=CategoryModel,
-    response_model_by_alias=False,
-)
-def get_category(category_id: str):
-    category = db.get_collection("categories").find_one(
-        {"_id": ObjectId(category_id)})
-    check_for_none(category, "category not found")
-    return CategoryModel(**category)
+# @router.get(
+#     "/categories/{category_id}/",
+#     response_description="Get a specific category",
+#     response_model=CategoryModel,
+#     response_model_by_alias=False,
+# )
+# def get_category(category_id: str):
+#     category = db.get_collection("categories").find_one(
+#         {"_id": ObjectId(category_id)})
+#     check_for_none(category, "category not found")
+#     return CategoryModel(**category)

@@ -18,7 +18,11 @@ const HomeHero = () => {
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
-      <Img sx={{ width: "50%" }} src={child.profile_picture} />
+      <Box
+        sx={{ width: "50%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
+      >
+        <Img sx={{ width: "20%" }} src={child.profile_picture} />
+      </Box>
       <Box
         sx={{ width: "50%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
       >

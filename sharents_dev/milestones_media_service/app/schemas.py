@@ -1,5 +1,5 @@
 from typing import List, Optional
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr, ConfigDict
 from pydantic.functional_validators import BeforeValidator
 from typing_extensions import Annotated
 import datetime
@@ -31,7 +31,9 @@ class MediaModel(BaseModel):
     date: str = Field(...)
     type: str = Field(...)
     url: str = Field(...)
-    # created_at: datetime = Field(default_factory=datetime.now)
+    created_at: datetime = Field(...)
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 class MediaCollection(BaseModel):
@@ -71,6 +73,9 @@ class MilestoneModel(BaseModel):
     category: str = Field(...)
     child: str = Field(...)
     date: str = Field(...)
+    created_at: datetime = Field(...)
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 class MilestoneCollection(BaseModel):
