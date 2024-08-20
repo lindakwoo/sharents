@@ -218,7 +218,7 @@ async def get_wishlist_items(wishlist_id: str):
 
 
 @router.post(
-    "/wishlists/{wishlist_id}/wishListItems/",
+    "/wishlists/{wishlist_id}/wishlistItems/",
     response_description="Create a new wishlist item",
     response_model=WishlistItemModel,
     response_model_by_alias=False,

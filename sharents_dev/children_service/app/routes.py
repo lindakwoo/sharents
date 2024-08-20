@@ -30,8 +30,8 @@ async def list_children():
 
 # list all of a guardian's children
 @router.get(
-    "/guardians/{guardian_id}/",
-    response_description="Get all child events",
+    "/children/guardians/{guardian_id}/",
+    response_description="Get all children",
     response_model=ChildrenCollection,
     response_model_by_alias=False,
 )
@@ -48,7 +48,7 @@ async def get_guardian_children(guardian_id: str):
 
 
 @router.post(
-    "/guardians/{guardian_id}/children/",
+    "/children/guardians/{guardian_id}/",
     response_description="Create a child",
     response_model=ChildModel,
     response_model_by_alias=False,
