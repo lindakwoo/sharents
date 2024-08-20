@@ -4,7 +4,9 @@ import customFetch from "../fetchWrapper";
 const ChildContext = createContext();
 
 const ChildProvider = ({ children }) => {
-  const [selectedChildId, setSelectedChildId] = useState(null);
+  const [selectedChildId, setSelectedChildId] = useState(() => {
+    return localStorage.getItem("selectedChildId") || null;
+  });
   const [child, setChild] = useState({});
 
   const selectChild = async (id) => {
@@ -19,6 +21,7 @@ const ChildProvider = ({ children }) => {
     } else {
       setChild(null);
     }
+    localStorage.setItem("selectedChildId", id);
   };
 
   useEffect(() => {
@@ -27,7 +30,7 @@ const ChildProvider = ({ children }) => {
     }
   }, [selectedChildId]);
 
-  return <ChildContext.Provider value={{ selectChild, child }}>{children}</ChildContext.Provider>;
+  return <ChildContext.Provider value={{ selectChild, child, selectedChildId }}>{children}</ChildContext.Provider>;
 };
 
 export { ChildContext, ChildProvider };

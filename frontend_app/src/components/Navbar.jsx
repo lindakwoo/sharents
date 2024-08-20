@@ -18,10 +18,9 @@ const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 
 const Navbar = () => {
   const { user, isGuardian } = useContext(AuthContext);
-  const { selectChild, child } = useContext(ChildContext);
+  const { selectChild, child, selectedChildId } = useContext(ChildContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [childrenList, setChildrenList] = useState([]);
-  const [selectedChildId, setSelectedChildId] = useState(child?.id || "");
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -33,7 +32,6 @@ const Navbar = () => {
 
   const handleChildChange = (event) => {
     const childId = event.target.value;
-    setSelectedChildId(childId);
     selectChild(childId);
   };
 
@@ -63,7 +61,7 @@ const Navbar = () => {
         {childrenList.length > 0 && (
           <Box sx={{ minWidth: 120 }}>
             <select
-              value={selectedChildId}
+              value={selectedChildId || ""}
               onChange={handleChildChange}
               style={{ padding: "8px", borderRadius: "4px" }}
             >
