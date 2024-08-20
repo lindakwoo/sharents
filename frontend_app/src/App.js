@@ -5,6 +5,8 @@ import Login from './components/forms/Login';
 import Home from "./components/homepage/Home";
 import Landing from "./components/Landing";
 import MilestoneExpandedView from "./components/milestones/MilestoneExpandedView";
+import MediaExpandedView from "./components/media/MediaExpandedView";
+import EventExpandedView from "./components/events/EventExpandedView";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
             <Route path='/home' element={<Home />} />
             <Route path='/login' element={<Login />} />
             <Route path='/milestones/:id' element={<MilestoneExpandedView />} />
+            <Route path='/media/:id' element={<MediaExpandedView />} />
+            <Route path='/events/:id' element={<EventExpandedView />} />
             {/* <Route path='inventory/manufacturers'>
               <Route index element={<Manufacturers />} />
               <Route path='create' element={<CreateManufacturerForm />} />
