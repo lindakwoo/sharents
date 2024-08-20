@@ -62,8 +62,16 @@ http:
       entryPoints:
         - web
 
-   milestones:
-      rule: "PathPrefix(`/api/milestones`) || PathPrefix(`/api/categories`) || PathPrefix(`/api/media`) || PathPrefix(`/api/comments`)"
+    milestones:
+      rule: >
+        PathPrefix(`/api/media`) ||
+        PathPrefix(`/api/milestones`) ||
+        PathPrefix(`/api/comments`) ||
+        PathPrefix(`/media/children/{child_id}`) ||
+        PathPrefix(`/milestones/children/{child_id}`) ||
+        PathPrefix(`/media/{media_id}`) ||
+        PathPrefix(`/milestones/{milestone_id}`) ||
+        PathPrefix(`/comments/{comment_id}`)
       service: milestones
       # middlewares:
       #  - auth-middleware
