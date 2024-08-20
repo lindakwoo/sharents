@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import customFetch from "../../fetchWrapper";
 import { Box, styled } from "@mui/material";
-import { formatDate } from "../../utils";
-import { format } from 'date-fns';
+import { Link } from "react-router-dom";
+
+import moment from "moment";
+
+const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 
 const EventExpandedView = () => {
   const [event, setEvent] = useState({});
@@ -31,7 +34,7 @@ const EventExpandedView = () => {
     } catch (error) {
       console.error("Error fetching wishlists", error);
     }
-  }
+  };
   useEffect(() => {
     fetchEvent(); // Fetch event when id changes
   }, [id]); // Dependency array ensures this runs only when `id` changes
@@ -39,25 +42,35 @@ const EventExpandedView = () => {
   useEffect(() => {
     fetchWishlists(); // Fetch wishlists when id changes
   }, [id]); // Dependency array ensures this runs only when `id` changes
-  console.log("event--- ", event.datetime);
-  let currentDate = format(event.datetime, 'MMMM do yyyy, h:mm:ss a');
-  console.log(currentDate);
+  const dateObj = moment(event.datetime);
+  const formattedDate = dateObj.format("MMMM Do YYYY, h:mm:ss a");
+
   return (
     <Box>
       {event && (
-        <Box sx={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center"
-        }}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
           <h1>{event.title}</h1>
-          {/* <h2>{date1}</h2> */}
+          <h2>{formattedDate}</h2>
           <p>{event.description}</p>
         </Box>
       )}
+      {wishlists.length > 0 && (
+        <StyledLink
+          to={`/wishlists/${wishlists[0].id}`}
+          sx={{ backgroundColor: "yellow", padding: "16px", borderRadius: "10px" }}
+        >
+          WishList
+        </StyledLink>
+      )}
     </Box>
-  )
+  );
 };
 
 export default EventExpandedView;
