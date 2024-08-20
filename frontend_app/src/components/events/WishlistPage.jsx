@@ -72,23 +72,25 @@ const WishlistPage = () => {
               <TableCell>Purchased</TableCell>
             </TableRow>
           </TableHead>
-          <tbody>
+          <TableBody>
             {wishlistItems.map((item, index) => (
-              <TableRow key={item.id}>
-                <TableCell><StyledLink sx={{
+              <StyledLink sx={{}} to={item.url} target="_">
+                <TableRow sx={{
                   "&:hover": {
-                    backgroundColor: "orange",
-                    color: "white",
+                    backgroundColor: "aqua",
                   }
-                }} to={item.url} target="_">
-                  {item.description}
-                </StyledLink>
-                </TableCell>
-                <TableCell>{item.price}</TableCell>
-                <TableCell><input onChange={() => handleCheckboxChange(index)} type="checkbox" checked={item.is_purchased} /></TableCell>
-              </TableRow>
+                }} key={item.id}>
+                  <TableCell>
+
+                    {item.description}
+
+                  </TableCell>
+                  <TableCell>{item.price}</TableCell>
+                  <TableCell><input onChange={() => handleCheckboxChange(index)} type="checkbox" checked={item.is_purchased} /></TableCell>
+                </TableRow>
+              </StyledLink>
             ))}
-          </tbody>
+          </TableBody>
         </Table>
       </TableContainer>
     </Box>
