@@ -39,5 +39,6 @@ export const getAge = (birthdate) => {
         }
     }
 
-    return { years, months };
+    // Return 0 for years or months if they are 0
+    return { years: years || 0, months: months || 0 };
 };

@@ -60,6 +60,7 @@ const EventExpandedView = () => {
           <h2>{formattedDate}</h2>
           <h3>{event.description}</h3>
           <h3>location: {event.location}</h3>
+          <h4>special notes: {event.notes}</h4>
         </Box>
       )}
       {wishlists.length > 0 && (

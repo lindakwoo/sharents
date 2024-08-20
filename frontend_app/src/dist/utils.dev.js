@@ -50,11 +50,12 @@ var getAge = function getAge(birthdate) {
       years--;
       months += 12;
     }
-  }
+  } // Return 0 for years or months if they are 0
+
 
   return {
-    years: years,
-    months: months
+    years: years || 0,
+    months: months || 0
   };
 };
 
