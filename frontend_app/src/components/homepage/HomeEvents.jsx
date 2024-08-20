@@ -40,7 +40,7 @@ const HomeEvents = () => {
   }, [child]);
 
   return (
-    <Box>
+    <Box sx={{ marginBottom: "64px" }}>
       <h1>Upcoming Events</h1>
       <Box>
         <TableContainer component={Paper}>

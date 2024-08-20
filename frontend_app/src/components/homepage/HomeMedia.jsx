@@ -27,13 +27,13 @@ const HomeMedia = () => {
     } catch (error) {
       console.error("Error fetching media", error);
     }
-  }
+  };
   useEffect(() => {
     fetchMedia(); // Fetch media when id changes
   }, [child]);
 
   return (
-    <Box>
+    <Box sx={{ marginBottom: "64px" }}>
       <h1>Latest media</h1>
       <Box
         sx={{
@@ -44,7 +44,6 @@ const HomeMedia = () => {
           marginBottom: "64px",
         }}
       >
-
         {media.map((media) => (
           <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <StyledLink to={`/media/${media.id}`}>
@@ -54,7 +53,7 @@ const HomeMedia = () => {
         ))}
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-export default HomeMedia
+export default HomeMedia;

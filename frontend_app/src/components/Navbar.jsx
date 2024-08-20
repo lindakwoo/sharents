@@ -11,7 +11,7 @@ import Button from "@mui/material/Button";
 import { AuthContext } from "../context/AuthContext";
 import { ChildContext } from "../context/ChildContext";
 import customFetch from "../fetchWrapper";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material";
 
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
@@ -21,6 +21,7 @@ const Navbar = () => {
   const { selectChild, child, selectedChildId } = useContext(ChildContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [childrenList, setChildrenList] = useState([]);
+  const navigate = useNavigate();
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -33,11 +34,16 @@ const Navbar = () => {
   const handleChildChange = (event) => {
     const childId = event.target.value;
     selectChild(childId);
+    navigate("/home");
   };
 
   const fetchChildren = async () => {
     // if (user && !isGuardian) {
     const url = `http://localhost/api/children/members/66bf92531efa3ca393556096/`;
+    // }
+    // else{
+    //   const url=`http://localhost/api/children/guardians/${user.id}/`
+    // }
 
     try {
       const response = await customFetch(url);
@@ -45,7 +51,6 @@ const Navbar = () => {
     } catch (error) {
       console.error("Error fetching children", error);
     }
-    // }
   };
 
   useEffect(() => {

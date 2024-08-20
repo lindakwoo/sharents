@@ -7,6 +7,7 @@ import Landing from "./components/Landing";
 import MilestoneExpandedView from "./components/milestones/MilestoneExpandedView";
 import MediaExpandedView from "./components/media/MediaExpandedView";
 import EventExpandedView from "./components/events/EventExpandedView";
+import MemberLanding from "./components/MemberLanding";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
         <Box sx={{ mx: "64px", mt: "32px" }}>
           <Routes>
             <Route path='/' element={<Landing />} />
+            <Route path='/member_landing' element={<MemberLanding />} />
             <Route path='/home' element={<Home />} />
             <Route path='/login' element={<Login />} />
             <Route path='/milestones/:id' element={<MilestoneExpandedView />} />

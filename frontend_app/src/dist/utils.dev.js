@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.formatDate = void 0;
+exports.getAge = exports.formatDate = void 0;
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -30,3 +30,32 @@ var formatDate = function formatDate(date) {
 };
 
 exports.formatDate = formatDate;
+
+var getAge = function getAge(birthdate) {
+  var today = new Date();
+  var birthDate = new Date(birthdate);
+  var years = today.getFullYear() - birthDate.getFullYear();
+  var months = today.getMonth() - birthDate.getMonth(); // If the current month is earlier than the birth month, adjust years and months
+
+  if (months < 0) {
+    years--;
+    months += 12;
+  } // If the current day of the month is earlier than the birth day, adjust months
+
+
+  if (today.getDate() < birthDate.getDate()) {
+    months--; // Handle case where months go below zero
+
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+  }
+
+  return {
+    years: years,
+    months: months
+  };
+};
+
+exports.getAge = getAge;
