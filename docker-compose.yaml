@@ -94,3 +94,5 @@ services:
       - children_service
       - events_service
       - milestones_media_service
+    environment:
+      - CHOKIDAR_USEPOLLING=true
