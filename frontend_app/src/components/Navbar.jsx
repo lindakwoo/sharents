@@ -39,12 +39,11 @@ const Navbar = () => {
 
   const fetchChildren = async () => {
     // if (user && !isGuardian) {
-    // const url = `http://localhost/api/children/members/${id}/children`;
-    const url = `http://localhost/api/children`;
+    const url = `http://localhost/api/children/members/66bf92531efa3ca393556096/`;
+
     try {
       const response = await customFetch(url);
       setChildrenList(response.children);
-      console.log(response);
     } catch (error) {
       console.error("Error fetching children", error);
     }

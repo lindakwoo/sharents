@@ -69,7 +69,7 @@ async def create_child(child: ChildModelCreate, guardian_id: str):
 
 
 @router.get(
-    "/members/{member_id}/children/",
+    "/children/members/{member_id}/",
     response_description="List all children for memeber",
     response_model=ChildrenCollection,
     response_model_by_alias=False,
@@ -116,7 +116,8 @@ async def get_child(child_id: str):
 )
 async def update_child(id: str, child_update: ChildModelUpdate):
     update_result = await db.get_collection("children").update_one(
-        {"_id": ObjectId(id)}, {"$set": child_update.model_dump(exclude_unset=True)}
+        {"_id": ObjectId(id)}, {
+            "$set": child_update.model_dump(exclude_unset=True)}
     )
     check_update_result(update_result, "Updated event not found")
     updated_child = await db.get_collection("children").find_one({"_id": ObjectId(id)})

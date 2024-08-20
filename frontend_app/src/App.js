@@ -16,7 +16,7 @@ function App() {
             <Route path='/' element={<Landing />} />
             <Route path='/home' element={<Home />} />
             <Route path='/login' element={<Login />} />
-            <Route path='/milestone' element={<MilestoneExpandedView />} />
+            <Route path='/milestones/:id' element={<MilestoneExpandedView />} />
             {/* <Route path='inventory/manufacturers'>
               <Route index element={<Manufacturers />} />
               <Route path='create' element={<CreateManufacturerForm />} />

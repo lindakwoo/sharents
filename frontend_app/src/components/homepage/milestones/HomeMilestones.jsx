@@ -32,7 +32,15 @@ const HomeMilestones = () => {
   return (
     <Box>
       <h1>Latest milestones</h1>
-      <Box sx={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", marginTop: "32px", marginBottom: "64px" }}>
+      <Box
+        sx={{
+          display: "grid",
+          gap: "24px",
+          gridTemplateColumns: "1fr 1fr 1fr",
+          marginTop: "32px",
+          marginBottom: "64px",
+        }}
+      >
         {milestones.map((milestone) => (
           <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
             <HomeMilestone key={milestone.id} milestone={milestone} />

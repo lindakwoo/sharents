@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useContext } from "react";
-import customFetch from "../../fetchWrapper";
-import { ChildContext } from "../../context/ChildContext";
 import { useNavigate } from "react-router-dom";
 import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import customFetch from "../../fetchWrapper";
+import { ChildContext } from "../../context/ChildContext";
+import { formatDate } from "../../utils";
 
 const HomeEvents = () => {
   const [events, setEvents] = useState([]);
@@ -32,19 +33,6 @@ const HomeEvents = () => {
   const handleRowClick = (eventId) => {
     // Navigate to the event details page
     navigate(`/events/${eventId}`);
-  };
-
-  const formatDate = (date) => {
-    const options = {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-      hour: "numeric",
-      minute: "numeric",
-      hour12: true,
-    };
-    return new Intl.DateTimeFormat("en-US", options).format(date);
   };
 
   useEffect(() => {

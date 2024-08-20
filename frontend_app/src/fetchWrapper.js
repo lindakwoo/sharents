@@ -38,7 +38,6 @@ const customFetch = async (url, options = {}) => {
         },
     };
 
-    console.log(fetchOptions)
     try {
         let response = await fetch(url, fetchOptions);
 
