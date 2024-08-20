@@ -12,7 +12,7 @@ app = FastAPI(
 
 origins = [
     "http://localhost:3000",  # For local development outside Docker
-    "http://frontend_service:3000",  # For React app running inside Docker
+    # "http://frontend_service:3000",  # For React app running inside Docker
 ]
 
 app.add_middleware(

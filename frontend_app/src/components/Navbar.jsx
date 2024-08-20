@@ -12,6 +12,9 @@ import { AuthContext } from "../context/AuthContext";
 import { ChildContext } from "../context/ChildContext";
 import customFetch from "../fetchWrapper";
 import { Link } from "react-router-dom";
+import { styled } from "@mui/material";
+
+const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 
 const Navbar = () => {
   const { user, isGuardian } = useContext(AuthContext);
@@ -36,12 +39,11 @@ const Navbar = () => {
 
   const fetchChildren = async () => {
     // if (user && !isGuardian) {
-    // const url = `http://localhost/api/children/members/${id}/children`;
-    const url = `http://localhost/api/children`;
+    const url = `http://localhost/api/children/members/66bf92531efa3ca393556096/`;
+
     try {
       const response = await customFetch(url);
       setChildrenList(response.children);
-      console.log(response);
     } catch (error) {
       console.error("Error fetching children", error);
     }
@@ -77,21 +79,15 @@ const Navbar = () => {
         <Box sx={{ display: { xs: "none", md: "block" } }}>
           <Button color='inherit'>
             {" "}
-            <Link to='/home' style={{ textDecoration: "none", color: "inherit" }}>
-              Home
-            </Link>
+            <StyledLink to='/home'>Home</StyledLink>
           </Button>
           <Button color='inherit'>
             {" "}
-            <Link to='/signup' style={{ textDecoration: "none", color: "inherit" }}>
-              Signup
-            </Link>
+            <StyledLink to='/signup'>Signup</StyledLink>
           </Button>
           <Button color='inherit'>
             {" "}
-            <Link to='/login' style={{ textDecoration: "none", color: "inherit" }}>
-              Login
-            </Link>
+            <StyledLink to='/login'>Login</StyledLink>
           </Button>
         </Box>
         <Box sx={{ display: { xs: "block", md: "none" } }}>
@@ -102,21 +98,15 @@ const Navbar = () => {
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
           <MenuItem onClick={handleMenuClose}>
             {" "}
-            <Link to='/home' style={{ textDecoration: "none", color: "inherit" }}>
-              Home
-            </Link>
+            <StyledLink to='/home'>Home</StyledLink>
           </MenuItem>
           <MenuItem onClick={handleMenuClose}>
             {" "}
-            <Link to='/signup' style={{ textDecoration: "none", color: "inherit" }}>
-              Signup
-            </Link>
+            <StyledLink to='/signup'>Signup</StyledLink>
           </MenuItem>
           <MenuItem onClick={handleMenuClose}>
             {" "}
-            <Link to='/login' style={{ textDecoration: "none", color: "inherit" }}>
-              Login
-            </Link>
+            <StyledLink to='/login'>Login</StyledLink>
           </MenuItem>
         </Menu>
       </Toolbar>

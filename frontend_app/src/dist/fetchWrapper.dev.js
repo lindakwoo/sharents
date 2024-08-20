@@ -55,42 +55,40 @@ var customFetch = function customFetch(url) {
               Authorization: "Bearer ".concat(accessToken)
             })
           });
-          console.log(fetchOptions);
-          _context.prev = 4;
-          console.log("inside the fetch");
-          _context.next = 8;
+          _context.prev = 3;
+          _context.next = 6;
           return regeneratorRuntime.awrap(fetch(url, fetchOptions));
 
-        case 8:
+        case 6:
           response = _context.sent;
 
           if (response.ok) {
-            _context.next = 11;
+            _context.next = 9;
             break;
           }
 
           throw new Error("HTTP error! status: ".concat(response.status));
 
-        case 11:
-          _context.next = 13;
+        case 9:
+          _context.next = 11;
           return regeneratorRuntime.awrap(response.json());
 
-        case 13:
+        case 11:
           data = _context.sent;
           return _context.abrupt("return", data);
 
-        case 17:
-          _context.prev = 17;
-          _context.t0 = _context["catch"](4);
+        case 15:
+          _context.prev = 15;
+          _context.t0 = _context["catch"](3);
           console.error("Error during fetch:", _context.t0);
           throw _context.t0;
 
-        case 21:
+        case 19:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[4, 17]]);
+  }, null, null, [[3, 15]]);
 };
 
 var _default = customFetch;

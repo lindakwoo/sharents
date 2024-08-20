@@ -1,9 +1,11 @@
 from typing import List, Optional
-from pydantic import BaseModel, Field, EmailStr
+from pydantic import BaseModel, Field, EmailStr, ConfigDict
 from pydantic.functional_validators import BeforeValidator
 from typing_extensions import Annotated
+import datetime
 
 PyObjectId = Annotated[str, BeforeValidator(str)]
+
 
 class MediaModelUpdate(BaseModel):
     description: Optional[str] = Field(default=None)
@@ -11,6 +13,7 @@ class MediaModelUpdate(BaseModel):
     date: Optional[str] = Field(default=None)
     type: Optional[str] = Field(default=None)
     url: Optional[str] = Field(default=None)
+
 
 class MediaModelCreate(BaseModel):
     description: str = Field(...)
@@ -28,10 +31,14 @@ class MediaModel(BaseModel):
     date: str = Field(...)
     type: str = Field(...)
     url: str = Field(...)
+    created_at: datetime = Field(...)
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 class MediaCollection(BaseModel):
     media: List[MediaModel]
+
 
 class ChildModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
@@ -44,11 +51,13 @@ class ChildModel(BaseModel):
 class ChildrenCollection(BaseModel):
     children: List[ChildModel]
 
+
 class MilestoneModelUpdate(BaseModel):
     name: Optional[str] = Field(default=None)
     description: Optional[str] = Field(default=None)
     category: Optional[str] = Field(default=None)
     date: Optional[str] = Field(default=None)
+
 
 class MilestoneModelCreate(BaseModel):
     name: str = Field(...)
@@ -64,6 +73,9 @@ class MilestoneModel(BaseModel):
     category: str = Field(...)
     child: str = Field(...)
     date: str = Field(...)
+    created_at: datetime = Field(...)
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
 
 
 class MilestoneCollection(BaseModel):
@@ -87,6 +99,7 @@ class CommentCollection(BaseModel):
 
 class CategoryModel(BaseModel):
     name: str = Field(...)
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)
 
 
 class CategoryCollection(BaseModel):
