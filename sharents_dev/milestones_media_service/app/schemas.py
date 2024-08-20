@@ -3,13 +3,24 @@ from pydantic import BaseModel, Field, EmailStr, ConfigDict
 from pydantic.functional_validators import BeforeValidator
 from typing_extensions import Annotated
 import datetime
+from enum import Enum
 
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
 
+class CategoryEnum(str, Enum):
+    growth = 'growth'
+    food = 'food'
+    health = 'health'
+    speeach = 'speech'
+    physical = 'physical'
+    cognitive = 'cognitive'
+    other = 'other'
+
+
 class MediaModelUpdate(BaseModel):
     description: Optional[str] = Field(default=None)
-    category: Optional[str] = Field(default=None)
+    category: Optional[CategoryEnum] = Field(default=None)
     date: Optional[str] = Field(default=None)
     type: Optional[str] = Field(default=None)
     url: Optional[str] = Field(default=None)
@@ -17,7 +28,7 @@ class MediaModelUpdate(BaseModel):
 
 class MediaModelCreate(BaseModel):
     description: str = Field(...)
-    category: Optional[str] = Field(default=None)
+    category: CategoryEnum = Field(...)
     date: str = Field(...)
     type: str = Field(...)
     url: str = Field(...)
@@ -26,7 +37,7 @@ class MediaModelCreate(BaseModel):
 class MediaModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     description: str = Field(...)
-    category: Optional[str] = Field(default=None)
+    category: Optional[CategoryEnum] = Field(default=None)
     child: str = Field(...)
     date: str = Field(...)
     type: str = Field(...)
@@ -55,14 +66,14 @@ class ChildrenCollection(BaseModel):
 class MilestoneModelUpdate(BaseModel):
     name: Optional[str] = Field(default=None)
     description: Optional[str] = Field(default=None)
-    category: Optional[str] = Field(default=None)
+    category: Optional[CategoryEnum] = Field(default=None)
     date: Optional[str] = Field(default=None)
 
 
 class MilestoneModelCreate(BaseModel):
     name: str = Field(...)
     description: str = Field(...)
-    category: str = Field(...)
+    category: CategoryEnum = Field(...)
     date: str = Field(...)
 
 
@@ -70,7 +81,7 @@ class MilestoneModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     name: str = Field(...)
     description: str = Field(...)
-    category: str = Field(...)
+    category: CategoryEnum = Field(...)
     child: str = Field(...)
     date: str = Field(...)
     created_at: datetime = Field(...)
@@ -95,12 +106,3 @@ class CommentModel(BaseModel):
 
 class CommentCollection(BaseModel):
     comments: List[CommentModel]
-
-
-class CategoryModel(BaseModel):
-    name: str = Field(...)
-    id: Optional[PyObjectId] = Field(alias="_id", default=None)
-
-
-class CategoryCollection(BaseModel):
-    categories: List[CategoryModel]

@@ -314,31 +314,3 @@ async def delete_comment(comment_id: str):
     )
     check_delete_result(result, "comment not found")
     return {"message": "comment successfully deleted"}
-
-
-#  get all the categories
-# @router.get(
-#     "/categories/",
-#     response_description="List all categories",
-#     response_model=CategoryCollection,
-#     response_model_by_alias=False,
-# )
-# def list_categories():
-#     categories = db.get_collection("categories")
-#     return CategoryCollection(categories=categories)
-
-
-# # #  get category by id
-
-
-# @router.get(
-#     "/categories/{category_id}/",
-#     response_description="Get a specific category",
-#     response_model=CategoryModel,
-#     response_model_by_alias=False,
-# )
-# def get_category(category_id: str):
-#     category = db.get_collection("categories").find_one(
-#         {"_id": ObjectId(category_id)})
-#     check_for_none(category, "category not found")
-#     return CategoryModel(**category)
