@@ -1,7 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
-import customFetch from "../../../fetchWrapper";
+import customFetch from "../../fetchWrapper";
 import { ChildContext } from "../../context/ChildContext";
 import { Box, styled } from "@mui/material";
+import { Link } from "react-router-dom";
+
+const Img = styled("img")({});
+const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 
 const HomeMedia = () => {
   const [media, setMedia] = useState([]);
@@ -40,9 +44,12 @@ const HomeMedia = () => {
           marginBottom: "64px",
         }}
       >
+
         {media.map((media) => (
           <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            {media.description}
+            <StyledLink to={`/media/${media.id}`}>
+              <Img sx={{ width: "80%" }} src={media.url} />
+            </StyledLink>
           </Box>
         ))}
       </Box>
