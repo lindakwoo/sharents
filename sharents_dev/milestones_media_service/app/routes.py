@@ -19,8 +19,6 @@ from .schemas import (
     CommentModelCreate,
     MilestoneModelCreate,
     MilestoneModelUpdate,
-    CategoryCollection,
-    CategoryModel,
 )
 from .database import db
 from datetime import datetime
