@@ -3,6 +3,7 @@ import customFetch from "../../fetchWrapper";
 import { ChildContext } from "../../context/ChildContext";
 import { Box, styled } from "@mui/material";
 import { Link } from "react-router-dom";
+import { ArrowForward } from "@mui/icons-material";
 
 const Img = styled("img")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
@@ -33,24 +34,49 @@ const HomeMedia = () => {
   }, [child]);
 
   return (
-    <Box sx={{ marginBottom: "64px" }}>
-      <h1>Latest media</h1>
+    <Box
+      sx={{
+        padding: "16px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        marginBottom: "64px",
+      }}
+    >
       <Box
         sx={{
-          display: "grid",
-          gap: "24px",
-          gridTemplateColumns: "1fr 1fr 1fr",
-          marginTop: "32px",
-          marginBottom: "64px",
+          width: "85%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
-        {media.map((media) => (
-          <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-            <StyledLink to={`/media/${media.id}`}>
-              <Img sx={{ width: "80%" }} src={media.url} />
-            </StyledLink>
-          </Box>
-        ))}
+        <h1>Latest media</h1>
+        <Box
+          sx={{
+            display: "grid",
+            gap: "24px",
+            gridTemplateColumns: "1fr 1fr 1fr",
+            marginTop: "32px",
+            marginBottom: "64px",
+          }}
+        >
+          {media.map((media) => (
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+              <StyledLink to={`/media/${media.id}`}>
+                <Img sx={{ width: "80%" }} src={media.url} />
+              </StyledLink>
+            </Box>
+          ))}
+        </Box>
+      </Box>
+
+      <Box sx={{ display: "flex", justifyContent: "end", alignSelf: "end" }}>
+        <StyledLink to='/milestones' sx={{ backgroundColor: "yellow", padding: "16px", borderRadius: "10px" }}>
+          All media <ArrowForward style={{ marginLeft: 8, verticalAlign: "middle" }} />
+        </StyledLink>
       </Box>
     </Box>
   );

@@ -15,7 +15,7 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <main>
-        <Box sx={{ mx: "64px", mt: "32px" }}>
+        <Box sx={{ mt: "32px" }}>
           <Routes>
             <Route path='/' element={<Landing />} />
             <Route path='/member_landing' element={<MemberLanding />} />

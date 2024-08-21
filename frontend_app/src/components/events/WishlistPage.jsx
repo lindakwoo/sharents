@@ -2,12 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import customFetch from "../../fetchWrapper";
 import { Box, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
-import { Link } from "react-router-dom";
 
-import moment from "moment";
-
-const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
-
+const Input = styled("input")({});
 const WishlistPage = () => {
   const [wishlist, setWishlist] = useState({});
   const [wishlistItems, setWishlistItems] = useState([]);
@@ -43,6 +39,11 @@ const WishlistPage = () => {
     fetchWishlistItems(); // Fetch wishlists when id changes
   }, [id]); // Dependency array ensures this runs only when `id` changes
 
+  const handleRowClick = (url) => {
+    // Navigate to the event details page
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+
   const handleCheckboxChange = async (index) => {
     const item = wishlistItems[index];
     const updatedItem = { ...item, is_purchased: !item.is_purchased };
@@ -63,32 +64,39 @@ const WishlistPage = () => {
   return (
     <Box>
       <h1>{wishlist.name}</h1>
-      <TableContainer component={Paper}>
-        <Table>
+      <TableContainer sx={{ width: "60%" }} component={Paper}>
+        <Table sx={{ width: "100%" }}>
           <TableHead>
             <TableRow>
               <TableCell>Item</TableCell>
-              <TableCell>Price</TableCell>
-              <TableCell>Purchased</TableCell>
+              <TableCell sx={{ width: "100px", textAlign: "center" }}>Price</TableCell>
+              <TableCell sx={{ width: "100px", textAlign: "center" }}>Purchased</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {wishlistItems.map((item, index) => (
-              <StyledLink sx={{}} to={item.url} target="_">
-                <TableRow sx={{
+              <TableRow
+                key={item.id}
+                onClick={() => handleRowClick(item.url)}
+                sx={{
                   "&:hover": {
                     backgroundColor: "aqua",
-                  }
-                }} key={item.id}>
-                  <TableCell>
-
-                    {item.description}
-
-                  </TableCell>
-                  <TableCell>{item.price}</TableCell>
-                  <TableCell><input onChange={() => handleCheckboxChange(index)} type="checkbox" checked={item.is_purchased} /></TableCell>
-                </TableRow>
-              </StyledLink>
+                  },
+                  cursor: "pointer",
+                }}
+              >
+                <TableCell>{item.description}</TableCell>
+                <TableCell sx={{ width: "100px", textAlign: "center" }}>${item.price}</TableCell>
+                <TableCell sx={{ width: "100px", textAlign: "center" }}>
+                  <Input
+                    sx={{ width: "20px", height: "20px" }}
+                    onClick={(e) => e.stopPropagation()}
+                    onChange={() => handleCheckboxChange(index)}
+                    type='checkbox'
+                    checked={item.is_purchased}
+                  />
+                </TableCell>
+              </TableRow>
             ))}
           </TableBody>
         </Table>

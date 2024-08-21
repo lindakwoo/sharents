@@ -14,7 +14,16 @@ const HomeHero = () => {
   const months = age.months === 1 ? `${age.months} month old` : `${age.months} months old`;
 
   return (
-    <Box sx={{ display: "flex", alignItems: "center" }}>
+    <Box
+      sx={{
+        zIndex: "relative",
+        display: "flex",
+        alignItems: "center",
+        marginBottom: "64px",
+        position: "relative",
+        overflow: "hidden",
+      }}
+    >
       <Box
         sx={{ width: "50%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
       >
