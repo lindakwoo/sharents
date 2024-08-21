@@ -74,7 +74,7 @@ const HomeMedia = () => {
       </Box>
 
       <Box sx={{ display: "flex", justifyContent: "end", alignSelf: "end" }}>
-        <StyledLink to='/milestones' sx={{ backgroundColor: "yellow", padding: "16px", borderRadius: "10px" }}>
+        <StyledLink to='/media' sx={{ backgroundColor: "orange", padding: "16px", borderRadius: "10px" }}>
           All media <ArrowForward style={{ marginLeft: 8, verticalAlign: "middle" }} />
         </StyledLink>
       </Box>

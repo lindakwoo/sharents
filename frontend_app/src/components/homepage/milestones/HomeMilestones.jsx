@@ -99,7 +99,7 @@ const HomeMilestones = () => {
         </Box>
       </Box>
       <Box sx={{ display: "flex", justifyContent: "end", alignSelf: "end" }}>
-        <StyledLink to='/milestones' sx={{ backgroundColor: "yellow", padding: "16px", borderRadius: "10px" }}>
+        <StyledLink to='/milestones' sx={{ backgroundColor: "orange", padding: "16px", borderRadius: "10px" }}>
           All milestones <ArrowForward style={{ marginLeft: 8, verticalAlign: "middle" }} />
         </StyledLink>
       </Box>

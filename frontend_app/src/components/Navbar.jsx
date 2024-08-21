@@ -47,6 +47,7 @@ const Navbar = () => {
 
     try {
       const response = await customFetch(url);
+      console.log("from nav", response);
       setChildrenList(response.children);
     } catch (error) {
       console.error("Error fetching children", error);
@@ -58,9 +59,9 @@ const Navbar = () => {
   }, []);
 
   return (
-    <AppBar position='static' sx={{ backgroundColor: "#007bff" }}>
+    <AppBar position='static' sx={{ backgroundColor: "#0288d1" }}>
       <Toolbar>
-        <Typography variant='h6' sx={{ flexGrow: 1 }}>
+        <Typography variant='h6' sx={{ flexGrow: 1, fontWeight: "bold", fontSize: "24px" }}>
           Sharents
         </Typography>
         {childrenList.length > 0 && (

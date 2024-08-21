@@ -2,7 +2,7 @@ import React from "react";
 import { Box, styled } from "@mui/material";
 import { Link } from "react-router-dom";
 import { formatDate } from "../../../utils";
-const Span = styled("span")({});
+import Category from "../../Category";
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 
 const HomeMilestone = ({ milestone }) => {
@@ -10,32 +10,32 @@ const HomeMilestone = ({ milestone }) => {
     <Box
       sx={{
         minHeight: "300px",
-        backgroundColor: "green",
-        color: "white",
+        backgroundColor: "#b5d4f6",
+
         width: "80%",
         padding: "64px",
         borderRadius: "10px",
       }}
     >
-      <StyledLink sx={{ position: "relative" }} to={`/milestones/${milestone.id}`}>
-        <Box
-          sx={{
-            position: "absolute",
-            padding: "8px",
-            backgroundColor: "yellow",
-            color: "black",
-            width: "100px",
-            textAlign: "center",
-            top: "-50px",
-            left: "-50px",
-          }}
+      <Category> {milestone.category}</Category>
+      <Box
+        sx={{
+          color: "black",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          position: "relative",
+        }}
+      >
+        <StyledLink
+          sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}
+          to={`/milestones/${milestone.id}`}
         >
-          {milestone.category}
-        </Box>
-        <Box>{formatDate(milestone.date)}</Box>
+          <Box>{formatDate(milestone.date)}</Box>
 
-        <h1>{milestone.name}</h1>
-      </StyledLink>
+          <h1>{milestone.name}</h1>
+        </StyledLink>
+      </Box>
     </Box>
   );
 };

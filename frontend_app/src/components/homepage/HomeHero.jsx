@@ -19,7 +19,7 @@ const HomeHero = () => {
         zIndex: "relative",
         display: "flex",
         alignItems: "center",
-        marginBottom: "64px",
+        my: "64px",
         position: "relative",
         overflow: "hidden",
       }}
