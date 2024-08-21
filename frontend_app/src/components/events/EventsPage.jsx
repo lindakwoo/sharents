@@ -23,7 +23,7 @@ const EventsPage = () => {
         ...event,
         datetime: new Date(event.datetime), // Convert to Date object
       }));
-
+      console.log("processedEvents", processedEvents);
       const futureEvents = processedEvents.filter((event) => event.datetime >= today);
       futureEvents.sort((a, b) => a.datetime - b.datetime);
       setEvents(futureEvents);
