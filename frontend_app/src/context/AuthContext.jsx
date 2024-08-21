@@ -44,7 +44,7 @@ const AuthProvider = ({ children }) => {
       setIsGuardian(storedIsGuardian || false);
     } else {
       // Redirect to login if not authenticated
-      navigate.push("/login");
+      navigate("/login");
     }
   }, [navigate]);
 
