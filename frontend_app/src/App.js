@@ -10,6 +10,7 @@ import EventExpandedView from "./components/events/EventExpandedView";
 import MemberLanding from "./components/MemberLanding";
 import WishlistPage from "./components/events/WishlistPage";
 import MilestonesPage from "./components/milestones/MilestonesPage";
+import EventsPage from "./components/events/EventsPage";
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path='/media/:id' element={<MediaExpandedView />} />
           <Route path='/events/:id' element={<EventExpandedView />} />
           <Route path='/wishlists/:id' element={<WishlistPage />} />
+          <Route path='/events' element={<EventsPage />} />
           {/* <Route path='inventory/manufacturers'>
               <Route index element={<Manufacturers />} />
               <Route path='create' element={<CreateManufacturerForm />} />
