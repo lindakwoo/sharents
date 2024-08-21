@@ -4,6 +4,7 @@ import { ChildContext } from "../../context/ChildContext";
 import HomeHero from "./HomeHero";
 import HomeMilestones from "./milestones/HomeMilestones";
 import HomeEvents from "./HomeEvents";
+import HomeMedia from "./HomeMedia";
 
 const Home = () => {
   const { user } = useContext(AuthContext);
@@ -12,6 +13,7 @@ const Home = () => {
     <>
       <HomeHero />
       <HomeMilestones />
+      <HomeMedia />
       <HomeEvents />
     </>
   );

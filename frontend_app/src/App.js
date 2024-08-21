@@ -5,19 +5,29 @@ import Login from './components/forms/Login';
 import Home from "./components/homepage/Home";
 import Landing from "./components/Landing";
 import MilestoneExpandedView from "./components/milestones/MilestoneExpandedView";
+import MediaExpandedView from "./components/media/MediaExpandedView";
+import EventExpandedView from "./components/events/EventExpandedView";
+import MemberLanding from "./components/MemberLanding";
+import WishlistPage from "./components/events/WishlistPage";
+import MilestonesPage from "./components/milestones/MilestonesPage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
       <main>
-        <Box sx={{ mx: "64px", mt: "32px" }}>
-          <Routes>
-            <Route path='/' element={<Landing />} />
-            <Route path='/home' element={<Home />} />
-            <Route path='/login' element={<Login />} />
-            <Route path='/milestones/:id' element={<MilestoneExpandedView />} />
-            {/* <Route path='inventory/manufacturers'>
+
+        <Routes>
+          <Route path='/' element={<Landing />} />
+          <Route path='/member_landing' element={<MemberLanding />} />
+          <Route path='/home' element={<Home />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/milestones' element={<MilestonesPage />} />
+          <Route path='/milestones/:id' element={<MilestoneExpandedView />} />
+          <Route path='/media/:id' element={<MediaExpandedView />} />
+          <Route path='/events/:id' element={<EventExpandedView />} />
+          <Route path='/wishlists/:id' element={<WishlistPage />} />
+          {/* <Route path='inventory/manufacturers'>
               <Route index element={<Manufacturers />} />
               <Route path='create' element={<CreateManufacturerForm />} />
             </Route>
@@ -53,10 +63,10 @@ function App() {
               <Route index element={<ListSaleHistory />} />
               <Route path='create' element={<CreateSalesRecord />} />
             </Route> */}
-          </Routes>
-        </Box>
+        </Routes>
+
       </main>
-    </BrowserRouter>
+    </>
   );
 }
 

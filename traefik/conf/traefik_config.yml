@@ -49,7 +49,10 @@ http:
         - web
 
     events:
-      rule: "PathPrefix(`/api/events`) && !PathPrefix(`/api/events/docs`) && !PathPrefix(`/api/events/openapi.json`)"
+      rule: >
+        PathPrefix(`/api/events`) ||
+        PathPrefix(`/api/wishlists`) ||
+        PathPrefix(`/api/wishlistItems`)
       service: events
       #middlewares:
       #  - auth-middleware
@@ -64,9 +67,9 @@ http:
 
     milestones:
       rule: >
-        PathPrefix(`/api/milestones`) || 
-        PathPrefix(`/api/categories`) || 
-        PathPrefix(`/api/media`) || 
+        PathPrefix(`/api/milestones`) ||
+        PathPrefix(`/api/categories`) ||
+        PathPrefix(`/api/media`) ||
         PathPrefix(`/api/comments`) ||
         PathPrefix(`/media/children`) ||
         PathPrefix(`/milestones/children`) ||

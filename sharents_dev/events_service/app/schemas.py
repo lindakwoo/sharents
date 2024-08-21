@@ -54,12 +54,16 @@ class EventModelCreate(BaseModel):
     datetime: str = Field(...)
     description: str = Field(...)
     title: str = Field(...)
+    location: str = Field(...)
+    notes: Optional[str] = Field(default=None)
 
 
 class EventModelUpdate(BaseModel):
     datetime: Optional[str] = Field(default=None)
     description: Optional[str] = Field(default=None)
     title: Optional[str] = Field(default=None)
+    location: Optional[str] = Field(default=None)
+    notes: Optional[str] = Field(default=None)
 
 
 class EventModel(BaseModel):
@@ -68,6 +72,8 @@ class EventModel(BaseModel):
     datetime: str = Field(...)
     description: str = Field(...)
     title: str = Field(...)
+    location: str = Field(...)
+    notes: Optional[str] = Field(default=None)
 
 
 class EventCollection(BaseModel):

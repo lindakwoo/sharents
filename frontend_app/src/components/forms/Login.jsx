@@ -18,7 +18,7 @@ function Login() {
     console.log(user);
     e.preventDefault();
     try {
-      login("some Access token", "user Id goes here", true);
+      login("some Access token", "user Id goes here", false);
       // const response = await axios.post("http://localhost/auth/token/", user, {
       //   headers: {
       //     "Content-Type": "application/json",
