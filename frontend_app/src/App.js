@@ -13,7 +13,7 @@ import MilestonesPage from "./components/milestones/MilestonesPage";
 
 function App() {
   return (
-    <BrowserRouter>
+    <>
       <Navbar />
       <main>
 
@@ -66,7 +66,7 @@ function App() {
         </Routes>
 
       </main>
-    </BrowserRouter>
+    </>
   );
 }
 
