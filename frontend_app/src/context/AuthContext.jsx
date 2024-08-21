@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
   const login = (access, user, isGuardian) => {
     localStorage.setItem("access_token", access);
     localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("isGuardian", JSON.stringify(isGuardian));
     setIsAuth(true);
     setUser(user);
     setIsGuardian(isGuardian);
@@ -20,12 +21,17 @@ const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user");
+    localStorage.removeItem("isGuardian");
     setIsAuth(false);
+    setUser(null);
+    setIsGuardian(false);
+    navigate("/login");
   };
 
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
     const storedUser = JSON.parse(localStorage.getItem("user"));
+    const storedIsGuardian = JSON.parse(localStorage.getItem("isGuardian"));
     console.log("accessToken", accessToken);
 
     if (accessToken && storedUser) {
@@ -35,7 +41,7 @@ const AuthProvider = ({ children }) => {
       console.log(storedUser);
       setIsAuth(true);
       setUser(storedUser);
-      setIsGuardian(storedUser.isGuardian);
+      setIsGuardian(storedIsGuardian || false);
     } else {
       // Redirect to login if not authenticated
       navigate.push("/login");
