@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import customFetch from "../../fetchWrapper";
@@ -7,13 +7,17 @@ import { formatDate } from "../../utils";
 import { ArrowBack } from "@mui/icons-material";
 import Category from "../Category";
 import Comments from "../comments/Comments";
-
+import UpdateMilestone from "../forms/milestones/UpdateMilestone";
+import { AuthContext } from "../../context/AuthContext";
+const Button = styled("button")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 const H1 = styled("h1")({});
 const H2 = styled("h2")({});
 
 const MilestoneExpandedView = () => {
   const [milestone, setMilestone] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const { role } = useContext(AuthContext);
 
   const { id } = useParams();
   const fetchMilestone = async () => {
@@ -28,6 +32,8 @@ const MilestoneExpandedView = () => {
     }
   };
 
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
   useEffect(() => {
     fetchMilestone(); // Fetch milestone when id changes
   }, [id]); // Dependency array ensures this runs only when `id` changes
@@ -65,6 +71,29 @@ const MilestoneExpandedView = () => {
               <Comments id={id} type='milestone' />
             </Box>
           </Box>
+          {role === "guardian" && (
+            <Button
+              sx={{
+                border: "none",
+                position: "fixed",
+                bottom: "16px",
+                right: "16px",
+                backgroundColor: "yellow",
+                padding: "8px",
+                borderRadius: "10px",
+                "& p": { my: 0 },
+                maxHeight: "50px",
+                "&:hover": {
+                  backgroundColor: "#0288d1",
+                  color: "white",
+                },
+              }}
+              onClick={handleOpen}
+            >
+              Update Milestone
+            </Button>
+          )}
+          <UpdateMilestone fetchMilestone={fetchMilestone} milestone={milestone} open={modalOpen} handleClose={handleClose} id={id} />
         </>
       )}
     </Box>
