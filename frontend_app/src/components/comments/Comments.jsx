@@ -76,7 +76,7 @@ const Comments = ({ id, type }) => {
             );
           })}
       </Box>
-      <CreateComment fetchComments={fetchComments} open={modalOpen} handleClose={handleClose} type='media' id={id} />
+      <CreateComment fetchComments={fetchComments} open={modalOpen} handleClose={handleClose} type={type} id={id} />
     </>
   );
 };
