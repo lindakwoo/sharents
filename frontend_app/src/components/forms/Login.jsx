@@ -18,13 +18,13 @@ function Login() {
     console.log(user);
     e.preventDefault();
     try {
-      login("some Access token", "user Id goes here", false);
+      login("some Access token", "66bf74d0e463457278b2ea36", true);
       // const response = await axios.post("http://localhost/auth/token/", user, {
       //   headers: {
       //     "Content-Type": "application/json",
       //   },
       // });
-      // login(response.data.access_token, { username: "linda woo" }); // set the access token and user in the local storage and context
+      // login(response.data.access_token, response.data.user, response.data.isGuardian); // set the access token and user in the local storage and context
       // setMessage("Login successful!");
       // navigate("/");
     } catch (error) {

@@ -2,7 +2,7 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from typing import List
 from bson import ObjectId
 from .schemas import ChildrenCollection, ChildModel, ChildModelCreate, ChildModelUpdate
-from .database import db, db_invites
+from .database import db, db_users
 from .utils import (
     check_for_none,
     check_list_not_empty,
@@ -56,6 +56,8 @@ async def get_guardian_children(guardian_id: str):
 )
 async def create_child(child: ChildModelCreate, guardian_id: str):
     children_collection = db.get_collection("children")
+    guardian = await db_users.get_collection("guardians").find_one({"_id": ObjectId(guardian_id)})
+    check_for_none(guardian, "Guardian not found")
     check_for_none(children_collection, "children collections not found")
     child_data = child.model_dump()
     child_data["guardian"] = guardian_id
@@ -75,7 +77,7 @@ async def create_child(child: ChildModelCreate, guardian_id: str):
     response_model_by_alias=False,
 )
 async def list_children_for_member(member_id: str):
-    invite_collection = db_invites.get_collection("invites")
+    invite_collection = db_users.get_collection("invites")
     invites_cursor = invite_collection.find({"member": member_id})
     invites = await invites_cursor.to_list(length=1000)
     child_ids = []

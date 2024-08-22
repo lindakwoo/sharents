@@ -42,7 +42,7 @@ const Navbar = () => {
     const url = `http://localhost/api/children/members/66bf92531efa3ca393556096/`;
     // }
     // else{
-    //   const url=`http://localhost/api/children/guardians/${user.id}/`
+    //   const url=`http://localhost/api/children/guardians/${user}/`
     // }
 
     try {
