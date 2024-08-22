@@ -26,6 +26,7 @@ const MediaPage = () => {
       setMedia(processedMedia);
     } catch (error) {
       console.error("Error fetching media", error);
+      setMedia([]);
     }
   };
   useEffect(() => {

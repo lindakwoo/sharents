@@ -13,6 +13,7 @@ const HomeMedia = () => {
   const { child } = useContext(ChildContext);
 
   const fetchMedia = async () => {
+    console.log("inside the fetch");
     const url = `http://localhost/api/media/children/${child.id}`;
     try {
       const response = await customFetch(url);
@@ -24,11 +25,13 @@ const HomeMedia = () => {
       processedMedia.sort((a, b) => b.created_at - a.created_at);
 
       const topThreeMedia = processedMedia.slice(0, 3);
-      setMedia(topThreeMedia);
+      setMedia(topThreeMedia.length ? topThreeMedia : []);
     } catch (error) {
       console.error("Error fetching media", error);
+      setMedia([]);
     }
   };
+
   useEffect(() => {
     fetchMedia(); // Fetch media when id changes
   }, [child]);
@@ -64,7 +67,7 @@ const HomeMedia = () => {
           }}
         >
           {media.map((media) => (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }} key={media.id}>
               <StyledLink to={`/media/${media.id}`}>
                 <Img sx={{ width: "80%" }} src={media.url} />
               </StyledLink>

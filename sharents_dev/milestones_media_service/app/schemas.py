@@ -95,6 +95,9 @@ class MilestoneCollection(BaseModel):
 
 class CommentModelCreate(BaseModel):
     text: str = Field(...)
+    member: Optional[str] = Field(default=None)
+    guardian: Optional[str] = Field(default=None)
+    creator_name: Optional[str] = Field(default=None)
 
 
 class CommentModel(BaseModel):
@@ -102,6 +105,9 @@ class CommentModel(BaseModel):
     media: Optional[str] = Field(default=None)
     milestone: Optional[str] = Field(default=None)
     text: str = Field(...)
+    member: Optional[str] = Field(default=None)
+    guardian: Optional[str] = Field(default=None)
+    creator_name: Optional[str] = Field(default=None)
 
 
 class CommentCollection(BaseModel):

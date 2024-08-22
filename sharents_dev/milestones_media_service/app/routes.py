@@ -262,7 +262,7 @@ async def post_comment_on_media(media_id: str, comment: CommentModelCreate):
 
 
 @router.post(
-    "/milestone/{milestone_id}/comments/",
+    "/milestones/{milestone_id}/comments/",
     response_description="Post a comment",
     response_model=CommentModel,
     response_model_by_alias=False,

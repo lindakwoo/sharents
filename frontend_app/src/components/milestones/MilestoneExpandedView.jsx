@@ -6,16 +6,15 @@ import { Box, styled } from "@mui/material";
 import { formatDate } from "../../utils";
 import { ArrowBack } from "@mui/icons-material";
 import Category from "../Category";
+import Comments from "../comments/Comments";
 
-const Button = styled("button")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 const H1 = styled("h1")({});
 const H2 = styled("h2")({});
-const H3 = styled("h3")({});
 
 const MilestoneExpandedView = () => {
   const [milestone, setMilestone] = useState(null);
-  const [comments, setComments] = useState([]);
+
   const { id } = useParams();
   const fetchMilestone = async () => {
     const url = `http://localhost/api/milestones/${id}/`;
@@ -29,24 +28,9 @@ const MilestoneExpandedView = () => {
     }
   };
 
-  const fetchComments = async () => {
-    const url = `http://localhost/api/milestones/${id}/comments/`;
-    try {
-      const response = await customFetch(url);
-      console.log("response", response);
-      setComments(response.comments);
-    } catch (error) {
-      console.error("Error fetching comments", error);
-    }
-  };
-
   useEffect(() => {
     fetchMilestone(); // Fetch milestone when id changes
   }, [id]); // Dependency array ensures this runs only when `id` changes
-
-  useEffect(() => {
-    fetchComments(); // Fetch milestone when id changes
-  }, [id]);
 
   return (
     <Box
@@ -76,46 +60,9 @@ const MilestoneExpandedView = () => {
           >
             <Box>{formatDate(milestone.date, false)}</Box>
             <H1 sx={{ fontSize: "64px", my: "8px" }}>{milestone.name}</H1>
-            <H2 sx={{ fontSize: "32px", my: "8px" }}>{milestone.description}</H2>
+            <H2 sx={{ fontSize: "32px", my: "8px", mb: "32px" }}>{milestone.description}</H2>
             <Box sx={{ mb: "64px" }}>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                {" "}
-                <H2>Comments:</H2>{" "}
-                <Button
-                  sx={{
-                    border: "none",
-                    backgroundColor: "orange",
-                    padding: "8px",
-                    borderRadius: "10px",
-                    "& p": { my: 0 },
-                    maxHeight: "50px",
-                    "&:hover": {
-                      backgroundColor: "#0288d1",
-                      color: "white",
-                    },
-                  }}
-                >
-                  <p>Add a comment</p>
-                </Button>
-              </Box>
-
-              {comments.length > 0 &&
-                comments.map((comment) => {
-                  return (
-                    <Box
-                      sx={{
-                        boxSizing: "border-box",
-
-                        border: "black 1px solid",
-                        borderRadius: "10px",
-                        padding: "16px",
-                        marginBottom: "16px",
-                      }}
-                    >
-                      {comment.text}
-                    </Box>
-                  );
-                })}
+              <Comments id={id} type='milestone' />
             </Box>
           </Box>
         </>

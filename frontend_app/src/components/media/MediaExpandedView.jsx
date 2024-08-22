@@ -6,17 +6,14 @@ import { Box, styled } from "@mui/material";
 import { formatDate } from "../../utils";
 import { ArrowBack } from "@mui/icons-material";
 import Category from "../Category";
+import Comments from "../comments/Comments";
 
 const Img = styled("img")({});
-const Button = styled("button")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
-const H1 = styled("h1")({});
-const H2 = styled("h2")({});
-const H3 = styled("h3")({});
 
 const MediaExpandedView = () => {
   const [media, setMedia] = useState(null);
-  const [comments, setComments] = useState([]);
+
   const { id } = useParams();
   const fetchMedia = async () => {
     const url = `http://localhost/api/media/${id}/`;
@@ -30,24 +27,9 @@ const MediaExpandedView = () => {
     }
   };
 
-  const fetchComments = async () => {
-    const url = `http://localhost/api/media/${id}/comments/`;
-    try {
-      const response = await customFetch(url);
-      console.log("response", response);
-      setComments(response.comments);
-    } catch (error) {
-      console.error("Error fetching comments", error);
-    }
-  };
-
   useEffect(() => {
     fetchMedia(); // Fetch media when id changes
   }, [id]); // Dependency array ensures this runs only when `id` changes
-
-  useEffect(() => {
-    fetchComments(); // Fetch media when id changes
-  }, [id]);
 
   return (
     <Box
@@ -70,58 +52,23 @@ const MediaExpandedView = () => {
             </Box>
             <Category> {media.category}</Category>
           </Box>
-          <Box>{formatDate(media.date, false)}</Box>
+
           <Box
             sx={{
               width: "70%",
             }}
           >
+            <Box>{formatDate(media.date, false)}</Box>
             <Img
               sx={{
-                width: "80%",
+                width: "65%",
+                my: "16px",
               }}
               src={media.url}
             />
-            <Box>{media.description}</Box>
+            <Box sx={{ mb: "32px", fontSize: "24px" }}>{media.description}</Box>
             <Box>
-              <Box sx={{ display: "flex", justifyContent: "space-between", width: "80%" }}>
-                {" "}
-                <h2>Comments:</h2>{" "}
-                <Button
-                  sx={{
-                    border: "none",
-                    backgroundColor: "yellow",
-                    padding: "8px",
-                    borderRadius: "10px",
-                    "& p": { my: 0 },
-                    maxHeight: "50px",
-                    "&:hover": {
-                      backgroundColor: "orange",
-                      color: "white",
-                    },
-                  }}
-                >
-                  <p>Add a comment</p>
-                </Button>
-              </Box>
-              {/* <Box sx={{ width: "80%" }}> */}
-              {comments.length > 0 &&
-                comments.map((comment) => {
-                  return (
-                    <Box
-                      sx={{
-                        boxSizing: "border-box",
-                        width: "80%",
-                        border: "black 1px solid",
-                        borderRadius: "10px",
-                        padding: "16px",
-                        marginBottom: "16px",
-                      }}
-                    >
-                      {comment.text}
-                    </Box>
-                  );
-                })}
+              <Comments id={id} type='media' />
             </Box>
           </Box>
         </>

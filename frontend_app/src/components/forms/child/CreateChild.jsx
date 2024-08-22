@@ -1,13 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
-import customFetch from '../../../fetchWrapper';
-import { Box, styled } from '@mui/material';
-import { AuthContext } from '../../../context/AuthContext';
+import React, { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import customFetch from "../../../fetchWrapper";
+import { Box, styled } from "@mui/material";
+import { AuthContext } from "../../../context/AuthContext";
 
-const Button = styled('button')({});
+const Button = styled("button")({});
 
 const CreateChild = () => {
-  const [childData, setChildData] = useState({ name: '', birthdate: '', profile_picture: '' });
+  const [childData, setChildData] = useState({ name: "", birthdate: "", profile_picture: "" });
   const { user, isGuardian } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -31,56 +31,66 @@ const CreateChild = () => {
   };
 
   return (
-    <Box className="row">
-      <Box className="offset-3 col-6">
-        <Box className="shadow p-4 mt-4">
-          <h1>Add Child</h1>
-          <form onSubmit={handleSubmit}>
-            <Box sx={{
-              mt: "16px"
-            }} className="form-group">
-              <label>Name</label>
-              <input
-                type="text"
-                className="form-control"
-                value={childData.name}
-                name="name"
-                onChange={e => handleChange(e)}
-                placeholder="Enter child's name"
-              />
-            </Box>
-            <Box sx={{
-              mt: "16px"
-            }} className="form-group">
-              <label>Birthdate</label>
-              <input
-                type="date"
-                className="form-control"
-                value={childData.birthdate}
-                name="birthdate"
-                onChange={e => handleChange(e)}
-                placeholder="select a date"
-              />
-            </Box>
-            <Box sx={{
-              mt: "16px"
-            }}>
-              <label>Profile Picture</label>
-              <input
-                type="url"
-                className="form-control"
-                value={childData.profile_picture}
-                name="profile_picture"
-                onChange={e => handleChange(e)}
-                placeholder="https://example.com/"
-              />
-            </Box>
-            <Button sx={{
-              mt: "16px"
-            }} type="submit" className="btn btn-primary">Create</Button>
-          </form>
+    <Box sx={{ width: "50%" }} className='shadow p-4 mt-4'>
+      <h1>Add Child</h1>
+      <form onSubmit={handleSubmit}>
+        <Box
+          sx={{
+            mt: "16px",
+          }}
+          className='form-group'
+        >
+          <label>Name</label>
+          <input
+            type='text'
+            className='form-control'
+            value={childData.name}
+            name='name'
+            onChange={(e) => handleChange(e)}
+            placeholder="Enter child's name"
+          />
         </Box>
-      </Box>
+        <Box
+          sx={{
+            mt: "16px",
+          }}
+          className='form-group'
+        >
+          <label>Birthdate</label>
+          <input
+            type='date'
+            className='form-control'
+            value={childData.birthdate}
+            name='birthdate'
+            onChange={(e) => handleChange(e)}
+            placeholder='select a date'
+          />
+        </Box>
+        <Box
+          sx={{
+            mt: "16px",
+          }}
+        >
+          <label>Profile Picture</label>
+          <input
+            type='url'
+            className='form-control'
+            value={childData.profile_picture}
+            name='profile_picture'
+            onChange={(e) => handleChange(e)}
+            placeholder='https://example.com/'
+          />
+        </Box>
+        <Button
+          sx={{
+            mt: "16px",
+          }}
+          type='submit'
+          className='btn btn-primary'
+        >
+          Create
+        </Button>
+      </form>
     </Box>
   );
 };
