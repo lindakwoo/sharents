@@ -6,19 +6,13 @@ import { Box, styled } from "@mui/material";
 import { formatDate } from "../../utils";
 import { ArrowBack } from "@mui/icons-material";
 import Category from "../Category";
-import CreateComment from "../forms/comments/CreateComment";
+import Comments from "../comments/Comments";
 
 const Img = styled("img")({});
-const Button = styled("button")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
-const H1 = styled("h1")({});
-const H2 = styled("h2")({});
-const H3 = styled("h3")({});
 
 const MediaExpandedView = () => {
   const [media, setMedia] = useState(null);
-  const [comments, setComments] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
 
   const { id } = useParams();
   const fetchMedia = async () => {
@@ -33,27 +27,9 @@ const MediaExpandedView = () => {
     }
   };
 
-  const fetchComments = async () => {
-    const url = `http://localhost/api/media/${id}/comments/`;
-    try {
-      const response = await customFetch(url);
-      console.log("response", response);
-      setComments(response.comments);
-    } catch (error) {
-      console.error("Error fetching comments", error);
-    }
-  };
-
-  const handleOpen = () => setModalOpen(true);
-  const handleClose = () => setModalOpen(false);
-
   useEffect(() => {
     fetchMedia(); // Fetch media when id changes
   }, [id]); // Dependency array ensures this runs only when `id` changes
-
-  useEffect(() => {
-    fetchComments(); // Fetch media when id changes
-  }, [id]);
 
   return (
     <Box
@@ -92,54 +68,9 @@ const MediaExpandedView = () => {
             />
             <Box sx={{ mb: "32px", fontSize: "24px" }}>{media.description}</Box>
             <Box>
-              <Box sx={{ display: "flex", justifyContent: "space-between", width: "80%", mb: "16px" }}>
-                {" "}
-                <h2>Comments:</h2>{" "}
-                <Button
-                  sx={{
-                    border: "none",
-                    backgroundColor: "orange",
-                    padding: "8px",
-                    borderRadius: "10px",
-                    "& p": { my: 0 },
-                    maxHeight: "50px",
-                    "&:hover": {
-                      backgroundColor: "#0288d1",
-                      color: "white",
-                    },
-                  }}
-                  onClick={handleOpen}
-                >
-                  Add a comment
-                </Button>
-              </Box>
-              {/* <Box sx={{ width: "80%" }}> */}
-              {comments.length > 0 &&
-                comments.map((comment) => {
-                  return (
-                    <Box
-                      sx={{
-                        boxSizing: "border-box",
-                        width: "80%",
-                        border: "black 1px solid",
-                        borderRadius: "10px",
-                        padding: "16px",
-                        marginBottom: "16px",
-                      }}
-                    >
-                      {comment.text}
-                    </Box>
-                  );
-                })}
+              <Comments id={id} type='media' />
             </Box>
           </Box>
-          <CreateComment
-            fetchComments={fetchComments}
-            open={modalOpen}
-            handleClose={handleClose}
-            type='media'
-            id={id}
-          />
         </>
       )}
     </Box>

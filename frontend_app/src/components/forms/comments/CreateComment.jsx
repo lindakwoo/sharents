@@ -25,7 +25,9 @@ const CreateComment = ({ fetchComments, open, handleClose, type, id }) => {
       console.log("user", userResponse);
       commentData.creator_name = userResponse.name;
     } catch (error) {
-      console.error("Error creating comment: ", error);
+      console.error("Error getting user: ", error);
+      // TODO: REMOVE THIS LINE
+      commentData.creator_name = "Jane Doe";
     }
     if (isGuardian) {
       commentData.guardian = user;
