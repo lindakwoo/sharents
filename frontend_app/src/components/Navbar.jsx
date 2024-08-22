@@ -51,6 +51,7 @@ const Navbar = () => {
       setChildrenList(response.children);
     } catch (error) {
       console.error("Error fetching children", error);
+      setChildrenList([]);
     }
   };
 

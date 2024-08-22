@@ -29,6 +29,7 @@ const WishlistPage = () => {
       setWishlistItems(response.wishlistItems);
     } catch (error) {
       console.error("Error fetching wishlists", error);
+      setWishlistItems([]);
     }
   };
   useEffect(() => {

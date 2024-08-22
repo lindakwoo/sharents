@@ -85,8 +85,9 @@ async def list_children_for_member(member_id: str):
     children = []
     for child_id in object_ids:
         child = await db.get_collection("children").find_one({"_id": child_id})
-        child_model = ChildModel(**child)  # Convert to ChildModel
-        children.append(child_model)
+        if child is not None:
+            child_model = ChildModel(**child)  # Convert to ChildModel
+            children.append(child_model)
     return ChildrenCollection(children=children)
 
 

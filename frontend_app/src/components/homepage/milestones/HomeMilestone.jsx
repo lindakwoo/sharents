@@ -9,9 +9,8 @@ const HomeMilestone = ({ milestone }) => {
   return (
     <Box
       sx={{
-        minHeight: "300px",
+        minHeight: "400px",
         backgroundColor: "#b5d4f6",
-
         width: "80%",
         padding: "64px",
         borderRadius: "10px",

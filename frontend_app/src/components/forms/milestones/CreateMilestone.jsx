@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import customFetch from "../fetchWrapper";
+import customFetch from "../../../fetchWrapper";
 import { Box, Typography, Button, Select, MenuItem, FormControl, InputLabel, TextField } from "@mui/material";
 
 const CreateMilestone = () => {

@@ -13,6 +13,7 @@ import MilestonesPage from "./components/milestones/MilestonesPage";
 import MediaPage from "./components/media/MediaPage";
 import EventsPage from "./components/events/EventsPage";
 import CreateChild from "./components/forms/child/CreateChild";
+import GuardianDashboard from "./components/forms/GuardianDashboard";
 
 function App() {
   return (
@@ -32,7 +33,9 @@ function App() {
           <Route path='/events/:id' element={<EventExpandedView />} />
           <Route path='/wishlists/:id' element={<WishlistPage />} />
           <Route path='/events' element={<EventsPage />} />
-          <Route path='/create_child' element={<CreateChild />} />
+          {/* <Route path='/create_child' element={<CreateChild />} /> */}
+          <Route path='/guardian_dashboard' element={<GuardianDashboard />} />
+
           {/* <Route path='inventory/manufacturers'>
               <Route index element={<Manufacturers />} />
               <Route path='create' element={<CreateManufacturerForm />} />

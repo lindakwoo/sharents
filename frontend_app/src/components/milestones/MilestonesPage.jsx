@@ -25,6 +25,7 @@ const MilestonesPage = () => {
       setMilestones(processedMilestones);
     } catch (error) {
       console.error("Error fetching milestones", error);
+      setMilestones([]);
     }
   };
 

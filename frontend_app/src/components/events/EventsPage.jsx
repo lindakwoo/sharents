@@ -29,6 +29,7 @@ const EventsPage = () => {
       setEvents(futureEvents);
     } catch (error) {
       console.error("Error fetching events", error);
+      setEvents([]);
     }
   };
 
@@ -100,10 +101,7 @@ const EventsPage = () => {
         </Box>
       </Box>
     </Box>
-  )
-
-
-
+  );
 };
 
 export default EventsPage;

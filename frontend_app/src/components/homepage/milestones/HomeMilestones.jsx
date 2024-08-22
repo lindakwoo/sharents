@@ -26,6 +26,7 @@ const HomeMilestones = () => {
       setMilestones(topThreeMilestones);
     } catch (error) {
       console.error("Error fetching milestones", error);
+      setMilestones([]);
     }
   };
 
