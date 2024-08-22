@@ -6,6 +6,7 @@ import { Box, styled } from "@mui/material";
 import { formatDate } from "../../utils";
 import { ArrowBack } from "@mui/icons-material";
 import Category from "../Category";
+import CreateComment from "../forms/comments/CreateComment";
 
 const Button = styled("button")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
@@ -16,6 +17,8 @@ const H3 = styled("h3")({});
 const MilestoneExpandedView = () => {
   const [milestone, setMilestone] = useState(null);
   const [comments, setComments] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const { id } = useParams();
   const fetchMilestone = async () => {
     const url = `http://localhost/api/milestones/${id}/`;
@@ -30,6 +33,7 @@ const MilestoneExpandedView = () => {
   };
 
   const fetchComments = async () => {
+    console.log("inside!");
     const url = `http://localhost/api/milestones/${id}/comments/`;
     try {
       const response = await customFetch(url);
@@ -39,6 +43,9 @@ const MilestoneExpandedView = () => {
       console.error("Error fetching comments", error);
     }
   };
+
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
 
   useEffect(() => {
     fetchMilestone(); // Fetch milestone when id changes
@@ -76,11 +83,11 @@ const MilestoneExpandedView = () => {
           >
             <Box>{formatDate(milestone.date, false)}</Box>
             <H1 sx={{ fontSize: "64px", my: "8px" }}>{milestone.name}</H1>
-            <H2 sx={{ fontSize: "32px", my: "8px" }}>{milestone.description}</H2>
+            <H2 sx={{ fontSize: "32px", my: "8px", mb: "32px" }}>{milestone.description}</H2>
             <Box sx={{ mb: "64px" }}>
-              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+              <Box sx={{ display: "flex", justifyContent: "space-between", mb: "16px" }}>
                 {" "}
-                <H2>Comments:</H2>{" "}
+                <H3>Comments:</H3>{" "}
                 <Button
                   sx={{
                     border: "none",
@@ -94,30 +101,41 @@ const MilestoneExpandedView = () => {
                       color: "white",
                     },
                   }}
+                  onClick={handleOpen}
                 >
-                  <p>Add a comment</p>
+                  Add a comment
                 </Button>
               </Box>
 
               {comments.length > 0 &&
                 comments.map((comment) => {
                   return (
-                    <Box
-                      sx={{
-                        boxSizing: "border-box",
+                    <>
+                      {comment.creator_name && <Box>{comment.creator_name}:</Box>}
+                      <Box
+                        sx={{
+                          boxSizing: "border-box",
 
-                        border: "black 1px solid",
-                        borderRadius: "10px",
-                        padding: "16px",
-                        marginBottom: "16px",
-                      }}
-                    >
-                      {comment.text}
-                    </Box>
+                          border: "black 1px solid",
+                          borderRadius: "10px",
+                          padding: "16px",
+                          marginBottom: "16px",
+                        }}
+                      >
+                        {comment.text}
+                      </Box>
+                    </>
                   );
                 })}
             </Box>
           </Box>
+          <CreateComment
+            fetchComments={fetchComments}
+            open={modalOpen}
+            handleClose={handleClose}
+            type='milestone'
+            id={id}
+          />
         </>
       )}
     </Box>

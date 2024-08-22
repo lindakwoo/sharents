@@ -6,6 +6,7 @@ import { Box, styled } from "@mui/material";
 import { formatDate } from "../../utils";
 import { ArrowBack } from "@mui/icons-material";
 import Category from "../Category";
+import CreateComment from "../forms/comments/CreateComment";
 
 const Img = styled("img")({});
 const Button = styled("button")({});
@@ -17,6 +18,8 @@ const H3 = styled("h3")({});
 const MediaExpandedView = () => {
   const [media, setMedia] = useState(null);
   const [comments, setComments] = useState([]);
+  const [modalOpen, setModalOpen] = useState(false);
+
   const { id } = useParams();
   const fetchMedia = async () => {
     const url = `http://localhost/api/media/${id}/`;
@@ -40,6 +43,9 @@ const MediaExpandedView = () => {
       console.error("Error fetching comments", error);
     }
   };
+
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
 
   useEffect(() => {
     fetchMedia(); // Fetch media when id changes
@@ -70,38 +76,41 @@ const MediaExpandedView = () => {
             </Box>
             <Category> {media.category}</Category>
           </Box>
-          <Box>{formatDate(media.date, false)}</Box>
+
           <Box
             sx={{
               width: "70%",
             }}
           >
+            <Box>{formatDate(media.date, false)}</Box>
             <Img
               sx={{
-                width: "80%",
+                width: "65%",
+                my: "16px",
               }}
               src={media.url}
             />
-            <Box>{media.description}</Box>
+            <Box sx={{ mb: "32px", fontSize: "24px" }}>{media.description}</Box>
             <Box>
-              <Box sx={{ display: "flex", justifyContent: "space-between", width: "80%" }}>
+              <Box sx={{ display: "flex", justifyContent: "space-between", width: "80%", mb: "16px" }}>
                 {" "}
                 <h2>Comments:</h2>{" "}
                 <Button
                   sx={{
                     border: "none",
-                    backgroundColor: "yellow",
+                    backgroundColor: "orange",
                     padding: "8px",
                     borderRadius: "10px",
                     "& p": { my: 0 },
                     maxHeight: "50px",
                     "&:hover": {
-                      backgroundColor: "orange",
+                      backgroundColor: "#0288d1",
                       color: "white",
                     },
                   }}
+                  onClick={handleOpen}
                 >
-                  <p>Add a comment</p>
+                  Add a comment
                 </Button>
               </Box>
               {/* <Box sx={{ width: "80%" }}> */}
@@ -124,6 +133,13 @@ const MediaExpandedView = () => {
                 })}
             </Box>
           </Box>
+          <CreateComment
+            fetchComments={fetchComments}
+            open={modalOpen}
+            handleClose={handleClose}
+            type='media'
+            id={id}
+          />
         </>
       )}
     </Box>

@@ -7,7 +7,6 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import { AuthContext } from "../context/AuthContext";
 import { ChildContext } from "../context/ChildContext";
 import customFetch from "../fetchWrapper";
@@ -15,6 +14,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material";
 
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
+const Button = styled("button")({
+  border: "none",
+  color: "white",
+  padding: "16px",
+  backgroundColor: "transparent",
+  fontWeight: "bold",
+  "&:hover": { color: "yellow" },
+});
 
 const Navbar = () => {
   const { user, isGuardian } = useContext(AuthContext);
@@ -84,16 +91,28 @@ const Navbar = () => {
         <Box sx={{ display: { xs: "none", md: "block" } }}>
           <Button color='inherit'>
             {" "}
-            <StyledLink to='/home'>Home</StyledLink>
+            <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/home'>
+              Home
+            </StyledLink>
           </Button>
           <Button color='inherit'>
             {" "}
-            <StyledLink to='/signup'>Signup</StyledLink>
+            <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/signup'>
+              Signup
+            </StyledLink>
           </Button>
           <Button color='inherit'>
             {" "}
-            <StyledLink to='/login'>Login</StyledLink>
+            <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/login'>
+              Login
+            </StyledLink>
           </Button>
+          {isGuardian && (
+            <Button sx={{ "&:hover": { color: "yellow" } }}>
+              {" "}
+              <StyledLink to='/guardian_dashboard'>Dashboard</StyledLink>
+            </Button>
+          )}
         </Box>
         <Box sx={{ display: { xs: "block", md: "none" } }}>
           <IconButton edge='start' color='inherit' aria-label='menu' onClick={handleMenuOpen}>
@@ -113,6 +132,12 @@ const Navbar = () => {
             {" "}
             <StyledLink to='/login'>Login</StyledLink>
           </MenuItem>
+          {isGuardian && (
+            <MenuItem onClick={handleMenuClose}>
+              {" "}
+              <StyledLink to='/guardian_dashboard'>Dashboard</StyledLink>
+            </MenuItem>
+          )}
         </Menu>
       </Toolbar>
     </AppBar>
