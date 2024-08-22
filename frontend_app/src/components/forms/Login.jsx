@@ -1,31 +1,34 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { Box, styled } from "@mui/material";
 import { AuthContext } from "../../context/AuthContext";
 
+const Button = styled("button")({});
+
 function Login() {
-  const [user, setUser] = useState({ username: "", password: "" });
+  const [userData, setUserData] = useState({ username: "", password: "" });
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
+    setUserData({ ...userData, [name]: value });
   };
 
   const handleSubmit = async (e) => {
-    console.log(user);
+    console.log(userData);
     e.preventDefault();
     try {
-      login("some Access token", "66bf74d0e463457278b2ea36", true);
-      navigate("/home");
+      login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
+      navigate("/member_landing");
       // const response = await axios.post("http://localhost/auth/token/", user, {
       //   headers: {
       //     "Content-Type": "application/json",
       //   },
       // });
-      // login(response.data.access_token, response.data.user, response.data.isGuardian); // set the access token and user in the local storage and context
+      // login(response.data.access_token, response.data.user, response.data.role); // set the access token and user in the local storage and context
       // setMessage("Login successful!");
       // navigate("/");
     } catch (error) {
@@ -34,31 +37,55 @@ function Login() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        {/* <input type='text' name='name' value={user.name} onChange={handleChange} placeholder='Name' required />
-        <input type='email' name='email' value={user.email} onChange={handleChange} placeholder='Email' required /> */}
-        <input
-          type='text'
-          name='username'
-          value={user.username}
-          onChange={handleChange}
-          placeholder='Username'
-          required
-        />
-        <input
-          type='password'
-          name='password'
-          value={user.password}
-          onChange={handleChange}
-          placeholder='Password'
-          required
-        />
-        <button type='submit'>Login</button>
-      </form>
-      {message && <p>{message}</p>}
-    </div>
+    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: "64px" }}>
+      <Box sx={{ width: "40%" }} className='shadow p-4 mt-4'>
+        <h1>Login</h1>
+        <form onSubmit={handleSubmit}>
+          <Box
+            sx={{
+              mt: "16px",
+            }}
+            className='form-group'
+          >
+            <label>Username</label>
+            <input
+              type='text'
+              className='form-control'
+              value={userData.username}
+              name='username'
+              onChange={(e) => handleChange(e)}
+              placeholder='Enter username'
+            />
+          </Box>
+          <Box
+            sx={{
+              mt: "16px",
+            }}
+            className='form-group'
+          >
+            <label>Password</label>
+            <input
+              type='password'
+              className='form-control'
+              value={userData.password}
+              name='password'
+              onChange={(e) => handleChange(e)}
+              placeholder='enter password'
+            />
+          </Box>
+
+          <Button
+            sx={{
+              mt: "16px",
+            }}
+            type='submit'
+            className='btn btn-primary'
+          >
+            Login
+          </Button>
+        </form>
+      </Box>
+    </Box>
   );
 }
 

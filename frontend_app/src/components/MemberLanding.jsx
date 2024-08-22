@@ -11,12 +11,12 @@ const Img = styled("img")({});
 
 const MemberLanding = () => {
   const [childrenList, setChildrenList] = useState([]);
-  const { user, isGuardian } = useContext(AuthContext);
+  const { user, role } = useContext(AuthContext);
   const { selectChild, child, selectedChildId } = useContext(ChildContext);
   const navigate = useNavigate();
 
   const fetchChildren = async () => {
-    // if (user && !isGuardian) {
+    // if (user && role==='member') {
     const url = `http://localhost/api/children/members/66bf92531efa3ca393556096/`;
     // }
     // else{

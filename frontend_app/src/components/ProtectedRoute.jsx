@@ -3,9 +3,9 @@ import { Outlet, Navigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
-  const { isGuardian } = useContext(AuthContext);
+  const { role } = useContext(AuthContext);
 
-  if (!isGuardian) {
+  if (role === "member" || role === "") {
     return <Navigate to='/unauthorized' replace />;
   }
 

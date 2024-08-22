@@ -8,7 +8,7 @@ const Button = styled("button")({});
 
 const CreateChild = () => {
   const [childData, setChildData] = useState({ name: "", birthdate: "", profile_picture: "" });
-  const { user, isGuardian } = useContext(AuthContext);
+  const { user, role } = useContext(AuthContext);
   const navigate = useNavigate();
 
   console.log(user);

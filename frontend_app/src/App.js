@@ -14,8 +14,9 @@ import MediaPage from "./components/media/MediaPage";
 import EventsPage from "./components/events/EventsPage";
 import CreateChild from "./components/forms/child/CreateChild";
 import GuardianDashboard from "./components/forms/GuardianDashboard";
-import ProtectedRoute from "./components/ProtectedRoute";
 import UnauthorizedPage from "./components/UnauthorizedPage";
+import ProtectedRoute from "./components/ProtectedRoute";
+import MemberSignup from "./components/forms/MemberSignup";
 
 function App() {
   return (
@@ -40,6 +41,7 @@ function App() {
             <Route path="/guardian_dashboard" element={<GuardianDashboard />} />
           </Route>
           <Route path='unauthorized' element={<UnauthorizedPage />} />
+          <Route path='member_signup/:id/:token' element={<MemberSignup />} />
 
           {/* <Route path='inventory/manufacturers'>
               <Route index element={<Manufacturers />} />

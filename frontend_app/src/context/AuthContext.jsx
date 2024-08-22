@@ -6,32 +6,32 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(!!localStorage.getItem("access_token"));
   const [user, setUser] = useState("");
-  const [isGuardian, setIsGuardian] = useState(false);
+  const [role, setRole] = useState("");
   const navigate = useNavigate();
 
-  const login = (access, user, isGuardian) => {
+  const login = (access, user, role) => {
     localStorage.setItem("access_token", access);
     localStorage.setItem("user", JSON.stringify(user));
-    localStorage.setItem("isGuardian", JSON.stringify(isGuardian));
+    localStorage.setItem("role", JSON.stringify(role));
     setIsAuth(true);
     setUser(user);
-    setIsGuardian(isGuardian);
+    setRole(role);
   };
 
   const logout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user");
-    localStorage.removeItem("isGuardian");
+    localStorage.removeItem("role");
     setIsAuth(false);
     setUser(null);
-    setIsGuardian(false);
-    navigate("/login");
+    setRole("");
+    navigate("/member_landing");
   };
 
   useEffect(() => {
     const accessToken = localStorage.getItem("access_token");
     const storedUser = JSON.parse(localStorage.getItem("user"));
-    const storedIsGuardian = JSON.parse(localStorage.getItem("isGuardian"));
+    const storedRole = JSON.parse(localStorage.getItem("role"));
     console.log("accessToken", accessToken);
 
     if (accessToken && storedUser) {
@@ -41,16 +41,16 @@ const AuthProvider = ({ children }) => {
       console.log(storedUser);
       setIsAuth(true);
       setUser(storedUser);
-      setIsGuardian(storedIsGuardian || false);
+      setRole(storedRole || false);
     } else {
       // Redirect to login if not authenticated
-      navigate("/login");
+      // navigate("/member_signup");
     }
   }, [navigate]);
 
   console.log(isAuth);
 
-  return <AuthContext.Provider value={{ isAuth, login, logout, user, isGuardian }}>{children}</AuthContext.Provider>;
+  return <AuthContext.Provider value={{ isAuth, login, logout, user, role }}>{children}</AuthContext.Provider>;
 };
 
 export { AuthContext, AuthProvider };

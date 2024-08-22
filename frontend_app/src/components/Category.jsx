@@ -11,6 +11,7 @@ const Category = styled(Box)(({ theme }) => ({
   fontWeight: "bold",
   marginBottom: "16px",
   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Adds a shadow for emphasis
+  width: "140px",
 }));
 
 export default Category;
