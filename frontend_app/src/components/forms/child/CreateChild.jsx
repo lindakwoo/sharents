@@ -1,23 +1,24 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import customFetch from '../../../fetchWrapper';
 import { Box, styled } from '@mui/material';
+import { AuthContext } from '../../../context/AuthContext';
 
 const Button = styled('button')({});
 
 const CreateChild = () => {
   const [childData, setChildData] = useState({ name: '', birthdate: '', profile_picture: '' });
+  const { user, isGuardian } = useContext(AuthContext);
   const navigate = useNavigate();
 
-
+  console.log(user);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setChildData({ ...childData, [name]: value });
   };
-  const guardian_id = "66bf74d0e463457278b2ea36"; // Replace with actual guardian ID
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const url = `http://localhost/api/children/guardians/${guardian_id}/`;
+    const url = `http://localhost/api/children/guardians/${user}/`;
     const options = { body: JSON.stringify(childData), method: "POST" };
 
     try {
