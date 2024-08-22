@@ -7,7 +7,7 @@ const Button = styled("button")({});
 
 const CreateComment = ({ fetchComments, open, handleClose, type, id }) => {
   const [commentData, setCommentData] = useState({ text: "" });
-  const { user, isGuardian } = useContext(AuthContext);
+  const { user, role } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -19,7 +19,8 @@ const CreateComment = ({ fetchComments, open, handleClose, type, id }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const getUserUrl = isGuardian ? `http://localhost/api/guardians/${user}/` : `http://localhost/api/members/${user}/`;
+    const getUserUrl =
+      role === "guardian" ? `http://localhost/api/guardians/${user}/` : `http://localhost/api/members/${user}/`;
     try {
       const userResponse = await customFetch(getUserUrl);
       console.log("user", userResponse);
@@ -29,7 +30,7 @@ const CreateComment = ({ fetchComments, open, handleClose, type, id }) => {
       // TODO: REMOVE THIS LINE
       commentData.creator_name = "Jane Doe";
     }
-    if (isGuardian) {
+    if (role === "guardian") {
       commentData.guardian = user;
     } else {
       commentData.member = user;

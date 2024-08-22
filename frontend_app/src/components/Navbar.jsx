@@ -24,7 +24,7 @@ const Button = styled("button")({
 });
 
 const Navbar = () => {
-  const { user, isGuardian } = useContext(AuthContext);
+  const { user, role, logout } = useContext(AuthContext);
   const { selectChild, child, selectedChildId } = useContext(ChildContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [childrenList, setChildrenList] = useState([]);
@@ -43,12 +43,16 @@ const Navbar = () => {
     selectChild(childId);
     navigate("/home");
   };
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   const fetchChildren = async () => {
-    // if (user && !isGuardian) {
+    // if (user && role==='member') {
     const url = `http://localhost/api/children/members/66bf92531efa3ca393556096/`;
     // }
-    // else{
+    // else if (user && role==='guardian'){
     //   const url=`http://localhost/api/children/guardians/${user}/`
     // }
 
@@ -95,19 +99,31 @@ const Navbar = () => {
               Home
             </StyledLink>
           </Button>
-          <Button color='inherit'>
-            {" "}
-            <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/signup'>
-              Signup
-            </StyledLink>
-          </Button>
-          <Button color='inherit'>
-            {" "}
-            <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/login'>
-              Login
-            </StyledLink>
-          </Button>
-          {isGuardian && (
+          {!user && (
+            <Button color='inherit'>
+              {" "}
+              <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/signup'>
+                Signup
+              </StyledLink>
+            </Button>
+          )}
+          {!user && (
+            <Button color='inherit'>
+              {" "}
+              <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/login'>
+                Login
+              </StyledLink>
+            </Button>
+          )}
+          {user && (
+            <Button color='inherit' onClick={handleLogout}>
+              {" "}
+              <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='#'>
+                Logout
+              </StyledLink>
+            </Button>
+          )}
+          {role === "guardian" && (
             <Button sx={{ "&:hover": { color: "yellow" } }}>
               {" "}
               <StyledLink to='/guardian_dashboard'>Dashboard</StyledLink>
@@ -124,15 +140,25 @@ const Navbar = () => {
             {" "}
             <StyledLink to='/home'>Home</StyledLink>
           </MenuItem>
-          <MenuItem onClick={handleMenuClose}>
-            {" "}
-            <StyledLink to='/signup'>Signup</StyledLink>
-          </MenuItem>
-          <MenuItem onClick={handleMenuClose}>
-            {" "}
-            <StyledLink to='/login'>Login</StyledLink>
-          </MenuItem>
-          {isGuardian && (
+          {!user && (
+            <MenuItem onClick={handleMenuClose}>
+              {" "}
+              <StyledLink to='/signup'>Signup</StyledLink>
+            </MenuItem>
+          )}
+          {!user && (
+            <MenuItem onClick={handleMenuClose}>
+              {" "}
+              <StyledLink to='/login'>Login</StyledLink>
+            </MenuItem>
+          )}
+          {user && (
+            <MenuItem onClick={handleMenuClose}>
+              {" "}
+              <StyledLink to='/login'>Logout</StyledLink>
+            </MenuItem>
+          )}
+          {role === "guardian" && (
             <MenuItem onClick={handleMenuClose}>
               {" "}
               <StyledLink to='/guardian_dashboard'>Dashboard</StyledLink>

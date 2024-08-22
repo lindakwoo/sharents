@@ -149,8 +149,6 @@ async def verify_token(current_user: GuardianModel = Depends(get_current_user)):
     return {"X-User-ID": str(current_user.id)}
 
 
-from fastapi import APIRouter, HTTPException, Depends, status
-
 # ... (keep your existing imports)
 
 # ... (keep your existing code)
@@ -220,7 +218,8 @@ async def update_guardian(
 
     # If password is being updated, hash it
     if "password" in update_data:
-        update_data["hashed_password"] = get_password_hash(update_data["password"])
+        update_data["hashed_password"] = get_password_hash(
+            update_data["password"])
         del update_data["password"]
 
     # Check if username is being updated and if it's already taken
@@ -392,7 +391,7 @@ async def send_invite(member: MemberModelCreate, guardian_id: str, children: Lis
     print("we hit here 2")
     email = member.email
     token = create_safe_token({"email": email})
-    link = f"http://{os.getenv('DOMAIN')}/verify_invite/{new_member.id}/{token}"
+    link = f"http://{os.getenv('DOMAIN')}/member_signup/{new_member.id}/{token}"
     html = f"""
     <h1>Welcome to the app</h1>
     <p> Click here <a href="{link}"> link<a/> to accept your invitation <p/>"""

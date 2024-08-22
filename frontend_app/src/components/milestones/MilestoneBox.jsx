@@ -30,7 +30,6 @@ const MilestoneBox = ({ milestone }) => {
           position: "absolute",
           top: "20px",
           left: "20px",
-          width: "100px",
         }}
       >
         {milestone.category}

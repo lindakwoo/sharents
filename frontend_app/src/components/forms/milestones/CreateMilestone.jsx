@@ -11,7 +11,7 @@ const CreateMilestone = () => {
   const [milestoneData, setMilestoneData] = useState({ name: "", description: "", category: "", date: "" });
   const navigate = useNavigate();
   const { child } = useContext(ChildContext);
-  const { isGuardian } = useContext(AuthContext);
+  const { role } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
