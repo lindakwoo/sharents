@@ -25,7 +25,7 @@ function Login() {
       //     "Content-Type": "application/json",
       //   },
       // });
-      // login(response.data.access_token, { username: "linda woo" }); // set the access token and user in the local storage and context
+      // login(response.data.access_token, response.data.user, response.data.isGuardian); // set the access token and user in the local storage and context
       // setMessage("Login successful!");
       // navigate("/");
     } catch (error) {

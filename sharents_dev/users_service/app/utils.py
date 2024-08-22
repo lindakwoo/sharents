@@ -8,6 +8,7 @@ T = TypeVar('T')
 
 
 def check_for_none(data, error_message: str):
+    print("data", data)
     if data is None:
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=error_message)

@@ -382,9 +382,14 @@ async def create_invites(guardian_id: str, member_id: str, children: List[str]):
 
 @router.post("/guardians/{guardian_id}/invite")
 async def send_invite(member: MemberModelCreate, guardian_id: str, children: List[str]):
+    guardian_collection = db.get_collection("guardians")
+    check_for_none(guardian_collection, "guardian collection not found")
+    guardian = await guardian_collection.find_one({"_id": ObjectId(guardian_id)})
+    if guardian is None:
+        raise HTTPException(status_code=404, detail="Guardian not found")
     new_member = await create_member(member, guardian_id)
     await create_invites(guardian_id, str(new_member.id), children)
-
+    print("we hit here 2")
     email = member.email
     token = create_safe_token({"email": email})
     link = f"http://{os.getenv('DOMAIN')}/verify_invite/{new_member.id}/{token}"

@@ -7,5 +7,5 @@ DATABASE_URL = os.getenv("ATLAS_URI")
 client = AsyncIOMotorClient(DATABASE_URL)
 
 db = client.get_database("milestones_media")
-db_invites = client.get_database("users")
+db_users = client.get_database("users")
 db_children = client.get_database("children")
