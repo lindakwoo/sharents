@@ -6,9 +6,11 @@ import { Link } from "react-router-dom";
 import { ArrowBack } from "@mui/icons-material";
 import { ArrowForward } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthContext";
+import UpdateEvent from "../forms/events/UpdateEvent";
 
 import moment from "moment";
 
+const Button = styled("button")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 const H1 = styled("h1")({});
 const H2 = styled("h2")({});
@@ -17,6 +19,8 @@ const H3 = styled("h3")({});
 const EventExpandedView = () => {
   const [event, setEvent] = useState({});
   const [wishlists, setWishlists] = useState([]);
+  const { role } = useContext(AuthContext);
+  const [modalOpen, setModalOpen] = useState(false);
   const { id } = useParams();
 
   const fetchEvent = async () => {
@@ -50,6 +54,9 @@ const EventExpandedView = () => {
   }, [id]); // Dependency array ensures this runs only when `id` changes
   const dateObj = moment(event.datetime);
   const formattedDate = dateObj.format("MMMM Do YYYY, h:mm:ss a");
+
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
@@ -103,6 +110,29 @@ const EventExpandedView = () => {
           </Box>
         )}
       </Box>
+      {role === "guardian" && (
+        <Button
+          sx={{
+            border: "none",
+            position: "fixed",
+            bottom: "16px",
+            right: "16px",
+            backgroundColor: "yellow",
+            padding: "8px",
+            borderRadius: "10px",
+            "& p": { my: 0 },
+            maxHeight: "50px",
+            "&:hover": {
+              backgroundColor: "#0288d1",
+              color: "white",
+            },
+          }}
+          onClick={handleOpen}
+        >
+          Update Event
+        </Button>
+      )}
+      <UpdateEvent fetchEvent={fetchEvent} event={event} open={modalOpen} handleClose={handleClose} />
     </Box>
   );
 };
