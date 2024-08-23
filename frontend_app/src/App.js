@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Box } from "@mui/material";
 import Navbar from './components/Navbar';
-import Login from './components/forms/Login';
 import Home from "./components/homepage/Home";
 import Landing from "./components/Landing";
 import MilestoneExpandedView from "./components/milestones/MilestoneExpandedView";
@@ -27,7 +26,6 @@ function App() {
           <Route path='/' element={<Landing />} />
           <Route path='/member_landing' element={<MemberLanding />} />
           <Route path='/home' element={<Home />} />
-          <Route path='/login' element={<Login />} />
           <Route path='/milestones' element={<MilestonesPage />} />
           <Route path='/milestones/:id' element={<MilestoneExpandedView />} />
           <Route path='/media/:id' element={<MediaExpandedView />} />
