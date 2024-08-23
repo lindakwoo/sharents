@@ -48,6 +48,7 @@ class MemberModelUpdate(BaseModel):
     email: Optional[EmailStr] = Field(default=None)
     accepted_invitation: Optional[bool] = Field(default=None)
     username: Optional[str] = Field(default=None)
+    password: Optional[str] = Field(default=None)
     hashed_password: Optional[str] = Field(default=None)
 
 

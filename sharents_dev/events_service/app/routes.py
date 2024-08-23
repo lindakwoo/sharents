@@ -89,7 +89,7 @@ async def get_event(id: str):
 async def update_event(id: str, event_update: EventModelUpdate):
     update_result = await db.get_collection("events").update_one(
         {"_id": ObjectId(id)},
-        {"$set": event_update.dict(exclude_unset=True)}
+        {"$set": event_update.model_dump(exclude_unset=True)}
     )
     check_update_result(update_result, "Updated event not found")
     updated_event = await db.get_collection("events").find_one({"_id": ObjectId(id)})
@@ -171,7 +171,7 @@ async def get_wishlist(wishlist_id: str):
 async def update_wishlist(wishlist_id: str, wishlist_update: WishlistModelUpdate):
     update_result = await db.get_collection("wishlists").update_one(
         {"_id": ObjectId(wishlist_id)},
-        {"$set": wishlist_update.dict(exclude_unset=True)},
+        {"$set": wishlist_update.model_dump(exclude_unset=True)},
     )
     check_update_result(update_result, "Updated wishlist not found")
     updated_wishlist = await db.get_collection("wishlists").find_one(

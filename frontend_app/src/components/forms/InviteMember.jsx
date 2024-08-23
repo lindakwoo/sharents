@@ -6,18 +6,13 @@ import { AuthContext } from "../../context/AuthContext";
 
 const Button = styled("button")({});
 const Label = styled("label")({});
-const Select = styled("select")({
-  width: "100%", // Make sure the select fills the width of its container
-  height: "100%", // Ensure it fills the height of its container
-  border: "none", // Remove border to fit nicely within the Box
-  boxSizing: "border-box", // Include padding and border in the element's total width and height
-});
 
 const InviteMember = () => {
   const [allChildren, setAllChildren] = useState([]);
   const [memberData, setMemberData] = useState({ name: "", email: "" });
   const [childrenData, setChildrenData] = useState([]);
   const { user } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const fetchChildren = async () => {
     const url = `http://localhost/api/children/`;
@@ -31,16 +26,6 @@ const InviteMember = () => {
     }
   };
 
-  const handleMemberChange = (e) => {
-    const { name, value } = e.target;
-    setMemberData({ ...memberData, [name]: value });
-  };
-
-  const handleChildrenChange = (e) => {
-    const { name, value } = e.target;
-    setMemberData({ ...memberData, [name]: value });
-  };
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (e.target.type === "checkbox" && e.target.checked) {
@@ -49,33 +34,6 @@ const InviteMember = () => {
       setMemberData({ ...memberData, [name]: value });
     }
   };
-
-  // const handleChildrenChange = (e) => {
-  //   const selectedOptions = Array.from(e.target.selectedOptions);
-  //   const selectedChildren = selectedOptions.map((option) => option.value);
-  //   setChildrenData(selectedChildren);
-  // };
-
-  // const handleSelectAll = () => {
-  //   const allChildrenIds = allChildren.map((child) => child.id);
-  //   setChildrenData(allChildrenIds);
-  // };
-
-  // const handleDeselectAll = () => {
-  //   setChildrenData([]);
-  // };
-
-  // const isAllSelected = () => {
-  //   return allChildren.length > 0 && allChildren.every((child) => childrenData.includes(child.id));
-  // };
-
-  // const handleSelectAllOptionChange = () => {
-  //   if (isAllSelected()) {
-  //     handleDeselectAll();
-  //   } else {
-  //     handleSelectAll();
-  //   }
-  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -86,6 +44,7 @@ const InviteMember = () => {
     try {
       const response = await customFetch(url, options);
       console.log(response);
+      navigate("/home");
     } catch (error) {
       console.error("Error creating and sending invite: ", error);
     }
@@ -100,7 +59,7 @@ const InviteMember = () => {
   const dropdownHeight = Math.min(allChildren.length * optionHeight, maxHeight);
 
   return (
-    <Box sx={{ width: "50%" }} className='shadow p-4 mt-4'>
+    <Box className='shadow p-4 mt-4'>
       <h1>Invite a member</h1>
       <form onSubmit={handleSubmit}>
         <Box
@@ -115,7 +74,7 @@ const InviteMember = () => {
             className='form-control'
             value={memberData.name}
             name='name'
-            onChange={(e) => handleMemberChange(e)}
+            onChange={(e) => handleChange(e)}
             placeholder="Enter member's name"
           />
         </Box>
@@ -131,7 +90,7 @@ const InviteMember = () => {
             className='form-control'
             value={memberData.email}
             name='email'
-            onChange={(e) => handleMemberChange(e)}
+            onChange={(e) => handleChange(e)}
             placeholder='Enter member email address'
           />
         </Box>
