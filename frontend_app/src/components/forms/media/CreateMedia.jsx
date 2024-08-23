@@ -16,7 +16,7 @@ const CreateMedia = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setMediaData({ ...mediaData, [name]: value });
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,10 +30,10 @@ const CreateMedia = () => {
     } catch (error) {
       console.error("Error creating media: ", error);
     }
-  }
+  };
 
   return (
-    <Box sx={{ width: "50%" }} className='shadow p-4 mt-4'>
+    <Box className='shadow p-4 mt-4'>
       <h1>Create a media for {child.name} </h1>
       <form onSubmit={handleSubmit}>
         <Box
@@ -141,7 +141,7 @@ const CreateMedia = () => {
         </Button>
       </form>
     </Box>
-  )
+  );
 };
 // {
 //   "description": "string",

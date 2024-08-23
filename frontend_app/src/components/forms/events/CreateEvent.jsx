@@ -16,7 +16,7 @@ const CreateEvent = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEventData({ ...eventData, [name]: value });
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -30,10 +30,10 @@ const CreateEvent = () => {
     } catch (error) {
       console.error("Error creating event: ", error);
     }
-  }
+  };
 
   return (
-    <Box sx={{ width: "50%" }} className='shadow p-4 mt-4'>
+    <Box className='shadow p-4 mt-4'>
       <h1>Create an event for {child.name} </h1>
       <form onSubmit={handleSubmit}>
         <Box
@@ -126,7 +126,6 @@ const CreateEvent = () => {
     </Box>
   );
 };
-
 
 // {
 //   "datetime": "string",

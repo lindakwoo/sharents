@@ -33,7 +33,7 @@ const CreateMilestone = () => {
   };
 
   return (
-    <Box sx={{ width: "50%" }} className='shadow p-4 mt-4'>
+    <Box className='shadow p-4 mt-4'>
       <h1>Create a milestone for {child.name} </h1>
       <form onSubmit={handleSubmit}>
         <Box

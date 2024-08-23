@@ -27,17 +27,19 @@ const GuardianDashboard = () => {
         <Button onClick={() => setAction("child")}> Add another child</Button>
         <Button onClick={() => setAction("invite")}> Invite a member</Button>
       </Box>
-      {action === "milestone" ? (
-        <CreateMilestone />
-      ) : action === "media" ? (
-        <CreateMedia />
-      ) : action === "event" ? (
-        <CreateEvent />
-      ) : action === "invite" ? (
-        <InviteMember />
-      ) : (
-        <CreateChild />
-      )}
+      <Box sx={{ mt: "128px", width: "50%" }}>
+        {action === "milestone" ? (
+          <CreateMilestone />
+        ) : action === "media" ? (
+          <CreateMedia />
+        ) : action === "event" ? (
+          <CreateEvent />
+        ) : action === "invite" ? (
+          <InviteMember />
+        ) : (
+          <CreateChild />
+        )}
+      </Box>
     </Box>
   );
 };

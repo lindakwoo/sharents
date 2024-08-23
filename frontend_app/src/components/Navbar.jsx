@@ -49,12 +49,14 @@ const Navbar = () => {
   };
 
   const fetchChildren = async () => {
-    // if (user && role==='member') {
-    const url = `http://localhost/api/children/members/66bf92531efa3ca393556096/`;
-    // }
-    // else if (user && role==='guardian'){
-    //   const url=`http://localhost/api/children/guardians/${user}/`
-    // }
+    let url;
+    if (user && role === "member") {
+      url = `http://localhost/api/children/members/${user}/`;
+    } else if (user && role === "guardian") {
+      url = `http://localhost/api/children/guardians/${user}/`;
+    } else {
+      console.log("there is no user");
+    }
 
     try {
       const response = await customFetch(url);
@@ -62,13 +64,12 @@ const Navbar = () => {
       setChildrenList(response.children);
     } catch (error) {
       console.error("Error fetching children", error);
-      setChildrenList([]);
     }
   };
 
   useEffect(() => {
     fetchChildren();
-  }, []);
+  }, [user]);
 
   return (
     <AppBar position='static' sx={{ backgroundColor: "#0288d1" }}>

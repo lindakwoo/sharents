@@ -37,7 +37,7 @@ function Login() {
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: "64px" }}>
+    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: "128px" }}>
       <Box sx={{ width: "40%" }} className='shadow p-4 mt-4'>
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>

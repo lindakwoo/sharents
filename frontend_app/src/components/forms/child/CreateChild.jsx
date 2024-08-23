@@ -31,7 +31,7 @@ const CreateChild = () => {
   };
 
   return (
-    <Box sx={{ width: "50%" }} className='shadow p-4 mt-4'>
+    <Box sx={{ width: "100%" }} className='shadow p-4 mt-4'>
       <h1>Add Child</h1>
       <form onSubmit={handleSubmit}>
         <Box

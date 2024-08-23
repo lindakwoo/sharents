@@ -1,4 +1,4 @@
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from pydantic import BaseModel, Field, EmailStr, ConfigDict
 from pydantic.functional_validators import BeforeValidator
 from typing_extensions import Annotated
@@ -68,6 +68,10 @@ class MilestoneModelUpdate(BaseModel):
     description: Optional[str] = Field(default=None)
     category: Optional[CategoryEnum] = Field(default=None)
     date: Optional[str] = Field(default=None)
+
+
+# def remove_none_values(data: Dict[str, Any]) -> Dict[str, Any]:
+#     return {k: v for k, v in data.items() if v is not None}
 
 
 class MilestoneModelCreate(BaseModel):
