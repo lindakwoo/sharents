@@ -64,14 +64,16 @@ const MemberSignup = () => {
       setError("Passwords do not match");
       return;
     }
+    // TODO: this route does not exist yet!!
+    // waiting until Caleb does his thing...
     const url = `http://localhost/auth/members/${id}/signup`;
 
     const data = { member: member, password: passwordData.password };
     const options = { body: JSON.stringify(data), method: "PUT" };
 
     try {
-      const response = await customFetch(url, options);
-      console.log(response);
+      // const response = await customFetch(url, options);
+      // console.log("success!!!", response);
       console.log("Form submitted successfully");
       navigate("/home");
     } catch (error) {

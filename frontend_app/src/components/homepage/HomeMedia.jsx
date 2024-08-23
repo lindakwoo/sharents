@@ -13,7 +13,6 @@ const HomeMedia = () => {
   const { child } = useContext(ChildContext);
 
   const fetchMedia = async () => {
-    console.log("inside the fetch");
     const url = `http://localhost/api/media/children/${child.id}`;
     try {
       const response = await customFetch(url);
@@ -33,8 +32,10 @@ const HomeMedia = () => {
   };
 
   useEffect(() => {
-    fetchMedia(); // Fetch media when id changes
-  }, [child]);
+    if (child.id) {
+      fetchMedia(); // Fetch media when id changes
+    }
+  }, [child.id]);
 
   return (
     <Box
@@ -56,31 +57,35 @@ const HomeMedia = () => {
           alignItems: "center",
         }}
       >
-        <h1>Latest media</h1>
-        <Box
-          sx={{
-            display: "grid",
-            gap: "24px",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            marginTop: "32px",
-            marginBottom: "64px",
-          }}
-        >
-          {media.map((media) => (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }} key={media.id}>
-              <StyledLink to={`/media/${media.id}`}>
-                <Img sx={{ width: "80%" }} src={media.url} />
-              </StyledLink>
-            </Box>
-          ))}
+        <h1>Latest photos</h1>
+        {media.length > 0 && (
+          <Box
+            sx={{
+              display: "grid",
+              gap: "24px",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              marginTop: "32px",
+              marginBottom: "64px",
+            }}
+          >
+            {media.map((media) => (
+              <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }} key={media.id}>
+                <StyledLink to={`/media/${media.id}`}>
+                  <Img sx={{ width: "80%" }} src={media.url} />
+                </StyledLink>
+              </Box>
+            ))}
+          </Box>
+        )}
+        {media.length === 0 && <Box>There are no photos or videos for this child</Box>}
+      </Box>
+      {media.length > 0 && (
+        <Box sx={{ display: "flex", justifyContent: "end", alignSelf: "end" }}>
+          <StyledLink to='/media' sx={{ backgroundColor: "orange", padding: "16px", borderRadius: "10px" }}>
+            All media <ArrowForward style={{ marginLeft: 8, verticalAlign: "middle" }} />
+          </StyledLink>
         </Box>
-      </Box>
-
-      <Box sx={{ display: "flex", justifyContent: "end", alignSelf: "end" }}>
-        <StyledLink to='/media' sx={{ backgroundColor: "orange", padding: "16px", borderRadius: "10px" }}>
-          All media <ArrowForward style={{ marginLeft: 8, verticalAlign: "middle" }} />
-        </StyledLink>
-      </Box>
+      )}
     </Box>
   );
 };

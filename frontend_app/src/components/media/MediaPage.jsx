@@ -54,35 +54,38 @@ const MediaPage = () => {
         }}
       >
         <h1>All media</h1>
-        <Box
-          sx={{
-            display: "grid",
-            gap: "24px",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", // Adjust minmax value to control the photo size
-            maxWidth: "100%",
-            justifyContent: "center",
-            alignItems: "center",
-            marginTop: "32px",
-            marginBottom: "64px",
-            "@media (max-width: 1200px)": {
-              gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", // Adjust for medium screens
-            },
-            "@media (max-width: 900px)": {
-              gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", // Adjust for small screens
-            },
-            "@media (max-width: 600px)": {
-              gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", // Adjust for very small screens
-            },
-          }}
-        >
-          {media.map((media) => (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-              <StyledLink to={`/media/${media.id}`}>
-                <Img sx={{ width: "100%", maxWidth: "300px", height: "auto" }} src={media.url} />
-              </StyledLink>
-            </Box>
-          ))}
-        </Box>
+        {media.length > 0 && (
+          <Box
+            sx={{
+              display: "grid",
+              gap: "24px",
+              gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", // Adjust minmax value to control the photo size
+              maxWidth: "100%",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: "32px",
+              marginBottom: "64px",
+              "@media (max-width: 1200px)": {
+                gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", // Adjust for medium screens
+              },
+              "@media (max-width: 900px)": {
+                gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", // Adjust for small screens
+              },
+              "@media (max-width: 600px)": {
+                gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", // Adjust for very small screens
+              },
+            }}
+          >
+            {media.map((media) => (
+              <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <StyledLink to={`/media/${media.id}`}>
+                  <Img sx={{ width: "100%", maxWidth: "300px", height: "auto" }} src={media.url} />
+                </StyledLink>
+              </Box>
+            ))}
+          </Box>
+        )}
+        {media.length === 0 && <Box>There are no photos or videos for this child</Box>}
       </Box>
     </Box>
   );

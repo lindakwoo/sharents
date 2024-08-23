@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Box } from "@mui/material";
 import Navbar from './components/Navbar';
-import Login from './components/forms/Login';
 import Home from "./components/homepage/Home";
 import Landing from "./components/Landing";
 import MilestoneExpandedView from "./components/milestones/MilestoneExpandedView";
@@ -14,7 +13,7 @@ import MediaPage from "./components/media/MediaPage";
 import EventsPage from "./components/events/EventsPage";
 import GuardianDashboard from "./components/forms/GuardianDashboard";
 import UnauthorizedPage from "./components/UnauthorizedPage";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedGuardianRoute from "./components/ProtectedGuardianRoute";
 import MemberSignup from "./components/forms/MemberSignup";
 
 function App() {
@@ -27,7 +26,6 @@ function App() {
           <Route path='/' element={<Landing />} />
           <Route path='/member_landing' element={<MemberLanding />} />
           <Route path='/home' element={<Home />} />
-          <Route path='/login' element={<Login />} />
           <Route path='/milestones' element={<MilestonesPage />} />
           <Route path='/milestones/:id' element={<MilestoneExpandedView />} />
           <Route path='/media/:id' element={<MediaExpandedView />} />
@@ -36,7 +34,7 @@ function App() {
           <Route path='/wishlists/:id' element={<WishlistPage />} />
           <Route path='/events' element={<EventsPage />} />
           {/* <Route path='/create_child' element={<CreateChild />} /> */}
-          <Route element={<ProtectedRoute />}>
+          <Route element={<ProtectedGuardianRoute />}>
             <Route path="/guardian_dashboard" element={<GuardianDashboard />} />
           </Route>
           <Route path='unauthorized' element={<UnauthorizedPage />} />
