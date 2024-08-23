@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import customFetch from "../../fetchWrapper";
 import { Link } from "react-router-dom";
@@ -7,12 +7,17 @@ import { formatDate } from "../../utils";
 import { ArrowBack } from "@mui/icons-material";
 import Category from "../Category";
 import Comments from "../comments/Comments";
+import { AuthContext } from "../../context/AuthContext";
+import UpdateMedia from "../forms/media/UpdateMedia";
 
 const Img = styled("img")({});
+const Button = styled("button")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 
 const MediaExpandedView = () => {
   const [media, setMedia] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
+  const { role } = useContext(AuthContext);
 
   const { id } = useParams();
   const fetchMedia = async () => {
@@ -26,6 +31,9 @@ const MediaExpandedView = () => {
       console.error("Error fetching media", error);
     }
   };
+
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
 
   useEffect(() => {
     fetchMedia(); // Fetch media when id changes
@@ -71,6 +79,29 @@ const MediaExpandedView = () => {
               <Comments id={id} type='media' />
             </Box>
           </Box>
+          {role === "guardian" && (
+            <Button
+              sx={{
+                border: "none",
+                position: "fixed",
+                bottom: "16px",
+                right: "16px",
+                backgroundColor: "yellow",
+                padding: "8px",
+                borderRadius: "10px",
+                "& p": { my: 0 },
+                maxHeight: "50px",
+                "&:hover": {
+                  backgroundColor: "#0288d1",
+                  color: "white",
+                },
+              }}
+              onClick={handleOpen}
+            >
+              Update Media
+            </Button>
+          )}
+          <UpdateMedia fetchMedia={fetchMedia} media={media} open={modalOpen} handleClose={handleClose} id={id} />
         </>
       )}
     </Box>
