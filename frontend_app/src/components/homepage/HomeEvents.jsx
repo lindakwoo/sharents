@@ -41,8 +41,10 @@ const HomeEvents = () => {
   };
 
   useEffect(() => {
-    fetchEvents(); // Fetch milestone when id changes
-  }, [child]);
+    if (child.id) {
+      fetchEvents(); // Fetch milestone when id changes
+    }
+  }, [child.id]);
 
   return (
     <Box

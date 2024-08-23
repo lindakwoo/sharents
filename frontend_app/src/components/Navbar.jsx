@@ -68,7 +68,9 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    fetchChildren();
+    if (user) {
+      fetchChildren();
+    }
   }, [user]);
 
   return (

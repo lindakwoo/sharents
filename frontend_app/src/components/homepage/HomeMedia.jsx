@@ -13,7 +13,6 @@ const HomeMedia = () => {
   const { child } = useContext(ChildContext);
 
   const fetchMedia = async () => {
-    console.log("inside the fetch");
     const url = `http://localhost/api/media/children/${child.id}`;
     try {
       const response = await customFetch(url);
@@ -33,8 +32,10 @@ const HomeMedia = () => {
   };
 
   useEffect(() => {
-    fetchMedia(); // Fetch media when id changes
-  }, [child]);
+    if (child.id) {
+      fetchMedia(); // Fetch media when id changes
+    }
+  }, [child.id]);
 
   return (
     <Box

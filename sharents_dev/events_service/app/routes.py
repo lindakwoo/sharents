@@ -17,7 +17,6 @@ from .schemas import (
 )
 from .utils import (
     check_for_none,
-    check_list_not_empty,
     check_update_result,
     check_delete_result,
 )
@@ -37,7 +36,6 @@ async def get_events(child_id: str):
     check_for_none(event_collection, "event collections not found")
     events_cursor = event_collection.find({"child": child_id})
     events = await events_cursor.to_list(length=1000)
-    check_list_not_empty(events, "no events found for this child")
     return EventCollection(events=events)
 
 
@@ -121,7 +119,6 @@ async def get_wishlists(event_id: str):
     check_for_none(wishlist_collection, "Wishlist collections not found")
     wishlists_cursor = wishlist_collection.find({"event": event_id})
     wishlists = await wishlists_cursor.to_list(length=1000)
-    check_list_not_empty(wishlists, "No wishlists found for this event")
     return WishlistCollection(wishlists=wishlists)
 
 # Create a wishlist for an event
@@ -210,8 +207,6 @@ async def get_wishlist_items(wishlist_id: str):
     wishlistItems_cursor = wishlistItems_collection.find(
         {"wishlist": wishlist_id})
     wishlists = await wishlistItems_cursor.to_list(length=1000)
-    print(wishlists)
-    check_list_not_empty(wishlists, "No wishlists found for this event")
     return WishlistItemCollection(wishlistItems=wishlists)
 
 # create wishlistItem

@@ -5,7 +5,6 @@ from .schemas import ChildrenCollection, ChildModel, ChildModelCreate, ChildMode
 from .database import db, db_users
 from .utils import (
     check_for_none,
-    check_list_not_empty,
     check_update_result,
     check_delete_result,
 )
@@ -24,7 +23,6 @@ async def list_children():
     children_collection = db.get_collection("children")
     check_for_none(children_collection, "children collections not found")
     children = await children_collection.find().to_list(1000)
-    check_list_not_empty(children, "no children found")
     return ChildrenCollection(children=children)
 
 
@@ -40,7 +38,6 @@ async def get_guardian_children(guardian_id: str):
     check_for_none(children_collection, "children collection not found")
     children_cursor = children_collection.find({"guardian": guardian_id})
     children = await children_cursor.to_list(length=1000)
-    check_list_not_empty(children, "no children found for this child")
     return ChildrenCollection(children=children)
 
 

@@ -93,7 +93,7 @@ const HomeMilestones = () => {
           }}
         >
           {milestones.map((milestone) => (
-            <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Box key={milestone.id} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
               <HomeMilestone key={milestone.id} milestone={milestone} />
             </Box>
           ))}
