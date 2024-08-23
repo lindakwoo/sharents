@@ -48,8 +48,7 @@ const AuthProvider = ({ children }) => {
       setRole(storedRole || false);
     } else {
       // Redirect to homepage if no authentication
-      // navigate("/");
-      // navigate("login");
+      navigate("/");
     }
   }, [navigate]);
 
