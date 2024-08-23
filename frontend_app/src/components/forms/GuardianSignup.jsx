@@ -2,7 +2,8 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
-function Signup() {
+
+const GuardianSignup = () => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
   const [user, setUser] = useState({ username: "", password: "", confirmPassword: "" });
@@ -67,6 +68,6 @@ function Signup() {
       {message && <p>{message}</p>}
     </div>
   );
-}
+};
 
-export default Signup;
+export default GuardianSignup;

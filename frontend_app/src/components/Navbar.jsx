@@ -24,7 +24,7 @@ const Button = styled("button")({
 });
 
 const Navbar = () => {
-  const { user, role, logout } = useContext(AuthContext);
+  const { user, role, logout, setIsLogin } = useContext(AuthContext);
   const { selectChild, child, selectedChildId } = useContext(ChildContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [childrenList, setChildrenList] = useState([]);
@@ -113,7 +113,7 @@ const Navbar = () => {
           {!user && (
             <Button color='inherit'>
               {" "}
-              <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/login'>
+              <StyledLink sx={{ "&:hover": { color: "yellow" } }} onClick={() => setIsLogin(true)}>
                 Login
               </StyledLink>
             </Button>
@@ -152,13 +152,13 @@ const Navbar = () => {
           {!user && (
             <MenuItem onClick={handleMenuClose}>
               {" "}
-              <StyledLink to='/login'>Login</StyledLink>
+              <StyledLink onClick={() => setIsLogin(true)}>Login</StyledLink>
             </MenuItem>
           )}
           {user && (
             <MenuItem onClick={handleMenuClose}>
               {" "}
-              <StyledLink to='/login'>Logout</StyledLink>
+              <StyledLink onClick={handleLogout}>Logout</StyledLink>
             </MenuItem>
           )}
           {role === "guardian" && (

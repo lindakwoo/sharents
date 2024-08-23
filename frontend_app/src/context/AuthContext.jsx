@@ -7,6 +7,7 @@ const AuthProvider = ({ children }) => {
   const [isAuth, setIsAuth] = useState(!!localStorage.getItem("access_token"));
   const [user, setUser] = useState("");
   const [role, setRole] = useState("");
+  const [isLogin, setIsLogin] = useState(false);
   const navigate = useNavigate();
 
   const login = (access, user, role) => {
@@ -16,6 +17,7 @@ const AuthProvider = ({ children }) => {
     setIsAuth(true);
     setUser(user);
     setRole(role);
+    setIsLogin(false);
   };
 
   const logout = () => {
@@ -43,14 +45,19 @@ const AuthProvider = ({ children }) => {
       setUser(storedUser);
       setRole(storedRole || false);
     } else {
-      // Redirect to login if not authenticated
-      // navigate("/member_signup");
+      // Redirect to homepage if no authentication
+      // navigate("/");
+      navigate("login");
     }
   }, [navigate]);
 
   console.log(isAuth);
 
-  return <AuthContext.Provider value={{ isAuth, login, logout, user, role }}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={{ isAuth, login, logout, user, role, isLogin, setIsLogin }}>
+      {children}
+    </AuthContext.Provider>
+  );
 };
 
 export { AuthContext, AuthProvider };

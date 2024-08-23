@@ -14,7 +14,7 @@ import MediaPage from "./components/media/MediaPage";
 import EventsPage from "./components/events/EventsPage";
 import GuardianDashboard from "./components/forms/GuardianDashboard";
 import UnauthorizedPage from "./components/UnauthorizedPage";
-import ProtectedRoute from "./components/ProtectedRoute";
+import ProtectedGuardianRoute from "./components/ProtectedGuardianRoute";
 import MemberSignup from "./components/forms/MemberSignup";
 
 function App() {
@@ -36,7 +36,7 @@ function App() {
           <Route path='/wishlists/:id' element={<WishlistPage />} />
           <Route path='/events' element={<EventsPage />} />
           {/* <Route path='/create_child' element={<CreateChild />} /> */}
-          <Route element={<ProtectedRoute />}>
+          <Route element={<ProtectedGuardianRoute />}>
             <Route path="/guardian_dashboard" element={<GuardianDashboard />} />
           </Route>
           <Route path='unauthorized' element={<UnauthorizedPage />} />

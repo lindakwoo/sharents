@@ -83,27 +83,32 @@ const HomeMilestones = () => {
         }}
       >
         <h1>Latest milestones</h1>
-        <Box
-          sx={{
-            display: "grid",
-            gap: "24px",
-            gridTemplateColumns: "1fr 1fr 1fr",
-            marginTop: "32px",
-            marginBottom: "64px",
-          }}
-        >
-          {milestones.map((milestone) => (
-            <Box key={milestone.id} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-              <HomeMilestone key={milestone.id} milestone={milestone} />
-            </Box>
-          ))}
+        {milestones.length > 0 && (
+          <Box
+            sx={{
+              display: "grid",
+              gap: "24px",
+              gridTemplateColumns: "1fr 1fr 1fr",
+              marginTop: "32px",
+              marginBottom: "64px",
+            }}
+          >
+            {milestones.map((milestone) => (
+              <Box key={milestone.id} sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+                <HomeMilestone key={milestone.id} milestone={milestone} />
+              </Box>
+            ))}
+          </Box>
+        )}
+        {milestones.length === 0 && <Box>There are no milestones for this child</Box>}
+      </Box>
+      {milestones.length > 0 && (
+        <Box sx={{ display: "flex", justifyContent: "end", alignSelf: "end" }}>
+          <StyledLink to='/milestones' sx={{ backgroundColor: "orange", padding: "16px", borderRadius: "10px" }}>
+            All milestones <ArrowForward style={{ marginLeft: 8, verticalAlign: "middle" }} />
+          </StyledLink>
         </Box>
-      </Box>
-      <Box sx={{ display: "flex", justifyContent: "end", alignSelf: "end" }}>
-        <StyledLink to='/milestones' sx={{ backgroundColor: "orange", padding: "16px", borderRadius: "10px" }}>
-          All milestones <ArrowForward style={{ marginLeft: 8, verticalAlign: "middle" }} />
-        </StyledLink>
-      </Box>
+      )}
     </Box>
   );
 };
