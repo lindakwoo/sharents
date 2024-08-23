@@ -8,6 +8,7 @@ const AuthProvider = ({ children }) => {
   const [user, setUser] = useState("");
   const [role, setRole] = useState("");
   const [isLogin, setIsLogin] = useState(false);
+  const [isSignup, setIsSignup] = useState(false);
   const navigate = useNavigate();
 
   const login = (access, user, role) => {
@@ -47,14 +48,14 @@ const AuthProvider = ({ children }) => {
     } else {
       // Redirect to homepage if no authentication
       // navigate("/");
-      navigate("login");
+      // navigate("login");
     }
   }, [navigate]);
 
   console.log(isAuth);
 
   return (
-    <AuthContext.Provider value={{ isAuth, login, logout, user, role, isLogin, setIsLogin }}>
+    <AuthContext.Provider value={{ isAuth, login, logout, user, role, isLogin, setIsLogin, isSignup, setIsSignup }}>
       {children}
     </AuthContext.Provider>
   );

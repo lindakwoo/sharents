@@ -1,12 +1,12 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Box, styled } from "@mui/material";
+import { Box, styled, Modal } from "@mui/material";
 import { AuthContext } from "../../context/AuthContext";
 
 const Button = styled("button")({});
 
-function Login() {
+function Login({ open, handleClose }) {
   const [userData, setUserData] = useState({ username: "", password: "" });
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
@@ -37,55 +37,70 @@ function Login() {
   };
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: "128px" }}>
-      <Box sx={{ width: "40%" }} className='shadow p-4 mt-4'>
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
-          <Box
-            sx={{
-              mt: "16px",
-            }}
-            className='form-group'
-          >
-            <label>Username</label>
-            <input
-              type='text'
-              className='form-control'
-              value={userData.username}
-              name='username'
-              onChange={(e) => handleChange(e)}
-              placeholder='Enter username'
-            />
-          </Box>
-          <Box
-            sx={{
-              mt: "16px",
-            }}
-            className='form-group'
-          >
-            <label>Password</label>
-            <input
-              type='password'
-              className='form-control'
-              value={userData.password}
-              name='password'
-              onChange={(e) => handleChange(e)}
-              placeholder='enter password'
-            />
-          </Box>
+    <Modal open={open} onClose={handleClose}>
+      <Box
+        sx={{
+          width: "50%",
+          backgroundColor: "white",
+          padding: 4,
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          boxShadow: 24,
+          borderRadius: 2,
+        }}
+        className='shadow p-4 mt-4'
+      >
+        <Box sx={{ width: "100%" }} className='shadow p-4 mt-4'>
+          <h1>Login</h1>
+          <form onSubmit={handleSubmit}>
+            <Box
+              sx={{
+                mt: "16px",
+              }}
+              className='form-group'
+            >
+              <label>Username</label>
+              <input
+                type='text'
+                className='form-control'
+                value={userData.username}
+                name='username'
+                onChange={(e) => handleChange(e)}
+                placeholder='Enter username'
+              />
+            </Box>
+            <Box
+              sx={{
+                mt: "16px",
+              }}
+              className='form-group'
+            >
+              <label>Password</label>
+              <input
+                type='password'
+                className='form-control'
+                value={userData.password}
+                name='password'
+                onChange={(e) => handleChange(e)}
+                placeholder='enter password'
+              />
+            </Box>
 
-          <Button
-            sx={{
-              mt: "16px",
-            }}
-            type='submit'
-            className='btn btn-primary'
-          >
-            Login
-          </Button>
-        </form>
+            <Button
+              sx={{
+                mt: "16px",
+              }}
+              type='submit'
+              className='btn btn-primary'
+            >
+              Login
+            </Button>
+          </form>
+        </Box>
       </Box>
-    </Box>
+    </Modal>
   );
 }
 

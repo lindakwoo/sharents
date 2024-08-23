@@ -24,7 +24,7 @@ const Button = styled("button")({
 });
 
 const Navbar = () => {
-  const { user, role, logout, setIsLogin } = useContext(AuthContext);
+  const { user, role, logout, setIsLogin, setIsSignup } = useContext(AuthContext);
   const { selectChild, child, selectedChildId } = useContext(ChildContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [childrenList, setChildrenList] = useState([]);
@@ -45,7 +45,20 @@ const Navbar = () => {
   };
   const handleLogout = () => {
     logout();
-    navigate("/login");
+    handleMenuClose();
+    navigate("/");
+  };
+
+  const handleLogin = () => {
+    setIsLogin(true);
+    handleMenuClose();
+    navigate("/");
+  };
+
+  const handleSignup = () => {
+    setIsSignup(true);
+    handleMenuClose();
+    navigate("/");
   };
 
   const fetchChildren = async () => {
@@ -103,17 +116,17 @@ const Navbar = () => {
             </StyledLink>
           </Button>
           {!user && (
-            <Button color='inherit'>
+            <Button color='inherit' onClick={() => setIsSignup(true)}>
               {" "}
-              <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/signup'>
+              <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/'>
                 Signup
               </StyledLink>
             </Button>
           )}
           {!user && (
-            <Button color='inherit'>
+            <Button color='inherit' onClick={() => setIsLogin(true)}>
               {" "}
-              <StyledLink sx={{ "&:hover": { color: "yellow" } }} onClick={() => setIsLogin(true)}>
+              <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/'>
                 Login
               </StyledLink>
             </Button>
@@ -150,15 +163,15 @@ const Navbar = () => {
             </MenuItem>
           )}
           {!user && (
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem onClick={handleLogin}>
               {" "}
-              <StyledLink onClick={() => setIsLogin(true)}>Login</StyledLink>
+              <StyledLink>Login</StyledLink>
             </MenuItem>
           )}
           {user && (
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem onClick={handleLogout}>
               {" "}
-              <StyledLink onClick={handleLogout}>Logout</StyledLink>
+              <StyledLink>Logout</StyledLink>
             </MenuItem>
           )}
           {role === "guardian" && (
