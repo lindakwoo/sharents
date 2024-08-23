@@ -8,7 +8,7 @@ const Button = styled("button")({});
 
 
 const UpdateMilestone = ({ fetchMilestone, milestone, open, handleClose, id }) => {
-  const [milestoneData, setMilestoneData] = useState({ name: milestone.name, description: milestone.description, category: milestone.category, date: milestone.date });
+  const [milestoneData, setMilestoneData] = useState({ name: milestone.name, description: milestone.description, category: milestone.category });
   const navigate = useNavigate();
 
 
