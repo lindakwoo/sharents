@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 const Button = styled("button")({});
 
 const UpdateMedia = ({ fetchMedia, media, open, handleClose, id }) => {
-  const [mediaData, setMediaData] = useState({ description: media.description, category: media.category, date: media.date, type: media.type, url: media.url });
+  const [mediaData, setMediaData] = useState({ description: media.description, category: media.category });
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -74,23 +74,6 @@ const UpdateMedia = ({ fetchMedia, media, open, handleClose, id }) => {
               {["growth", "food", "health", "speech", "physical", "cognitive", "other"].map((category) => (
                 <option key={category} value={category}>
                   {category}
-                </option>
-              ))}
-            </select>
-          </Box>
-          <Box>
-            <label>Type</label>
-            <select
-              type='text'
-              className='form-control'
-              value={mediaData.type}
-              name='type'
-              onChange={(e) => handleChange(e)}
-            >
-              <option value=''>Select type</option>
-              {["photo", "video"].map((type) => (
-                <option key={type} value={type}>
-                  {type}
                 </option>
               ))}
             </select>
