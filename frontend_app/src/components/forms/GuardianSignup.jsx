@@ -6,31 +6,34 @@ import { AuthContext } from "../../context/AuthContext";
 
 const Button = styled("button")({});
 
-function Login({ open, handleClose }) {
-  const [userData, setUserData] = useState({ username: "", password: "" });
+const GuardianSignup = ({ open, handleClose }) => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-
+  const [user, setUser] = useState({ name: "", username: "", password: "", confirmPassword: "" });
+  const [error, setError] = useState("");
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
+    setUser({ ...user, [name]: value });
   };
 
   const handleSubmit = async (e) => {
-    console.log(userData);
     e.preventDefault();
+    if (user.password !== user.confirmPassword) {
+      setError("passwords do not match");
+      return;
+    }
     try {
       // hard code for now until Caleb does his thing...
       login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
       navigate("/member_landing");
-      // const response = await axios.post("http://localhost/auth/token/", user, {
+      // const response = await axios.post("http://localhost:8000/signup/", user, {
       //   headers: {
       //     "Content-Type": "application/json",
       //   },
       // });
-      // login(response.data.access_token, response.data.user, response.data.role); // set the access token and user in the local storage and context
+      // login(response.data.access_token, response.data.user, response.data.role);
     } catch (error) {
-      console.log("Error logging in: " + error.response.data.detail);
+      console.log("Error signing in: " + error.response.data.detail);
     }
   };
 
@@ -51,8 +54,25 @@ function Login({ open, handleClose }) {
         className='shadow p-4 mt-4'
       >
         <Box sx={{ width: "100%" }} className='shadow p-4 mt-4'>
-          <h1>Login</h1>
+          <h2>Signup</h2>
           <form onSubmit={handleSubmit}>
+            <Box
+              sx={{
+                mt: "16px",
+              }}
+              className='form-group'
+            >
+              <label>Name</label>
+              <input
+                type='text'
+                name='name'
+                className='form-control'
+                value={user.name}
+                onChange={handleChange}
+                placeholder='Name'
+                required
+              />
+            </Box>
             <Box
               sx={{
                 mt: "16px",
@@ -62,11 +82,12 @@ function Login({ open, handleClose }) {
               <label>Username</label>
               <input
                 type='text'
-                className='form-control'
-                value={userData.username}
                 name='username'
-                onChange={(e) => handleChange(e)}
-                placeholder='Enter username'
+                className='form-control'
+                value={user.username}
+                onChange={handleChange}
+                placeholder='Username'
+                required
               />
             </Box>
             <Box
@@ -77,15 +98,32 @@ function Login({ open, handleClose }) {
             >
               <label>Password</label>
               <input
-                type='password'
                 className='form-control'
-                value={userData.password}
+                type='password'
                 name='password'
-                onChange={(e) => handleChange(e)}
-                placeholder='enter password'
+                value={user.password}
+                onChange={handleChange}
+                placeholder='Password'
+                required
               />
             </Box>
-
+            <Box
+              sx={{
+                mt: "16px",
+              }}
+              className='form-group'
+            >
+              <label>Confirm Password</label>
+              <input
+                className='form-control'
+                type='password'
+                name='confirmPassword'
+                value={user.confirmPassword}
+                onChange={handleChange}
+                placeholder='Confirm Password'
+                required
+              />
+            </Box>
             <Button
               sx={{
                 mt: "16px",
@@ -93,13 +131,14 @@ function Login({ open, handleClose }) {
               type='submit'
               className='btn btn-primary'
             >
-              Login
+              Signup
             </Button>
           </form>
         </Box>
+        <Box>{error}</Box>
       </Box>
     </Modal>
   );
-}
+};
 
-export default Login;
+export default GuardianSignup;

@@ -22,11 +22,8 @@ from .schemas import (
 from .database import db
 from .utils import (
     check_for_none,
-    check_list_not_empty,
     create_safe_token,
     decode_url_safe_token,
-    check_update_result,
-    check_delete_result,
 )
 from .mail import mail, create_message
 import os
@@ -263,7 +260,6 @@ async def list_guardians(current_user: GuardianModel = Depends(get_current_user)
     guardian_collection = db.get_collection("guardians")
     check_for_none(guardian_collection, "guardian collections not found")
     guardians = await guardian_collection.find().to_list(1000)
-    check_list_not_empty(guardians, "no guardians found")
     return GuardianCollection(guardians=guardians)
 
 

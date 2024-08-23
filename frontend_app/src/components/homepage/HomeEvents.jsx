@@ -41,8 +41,10 @@ const HomeEvents = () => {
   };
 
   useEffect(() => {
-    fetchEvents(); // Fetch milestone when id changes
-  }, [child]);
+    if (child.id) {
+      fetchEvents(); // Fetch milestone when id changes
+    }
+  }, [child.id]);
 
   return (
     <Box
@@ -98,42 +100,46 @@ const HomeEvents = () => {
         <Box
           sx={{ marginBottom: "64px", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}
         >
-          <TableContainer sx={{ width: "60%" }} component={Paper}>
-            <Table sx={{ wdith: "100%" }}>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Event</TableCell>
-                  <TableCell>Date</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {events.map((event) => (
-                  <TableRow
-                    sx={{
-                      "&:hover": {
-                        backgroundColor: "aqua",
-                      },
-                    }}
-                    key={event.id}
-                    hover
-                    onClick={() => handleRowClick(event.id)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    <TableCell>{event.title}</TableCell>
-                    <TableCell>{formatDate(event.datetime)}</TableCell>
+          {events.length > 0 && (
+            <TableContainer sx={{ width: "60%" }} component={Paper}>
+              <Table sx={{ wdith: "100%" }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Event</TableCell>
+                    <TableCell>Date</TableCell>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </TableContainer>
+                </TableHead>
+                <TableBody>
+                  {events.map((event) => (
+                    <TableRow
+                      sx={{
+                        "&:hover": {
+                          backgroundColor: "aqua",
+                        },
+                      }}
+                      key={event.id}
+                      hover
+                      onClick={() => handleRowClick(event.id)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <TableCell>{event.title}</TableCell>
+                      <TableCell>{formatDate(event.datetime)}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
+          {events.length === 0 && <Box>There are no events for this child</Box>}
         </Box>
       </Box>
-
-      <Box sx={{ display: "flex", justifyContent: "end", alignSelf: "end" }}>
-        <StyledLink to='/events' sx={{ backgroundColor: "orange", padding: "16px", borderRadius: "10px" }}>
-          All events <ArrowForward style={{ marginLeft: 8, verticalAlign: "middle" }} />
-        </StyledLink>
-      </Box>
+      {events.length > 0 && (
+        <Box sx={{ display: "flex", justifyContent: "end", alignSelf: "end" }}>
+          <StyledLink to='/events' sx={{ backgroundColor: "orange", padding: "16px", borderRadius: "10px" }}>
+            All events <ArrowForward style={{ marginLeft: 8, verticalAlign: "middle" }} />
+          </StyledLink>
+        </Box>
+      )}
     </Box>
   );
 };

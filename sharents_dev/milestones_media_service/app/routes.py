@@ -5,7 +5,6 @@ from .utils import (
     check_delete_result,
     check_update_result,
     check_for_none,
-    check_list_not_empty,
 )
 from .schemas import (
     MediaCollection,
@@ -38,7 +37,6 @@ async def list_media_for_child(child_id: str):
     media_collection = (
         await db.get_collection("media").find({"child": child_id}).to_list(length=1000)
     )
-    check_list_not_empty(media_collection, "no media found for this child")
     return MediaCollection(media=media_collection)
 
 
@@ -111,7 +109,6 @@ async def list_milestones_for_child(child_id: str):
 )
 async def get_media(media_id: str):
     media = await db.get_collection("media").find_one({"_id": ObjectId(media_id)})
-    check_list_not_empty(media, "no media found")
     return MediaModel(**media)
 
 
@@ -219,7 +216,6 @@ async def list_comments_on_media(media_id: str):
     check_for_none(comments_collection, "comment collections not found")
     comments_cursor = comments_collection.find({"media": media_id})
     comments = await comments_cursor.to_list(length=1000)
-    check_list_not_empty(comments, "no comments found for this media")
     return CommentCollection(comments=comments)
 
 
@@ -237,7 +233,6 @@ async def list_comments_on_milestone(milestone_id: str):
     check_for_none(comments_collection, "comment collections not found")
     comments_cursor = comments_collection.find({"milestone": milestone_id})
     comments = await comments_cursor.to_list(length=1000)
-    check_list_not_empty(comments, "no comments found for this milestone")
     return CommentCollection(comments=comments)
 
 
