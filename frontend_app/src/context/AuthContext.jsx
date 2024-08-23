@@ -19,6 +19,7 @@ const AuthProvider = ({ children }) => {
     setUser(user);
     setRole(role);
     setIsLogin(false);
+    setIsSignup(false);
   };
 
   const logout = () => {

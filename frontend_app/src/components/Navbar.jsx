@@ -157,7 +157,7 @@ const Navbar = () => {
             <StyledLink to='/home'>Home</StyledLink>
           </MenuItem>
           {!user && (
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem onClick={handleSignup}>
               {" "}
               <StyledLink to='/signup'>Signup</StyledLink>
             </MenuItem>

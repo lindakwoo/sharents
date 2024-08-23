@@ -8,7 +8,6 @@ const Button = styled("button")({});
 
 function Login({ open, handleClose }) {
   const [userData, setUserData] = useState({ username: "", password: "" });
-  const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
@@ -21,6 +20,7 @@ function Login({ open, handleClose }) {
     console.log(userData);
     e.preventDefault();
     try {
+      // hard code for now until Caleb does his thing...
       login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
       navigate("/member_landing");
       // const response = await axios.post("http://localhost/auth/token/", user, {
@@ -29,10 +29,8 @@ function Login({ open, handleClose }) {
       //   },
       // });
       // login(response.data.access_token, response.data.user, response.data.role); // set the access token and user in the local storage and context
-      // setMessage("Login successful!");
-      // navigate("/");
     } catch (error) {
-      setMessage("Error logging in: " + error.response.data.detail);
+      console.log("Error logging in: " + error.response.data.detail);
     }
   };
 

@@ -65,6 +65,7 @@ const MemberSignup = () => {
       return;
     }
     // TODO: this route does not exist yet!!
+    // waiting until Caleb does his thing...
     const url = `http://localhost/auth/members/${id}/signup`;
 
     const data = { member: member, password: passwordData.password };
