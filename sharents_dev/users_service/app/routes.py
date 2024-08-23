@@ -214,7 +214,7 @@ async def update_guardian(
         raise HTTPException(status_code=404, detail="Guardian not found")
 
     # Prepare update data
-    update_data = guardian_update.dict(exclude_unset=True)
+    update_data = guardian_update.model_dump(exclude_unset=True)
 
     # If password is being updated, hash it
     if "password" in update_data:

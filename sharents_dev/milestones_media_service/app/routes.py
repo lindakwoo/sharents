@@ -125,7 +125,8 @@ async def get_media(media_id: str):
     response_model_by_alias=False,
 )
 async def update_media(media_id: str, media: MediaModelUpdate):
-    media_dict = media.model_dump()
+    media_dict = media.model_dump(exclude_unset=True)
+    # media_dict = remove_none_values(media_dict)
     result = await db.get_collection("media").update_one(
         {"_id": ObjectId(media_id)}, {"$set": media_dict}
     )
@@ -176,7 +177,8 @@ async def get_milestone(milestone_id: str):
     response_model_by_alias=False,
 )
 async def update_milestone(milestone_id: str, milestone: MilestoneModelUpdate):
-    milestone_dict = milestone.model_dump()
+    milestone_dict = milestone.model_dump(exclude_unset=True)
+    # milestone_dict = remove_none_values(milestone_dict)
     result = await db.get_collection("milestones").update_one(
         {"_id": ObjectId(milestone_id)}, {"$set": milestone_dict}
     )
@@ -287,7 +289,8 @@ async def post_comment_on_milestone(milestone_id: str, comment: CommentModelCrea
     response_model_by_alias=False,
 )
 async def update_comment(comment_id: str, comment: CommentModelCreate):
-    comment_dict = comment.model_dump()
+    comment_dict = comment.model_dump(exclude_unset=True)
+    # comment_dict = remove_none_values(comment_dict)
     result = await db.get_collection("comments").update_one(
         {"_id": ObjectId(comment_id)}, {"$set": comment_dict}
     )

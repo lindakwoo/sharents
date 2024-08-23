@@ -5,7 +5,7 @@ import { styled, Box } from "@mui/material";
 import { AuthContext } from "../context/AuthContext";
 import { ChildContext } from "../context/ChildContext";
 
-const H1 = styled("h1")({});
+const P = styled("p")({});
 
 const Img = styled("img")({});
 
@@ -16,12 +16,14 @@ const MemberLanding = () => {
   const navigate = useNavigate();
 
   const fetchChildren = async () => {
-    // if (user && role==='member') {
-    const url = `http://localhost/api/children/members/66bf92531efa3ca393556096/`;
-    // }
-    // else{
-    // const url = `http://localhost/api/children/guardians/66bf74d0e463457278b2ea36/`;
-    // }
+    let url;
+    if (user && role === "member") {
+      url = `http://localhost/api/children/members/${user}/`;
+    } else if (user && role === "guardian") {
+      url = `http://localhost/api/children/guardians/${user}/`;
+    } else {
+      console.log("there is no user");
+    }
 
     try {
       const response = await customFetch(url);
@@ -39,40 +41,75 @@ const MemberLanding = () => {
   };
 
   useEffect(() => {
+    console.log();
     fetchChildren();
-  }, []);
+  }, [user]);
 
   return (
     <Box
       sx={{
-        display: "grid",
-        gap: "16px",
-        justifyItems: "center",
-        alignItems: "center",
-        width: "100%",
         padding: "16px",
-        gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
-        mt: "64px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        marginBottom: "64px",
       }}
     >
-      {childrenList.map((child) => {
-        return (
-          <Box
-            onClick={() => handleSelectChild(child.id)}
-            sx={{
-              width: "300px",
-              cursor: "pointer",
-              transition: "transform 0.3s ease-in-out", // Smooth transition
-              "&:hover": {
-                transform: "scale(1.1)", // Grow the image to 110% of its original size on hover
-              },
-            }}
-          >
-            <Img sx={{ width: "100%" }} src={child.profile_picture} />
-            <H1 sx={{ textAlign: "center" }}>{child.name}</H1>
-          </Box>
-        );
-      })}
+      <Box
+        sx={{
+          width: "85%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <h1>Select a child to view</h1>
+        <Box
+          sx={{
+            display: "grid",
+            gap: "24px",
+            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", // Adjust minmax value to control the photo size
+            maxWidth: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+            marginTop: "32px",
+            marginBottom: "64px",
+            "@media (max-width: 1200px)": {
+              gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", // Adjust for medium screens
+            },
+            "@media (max-width: 900px)": {
+              gridTemplateColumns: "repeat(auto-fill, minmax(140px, 1fr))", // Adjust for small screens
+            },
+            "@media (max-width: 600px)": {
+              gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))", // Adjust for very small screens
+            },
+          }}
+        >
+          {childrenList.map((child) => {
+            return (
+              <Box
+                onClick={() => handleSelectChild(child.id)}
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  cursor: "pointer",
+                  transition: "transform 0.3s ease-in-out", // Smooth transition
+                  "&:hover": {
+                    transform: "scale(1.1)", // Grow the image to 110% of its original size on hover
+                  },
+                }}
+              >
+                <Img sx={{ width: "100%", maxWidth: "300px", height: "auto" }} src={child.profile_picture} />
+                <P sx={{ textAlign: "center", fontSize: "24px" }}>{child.name}</P>
+              </Box>
+            );
+          })}
+        </Box>
+      </Box>
     </Box>
   );
 };

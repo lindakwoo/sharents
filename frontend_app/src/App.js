@@ -12,7 +12,6 @@ import WishlistPage from "./components/events/WishlistPage";
 import MilestonesPage from "./components/milestones/MilestonesPage";
 import MediaPage from "./components/media/MediaPage";
 import EventsPage from "./components/events/EventsPage";
-import CreateChild from "./components/forms/child/CreateChild";
 import GuardianDashboard from "./components/forms/GuardianDashboard";
 import UnauthorizedPage from "./components/UnauthorizedPage";
 import ProtectedRoute from "./components/ProtectedRoute";
