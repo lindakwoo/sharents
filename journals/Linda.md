@@ -59,3 +59,7 @@ Today Clarissa and I debugged why, when we were creating new items in the databa
 Today I worked on making the invite members form tested that it sends and email and a link, and can verify the token when the member arrives at our site. I also fixed the Auth Context. I also set up certain pages and items to be only accessible to users with role of "guardian", which comes from the Auth Context.
 
 I also started on the Member signup page, where the member lands after receiving the email and clicking on the invite link
+
+## Friday, August 23, 2024
+
+Today I fixed the entire user flow so that when a user comes to any page, if they are not logged in with an access code, they will be directed to the "/" page with the option to signup or login.
