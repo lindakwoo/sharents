@@ -83,9 +83,6 @@ const MediaExpandedView = () => {
             <Button
               sx={{
                 border: "none",
-                position: "fixed",
-                bottom: "16px",
-                right: "16px",
                 backgroundColor: "yellow",
                 padding: "8px",
                 borderRadius: "10px",

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import customFetch from "../../fetchWrapper";
 import { Box, styled } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -7,6 +7,7 @@ import { ArrowBack } from "@mui/icons-material";
 import { ArrowForward } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthContext";
 import UpdateEvent from "../forms/events/UpdateEvent";
+
 
 import moment from "moment";
 
@@ -22,6 +23,7 @@ const EventExpandedView = () => {
   const { role } = useContext(AuthContext);
   const [modalOpen, setModalOpen] = useState(false);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const fetchEvent = async () => {
     const url = `http://localhost/api/events/${id}/`;
@@ -55,6 +57,18 @@ const EventExpandedView = () => {
   useEffect(() => {
     fetchWishlists(); // Fetch wishlists when id changes
   }, [id]); // Dependency array ensures this runs only when `id` changes
+
+  const deleteEvent = async () => {
+    const url = `http://localhost/api/events/${id}`;
+    const options = { method: "DELETE" };
+    try {
+      const response = await customFetch(url, options);
+      console.log(response);
+      navigate("/events");
+    } catch (error) {
+      console.error("Error deleting event: ", error);
+    }
+  };
   const dateObj = moment(event.datetime);
   const formattedDate = dateObj.format("MMMM Do YYYY, h:mm:ss a");
 
@@ -114,26 +128,44 @@ const EventExpandedView = () => {
         )}
       </Box>
       {role === "guardian" && (
-        <Button
-          sx={{
-            border: "none",
-            position: "fixed",
-            bottom: "16px",
-            right: "16px",
-            backgroundColor: "yellow",
-            padding: "8px",
-            borderRadius: "10px",
-            "& p": { my: 0 },
-            maxHeight: "50px",
-            "&:hover": {
-              backgroundColor: "#0288d1",
+        <Box sx={{ position: "fixed", bottom: "16px", right: "16px" }}>
+          <Button
+            sx={{
+              border: "none",
+              backgroundColor: "red",
+              mr: "16px",
               color: "white",
-            },
-          }}
-          onClick={handleOpen}
-        >
-          Update Event
-        </Button>
+              padding: "8px",
+              borderRadius: "10px",
+              "& p": { my: 0 },
+              maxHeight: "50px",
+              "&:hover": {
+                backgroundColor: "#0288d1",
+                color: "white",
+              },
+            }}
+            onClick={deleteEvent}
+          >
+            Delete Event
+          </Button>{" "}
+          <Button
+            sx={{
+              border: "none",
+              backgroundColor: "yellow",
+              padding: "8px",
+              borderRadius: "10px",
+              "& p": { my: 0 },
+              maxHeight: "50px",
+              "&:hover": {
+                backgroundColor: "#0288d1",
+                color: "white",
+              },
+            }}
+            onClick={handleOpen}
+          >
+            Update Event
+          </Button>
+        </Box>
       )}
       <UpdateEvent fetchEvent={fetchEvent} event={event} open={modalOpen} handleClose={handleClose} id={id} />
     </Box>
