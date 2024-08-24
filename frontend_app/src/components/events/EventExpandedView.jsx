@@ -8,7 +8,6 @@ import { ArrowForward } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthContext";
 import UpdateEvent from "../forms/events/UpdateEvent";
 
-
 import moment from "moment";
 
 const Button = styled("button")({});
@@ -30,8 +29,6 @@ const EventExpandedView = () => {
     try {
       const response = await customFetch(url);
       console.log("response", response);
-
-
 
       setEvent(response);
       console.log(response);
@@ -76,7 +73,40 @@ const EventExpandedView = () => {
   const handleClose = () => setModalOpen(false);
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column" }}>
+    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", mt: "64px" }}>
+      <Box sx={{ display: "flex", width: "80vw", justifyContent: "space-between", mb: "64px" }}>
+        <Box sx={{ justifySelf: "start" }}>
+          <StyledLink
+            to='/events'
+            sx={{
+              backgroundColor: "orange",
+              padding: "16px",
+              borderRadius: "10px",
+              "&:hover": {
+                backgroundColor: "#0288d1",
+                color: "white",
+              },
+            }}
+          >
+            <ArrowBack style={{ marginRight: 8, verticalAlign: "middle" }} /> All events
+          </StyledLink>
+        </Box>
+
+        {wishlists.length > 0 && (
+          <Box sx={{ justifySelf: "start" }}>
+            <StyledLink
+              to={`/wishlists/${wishlists[0].id}`}
+              sx={{
+                backgroundColor: "yellow",
+                padding: "16px",
+                borderRadius: "10px",
+              }}
+            >
+              WishList <ArrowForward style={{ marginLeft: 8, verticalAlign: "middle" }} />
+            </StyledLink>
+          </Box>
+        )}
+      </Box>
       <Box
         sx={{
           mt: "64px",
@@ -105,28 +135,7 @@ const EventExpandedView = () => {
           </Box>
         )}
       </Box>
-      <Box sx={{ display: "flex", width: "80vw", justifyContent: "space-between", mb: "64px" }}>
-        <Box sx={{ justifySelf: "start" }}>
-          <StyledLink to='/events' sx={{ backgroundColor: "yellow", padding: "16px", borderRadius: "10px" }}>
-            <ArrowBack style={{ marginRight: 8, verticalAlign: "middle" }} /> All events
-          </StyledLink>
-        </Box>
 
-        {wishlists.length > 0 && (
-          <Box sx={{ justifySelf: "start" }}>
-            <StyledLink
-              to={`/wishlists/${wishlists[0].id}`}
-              sx={{
-                backgroundColor: "yellow",
-                padding: "16px",
-                borderRadius: "10px",
-              }}
-            >
-              WishList <ArrowForward style={{ marginLeft: 8, verticalAlign: "middle" }} />
-            </StyledLink>
-          </Box>
-        )}
-      </Box>
       {role === "guardian" && (
         <Box sx={{ position: "fixed", bottom: "16px", right: "16px" }}>
           <Button
