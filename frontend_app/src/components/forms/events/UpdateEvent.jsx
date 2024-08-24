@@ -3,16 +3,15 @@ import customFetch from "../../../fetchWrapper";
 import { Box, styled, Modal } from "@mui/material";
 import { AuthContext } from "../../../context/AuthContext";
 
-
 const Button = styled("button")({});
 
 const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
-  const [eventData, setEventData] = useState({});
+  const [eventData, setEventData] = useState({ ...event });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEventData({ ...eventData, [name]: value });
-  }
+  };
 
   const Button = styled("button")({});
 
@@ -23,17 +22,13 @@ const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
     const handleChange = (e) => {
       const { name, value } = e.target;
       setEventData({ ...eventData, [name]: value });
-    }
-
-  }
+    };
+  };
 
   let myDate = "";
   if (event.datetime !== undefined && event.datetime !== "") {
     myDate = event.datetime.substring(0, 16);
   }
-
-
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -48,9 +43,7 @@ const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
     } catch (error) {
       console.error("Error updating event: ", error);
     }
-  }
-
-
+  };
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -78,7 +71,7 @@ const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
               type='text'
               className='form-control'
               name='title'
-              value={event.title}
+              defaultValue={event.title}
               onChange={handleChange}
             />
           </Box>
@@ -93,7 +86,7 @@ const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
               type='text'
               className='form-control'
               name='description'
-              value={event.description}
+              defaultValue={event.description}
               onChange={handleChange}
             />
           </Box>
@@ -127,16 +120,13 @@ const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
               onChange={handleChange}
             />
           </Box>
-          <Box
-            sx={{ mt: "16px" }}
-            className='form-group'
-          >
+          <Box sx={{ mt: "16px" }} className='form-group'>
             <label>notes </label>
             <input
               type='text'
               className='form-control'
               name='notes'
-              value={event.notes}
+              defaultValue={event.notes}
               onChange={handleChange}
             />
           </Box>
