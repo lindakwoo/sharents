@@ -67,7 +67,18 @@ const MediaExpandedView = () => {
         <>
           <Box sx={{ display: "flex", justifyContent: "space-between", width: "70%" }}>
             <Box sx={{ justifySelf: "start" }}>
-              <StyledLink to='/media' sx={{ backgroundColor: "orange", padding: "16px", borderRadius: "10px" }}>
+              <StyledLink
+                to='/media'
+                sx={{
+                  backgroundColor: "orange",
+                  padding: "16px",
+                  borderRadius: "10px",
+                  "&:hover": {
+                    backgroundColor: "#0288d1",
+                    color: "white",
+                  },
+                }}
+              >
                 <ArrowBack style={{ marginRight: 8, verticalAlign: "middle" }} /> All media
               </StyledLink>
             </Box>
@@ -111,7 +122,7 @@ const MediaExpandedView = () => {
                 }}
                 onClick={deleteMedia}
               >
-                Delete Milestone
+                Delete Media
               </Button>{" "}
               <Button
                 sx={{
