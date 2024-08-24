@@ -28,6 +28,9 @@ const EventExpandedView = () => {
     try {
       const response = await customFetch(url);
       console.log("response", response);
+
+
+
       setEvent(response);
       console.log(response);
     } catch (error) {
@@ -132,7 +135,7 @@ const EventExpandedView = () => {
           Update Event
         </Button>
       )}
-      <UpdateEvent fetchEvent={fetchEvent} event={event} open={modalOpen} handleClose={handleClose} />
+      <UpdateEvent fetchEvent={fetchEvent} event={event} open={modalOpen} handleClose={handleClose} id={id} />
     </Box>
   );
 };
