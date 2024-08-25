@@ -160,11 +160,4 @@ const CreateEvent = () => {
   );
 };
 
-// {
-//   "datetime": "string",
-//     "description": "string",
-//       "title": "string",
-//         "location": "string",
-//           "notes": "string"
-// }
 export default CreateEvent;

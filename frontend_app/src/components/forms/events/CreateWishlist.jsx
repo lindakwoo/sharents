@@ -97,6 +97,7 @@ const CreateWishlist = ({ eventId, open, handleClose }) => {
               type='text'
               className='form-control'
               value={name}
+              required
               name='name'
               onChange={(e) => handleWishlistNameChange(e)}
               placeholder='Enter wishlist name'

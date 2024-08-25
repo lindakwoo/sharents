@@ -67,7 +67,7 @@ const EventExpandedView = () => {
     }
   };
   const dateObj = moment(event.datetime);
-  const formattedDate = dateObj.format("MMMM Do YYYY, h:mm:ss a");
+  const formattedDate = dateObj.format("MMMM Do YYYY, h:mm a");
 
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
