@@ -20,15 +20,18 @@ const CreateWishlistItem = ({ item, index, handleItemChange, handleRemoveItem })
       }}
       className='form-group'
     >
-      <label>Wishlist Item {index + 1}</label>
+      <Box sx={{ fontWeight: "bold" }}>Wishlist Item {index + 1}</Box>
+      <label>Description</label>
       <input
         type='text'
         name='description'
         value={item.description}
         onChange={(e) => handleItemChange(index, e)}
         placeholder='Enter description'
+        required
         className='form-control'
       />
+      <label>Item url</label>
       <input
         type='url'
         name='url'
@@ -37,12 +40,12 @@ const CreateWishlistItem = ({ item, index, handleItemChange, handleRemoveItem })
         placeholder='Enter URL'
         className='form-control mt-2'
       />
+      <label>Price</label>
       <input
         type='number'
         name='price'
         value={item.price}
         step='0.01' // Restrict to two decimal places
-        min='0'
         onChange={handlePriceChange}
         placeholder='Enter price'
         className='form-control mt-2'

@@ -1,23 +1,22 @@
 import React, { useState, useEffect, useContext } from "react";
 import customFetch from "../../../fetchWrapper";
 import { useNavigate } from "react-router-dom";
-import { Box, styled } from "@mui/material";
+import { Box, styled, Modal } from "@mui/material";
 import { AuthContext } from "../../../context/AuthContext";
 import { ChildContext } from "../../../context/ChildContext";
 import CreateWishlistItem from "./CreateWishlistItem";
 
 const Button = styled("button")({});
 
-const CreateWishlist = ({ event }) => {
-  const [name, setName] = useState("");
+const CreateWishlist = ({ eventId, open, handleClose }) => {
+  const [name, setName] = useState(null);
   const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
   const { child } = useContext(ChildContext);
   const { role } = useContext(AuthContext);
 
   const handleWishlistNameChange = (e) => {
-    const { name, value } = e.target;
-    setName({ ...name, [name]: value });
+    setName(e.target.value);
   };
 
   const handleItemChange = (index, e) => {
@@ -40,7 +39,7 @@ const CreateWishlist = ({ event }) => {
     e.preventDefault();
 
     // Step 1: Create the Wishlist
-    const wishlistUrl = `http://localhost/api/events/${event.id}/wishlists/`;
+    const wishlistUrl = `http://localhost/api/events/${eventId}/wishlists/`;
     const wishlistOptions = {
       body: JSON.stringify({ name: name }),
       method: "POST",
@@ -66,50 +65,62 @@ const CreateWishlist = ({ event }) => {
       }
 
       console.log("Wishlist and items created successfully");
-      //   navigate("/milesteventones");
+      navigate("/events");
     } catch (error) {
       console.error("Error creating wishlist or items: ", error);
     }
   };
 
   return (
-    <Box className='shadow p-4 mt-4'>
-      <h1>Create a milestone for {child.name} </h1>
-      <form onSubmit={handleWishlistSubmit}>
-        <Box
-          sx={{
-            mt: "16px",
-          }}
-          className='form-group'
-        >
-          <label>Wishlist Name </label>
-          <input
-            type='text'
-            className='form-control'
-            value={name}
-            name='name'
-            onChange={(e) => handleWishlistNameChange(e)}
-            placeholder='Enter wishlist name'
-          />
-        </Box>
-        {wishlistItems.length > 0 &&
-          wishlistItems.map((item, index) => (
-            <CreateWishlistItem
-              key={index}
-              item={item}
-              index={index}
-              handleItemChange={handleItemChange}
-              handleRemoveItem={handleRemoveItem}
+    <Modal open={open} onClose={handleClose}>
+      <Box
+        sx={{
+          width: "50%",
+          backgroundColor: "white",
+          padding: 4,
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <h1>Create a wishlist </h1>
+        <form onSubmit={handleWishlistSubmit}>
+          <Box
+            sx={{
+              mt: "16px",
+            }}
+            className='form-group'
+          >
+            <label>Wishlist Name </label>
+            <input
+              type='text'
+              className='form-control'
+              value={name}
+              name='name'
+              onChange={(e) => handleWishlistNameChange(e)}
+              placeholder='Enter wishlist name'
             />
-          ))}
-        <Button sx={{ mt: "16px" }} type='button' onClick={handleAddItem} className='btn btn-secondary'>
-          Add Wishlist Item
-        </Button>
-        <Button sx={{ mt: "16px", ml: "8px" }} type='submit' className='btn btn-primary'>
-          Create Wishlist
-        </Button>
-      </form>
-    </Box>
+          </Box>
+          {wishlistItems.length > 0 &&
+            wishlistItems.map((item, index) => (
+              <CreateWishlistItem
+                key={index}
+                item={item}
+                index={index}
+                handleItemChange={handleItemChange}
+                handleRemoveItem={handleRemoveItem}
+              />
+            ))}
+          <Button sx={{ mt: "16px" }} type='button' onClick={handleAddItem} className='btn btn-secondary'>
+            Add Wishlist Item
+          </Button>
+          <Button sx={{ mt: "16px", ml: "8px" }} type='submit' className='btn btn-primary'>
+            Create Wishlist
+          </Button>
+        </form>
+      </Box>
+    </Modal>
   );
 };
 

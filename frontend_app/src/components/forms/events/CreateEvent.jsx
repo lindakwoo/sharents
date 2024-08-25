@@ -10,7 +10,7 @@ const Button = styled("button")({});
 
 const CreateEvent = () => {
   const [eventData, setEventData] = useState({ datetime: "", description: "", title: "", location: "", notes: "" });
-  const [openModal, setOpenModal] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const [eventId, setEventId] = useState(null);
   const navigate = useNavigate();
   const { child } = useContext(ChildContext);
@@ -19,6 +19,10 @@ const CreateEvent = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEventData({ ...eventData, [name]: value });
+  };
+
+  const handleCloseModal = () => {
+    setModalOpen(false);
   };
 
   const handleSubmit = async (e) => {
@@ -50,6 +54,7 @@ const CreateEvent = () => {
               type='text'
               className='form-control'
               value={eventData.title}
+              required
               name='title'
               onChange={(e) => handleChange(e)}
               placeholder='Enter event title'
@@ -65,6 +70,7 @@ const CreateEvent = () => {
             <input
               type='datetime-local'
               className='form-control'
+              required
               value={eventData.datetime}
               name='datetime'
               onChange={(e) => handleChange(e)}
@@ -81,6 +87,7 @@ const CreateEvent = () => {
               type='text'
               className='form-control'
               value={eventData.location}
+              required
               name='location'
               onChange={(e) => handleChange(e)}
               placeholder='Enter event location'
@@ -96,6 +103,7 @@ const CreateEvent = () => {
             <textarea
               className='form-control'
               value={eventData.description}
+              required
               name='description'
               onChange={(e) => handleChange(e)}
               placeholder='Enter event description'
@@ -116,28 +124,38 @@ const CreateEvent = () => {
               placeholder='Enter event notes'
             />
           </Box>
-          <Button
-            sx={{
-              mt: "16px",
-            }}
-            type='submit'
-            className='btn btn-primary'
-          >
-            Create
-          </Button>
+          <Box>
+            <Button
+              sx={{
+                mt: "16px",
+              }}
+              type='submit'
+              className='btn btn-primary'
+            >
+              Create
+            </Button>
+            {eventId && (
+              <>
+                <Button
+                  sx={{ mt: "16px", ml: "16px", backgroundColor: "red", color: "white", border: "none" }}
+                  className='btn btn-secondary'
+                  onClick={() => setModalOpen(true)}
+                >
+                  Add Wishlist
+                </Button>
+                <Button
+                  sx={{ mt: "16px", ml: "16px", backgroundColor: "red", color: "white", border: "none" }}
+                  className='btn btn-secondary'
+                  onClick={() => navigate("/events")}
+                >
+                  No Wishlist
+                </Button>
+              </>
+            )}
+          </Box>
         </form>
-        {eventId && (
-          <Button
-            sx={{ mt: "16px" }}
-            className='btn btn-secondary'
-            onClick={() => setOpenModal(true)}
-            disabled={!eventId} // Disable if event is not yet created
-          >
-            Add Wishlist
-          </Button>
-        )}
       </Box>
-      <CreateWishlist />
+      <CreateWishlist open={modalOpen} handleClose={handleCloseModal} eventId={eventId} />
     </>
   );
 };

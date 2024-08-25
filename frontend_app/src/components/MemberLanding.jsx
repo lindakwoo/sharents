@@ -53,7 +53,7 @@ const MemberLanding = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        marginBottom: "64px",
+        my: "64px",
       }}
     >
       <Box
@@ -74,7 +74,7 @@ const MemberLanding = () => {
             maxWidth: "100%",
             justifyContent: "center",
             alignItems: "center",
-            marginTop: "32px",
+            marginTop: "64px",
             marginBottom: "64px",
             "@media (max-width: 1200px)": {
               gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", // Adjust for medium screens

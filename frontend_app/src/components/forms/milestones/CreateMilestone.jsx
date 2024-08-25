@@ -42,11 +42,12 @@ const CreateMilestone = () => {
           }}
           className='form-group'
         >
-          <label>Title </label>
+          <label>Name </label>
           <input
             type='text'
             className='form-control'
             value={milestoneData.name}
+            required
             name='name'
             onChange={(e) => handleChange(e)}
             placeholder='Enter milestone title'
@@ -62,6 +63,7 @@ const CreateMilestone = () => {
           <textarea
             className='form-control'
             value={milestoneData.description}
+            required
             name='description'
             onChange={(e) => handleChange(e)}
             placeholder='Enter details of milestone'
@@ -79,6 +81,7 @@ const CreateMilestone = () => {
             className='form-control'
             value={milestoneData.date}
             name='date'
+            required
             onChange={(e) => handleChange(e)}
             placeholder='select a date'
           />
@@ -93,6 +96,7 @@ const CreateMilestone = () => {
           <select
             className='form-control'
             value={milestoneData.category}
+            required
             name='category'
             onChange={(e) => handleChange(e)}
             placeholder='select a date'

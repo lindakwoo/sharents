@@ -47,6 +47,7 @@ const CreateMedia = () => {
             type='text'
             className='form-control'
             value={mediaData.description}
+            required
             name='description'
             onChange={(e) => handleChange(e)}
             placeholder='Enter media description'
@@ -63,6 +64,7 @@ const CreateMedia = () => {
             type='text'
             className='form-control'
             value={mediaData.category}
+            required
             name='category'
             onChange={(e) => handleChange(e)}
             placeholder='Enter media category'
@@ -85,6 +87,7 @@ const CreateMedia = () => {
           <input
             type='date'
             className='form-control'
+            required
             value={mediaData.date}
             name='date'
             onChange={(e) => handleChange(e)}
@@ -102,6 +105,7 @@ const CreateMedia = () => {
             type='text'
             className='form-control'
             value={mediaData.type}
+            required
             name='type'
             onChange={(e) => handleChange(e)}
             placeholder='Enter media type'
@@ -127,6 +131,7 @@ const CreateMedia = () => {
             value={mediaData.url}
             name='url'
             onChange={(e) => handleChange(e)}
+            required
             placeholder='Enter url'
           />
         </Box>
@@ -143,11 +148,4 @@ const CreateMedia = () => {
     </Box>
   );
 };
-// {
-//   "description": "string",
-//     "category": "growth",
-//       "date": "string",
-//         "type": "string",
-//           "url": "string"
-// }
 export default CreateMedia;

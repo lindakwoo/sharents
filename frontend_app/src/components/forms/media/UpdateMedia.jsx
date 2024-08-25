@@ -13,7 +13,7 @@ const UpdateMedia = ({ fetchMedia, media, open, handleClose, id }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setMediaData({ ...mediaData, [name]: value });
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,11 +25,10 @@ const UpdateMedia = ({ fetchMedia, media, open, handleClose, id }) => {
       console.log(response);
       fetchMedia();
       handleClose();
-
     } catch (error) {
       console.error("Error updating media: ", error);
     }
-  }
+  };
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -90,13 +89,7 @@ const UpdateMedia = ({ fetchMedia, media, open, handleClose, id }) => {
         </form>
       </Box>
     </Modal>
-  )
+  );
 };
-{/* {
-  "description": "string",
-    "category": "growth",
-      "date": "string",
-        "type": "string",
-          "url": "string"
-} */}
+
 export default UpdateMedia;
