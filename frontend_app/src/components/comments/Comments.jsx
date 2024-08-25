@@ -5,6 +5,7 @@ import { Box, styled } from "@mui/material";
 import CreateComment from "../forms/comments/CreateComment";
 import UpdateComment from "../forms/comments/UpdateComment";
 import UpdateIcon from "@mui/icons-material/Update";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { AuthContext } from "../../context/AuthContext";
 
 const Button = styled("button")({});
@@ -39,6 +40,18 @@ const Comments = ({ id, type }) => {
   const handleCloseUpdateModal = () => {
     setSelectedComment("");
     setUpdateModalOpen(false);
+  };
+
+  const deleteComment = async (commentId) => {
+    const url = `http://localhost/api/comments/${commentId}`;
+    const options = { method: "DELETE" };
+    try {
+      const response = await customFetch(url, options);
+      console.log(response);
+      fetchComments();
+    } catch (error) {
+      console.error("Error deleting comment: ", error);
+    }
   };
 
   useEffect(() => {
@@ -89,20 +102,35 @@ const Comments = ({ id, type }) => {
                 >
                   {comment.text}
                   {isCommentOwner && (
-                    <UpdateIcon
-                      sx={{
-                        float: "right",
-                        cursor: "pointer",
-                        color: "orange",
-                        "&:hover": {
-                          backgroundColor: "orange",
-                          color: "white",
-                        },
-                      }}
-                      onClick={() => {
-                        handleOpenUpdateModal(comment);
-                      }}
-                    />
+                    <>
+                      <UpdateIcon
+                        sx={{
+                          float: "right",
+                          cursor: "pointer",
+                          color: "orange",
+                          "&:hover": {
+                            backgroundColor: "orange",
+                            color: "white",
+                          },
+                        }}
+                        onClick={() => {
+                          handleOpenUpdateModal(comment);
+                        }}
+                      />
+                      <DeleteForeverIcon
+                        sx={{
+                          float: "right",
+                          cursor: "pointer",
+                          color: "red",
+                          "&:hover": {
+                            backgroundColor: "red",
+                            color: "white",
+                          },
+                        }}
+                        onClick={() => {
+                          deleteComment(comment.id)
+                        }} />
+                    </>
                   )}
                 </Box>
               </>
