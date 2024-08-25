@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import customFetch from "../../fetchWrapper";
 import { Link } from "react-router-dom";
 import { Box, styled } from "@mui/material";
@@ -18,6 +18,7 @@ const MediaExpandedView = () => {
   const [media, setMedia] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const { role } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const { id } = useParams();
   const fetchMedia = async () => {
@@ -29,6 +30,18 @@ const MediaExpandedView = () => {
       console.log(response);
     } catch (error) {
       console.error("Error fetching media", error);
+    }
+  };
+
+  const deleteMedia = async () => {
+    const url = `http://localhost/api/media/${id}`;
+    const options = { method: "DELETE" };
+    try {
+      const response = await customFetch(url, options);
+      console.log(response);
+      navigate("/media");
+    } catch (error) {
+      console.error("Error deleting media: ", error);
     }
   };
 
@@ -54,7 +67,18 @@ const MediaExpandedView = () => {
         <>
           <Box sx={{ display: "flex", justifyContent: "space-between", width: "70%" }}>
             <Box sx={{ justifySelf: "start" }}>
-              <StyledLink to='/media' sx={{ backgroundColor: "orange", padding: "16px", borderRadius: "10px" }}>
+              <StyledLink
+                to='/media'
+                sx={{
+                  backgroundColor: "orange",
+                  padding: "16px",
+                  borderRadius: "10px",
+                  "&:hover": {
+                    backgroundColor: "#0288d1",
+                    color: "white",
+                  },
+                }}
+              >
                 <ArrowBack style={{ marginRight: 8, verticalAlign: "middle" }} /> All media
               </StyledLink>
             </Box>
@@ -80,26 +104,44 @@ const MediaExpandedView = () => {
             </Box>
           </Box>
           {role === "guardian" && (
-            <Button
-              sx={{
-                border: "none",
-                position: "fixed",
-                bottom: "16px",
-                right: "16px",
-                backgroundColor: "yellow",
-                padding: "8px",
-                borderRadius: "10px",
-                "& p": { my: 0 },
-                maxHeight: "50px",
-                "&:hover": {
-                  backgroundColor: "#0288d1",
+            <Box sx={{ position: "fixed", bottom: "16px", right: "16px" }}>
+              <Button
+                sx={{
+                  border: "none",
+                  backgroundColor: "red",
+                  mr: "16px",
                   color: "white",
-                },
-              }}
-              onClick={handleOpen}
-            >
-              Update Media
-            </Button>
+                  padding: "8px",
+                  borderRadius: "10px",
+                  "& p": { my: 0 },
+                  maxHeight: "50px",
+                  "&:hover": {
+                    backgroundColor: "#0288d1",
+                    color: "white",
+                  },
+                }}
+                onClick={deleteMedia}
+              >
+                Delete Media
+              </Button>{" "}
+              <Button
+                sx={{
+                  border: "none",
+                  backgroundColor: "yellow",
+                  padding: "8px",
+                  borderRadius: "10px",
+                  "& p": { my: 0 },
+                  maxHeight: "50px",
+                  "&:hover": {
+                    backgroundColor: "#0288d1",
+                    color: "white",
+                  },
+                }}
+                onClick={handleOpen}
+              >
+                Update Media
+              </Button>
+            </Box>
           )}
           <UpdateMedia fetchMedia={fetchMedia} media={media} open={modalOpen} handleClose={handleClose} id={id} />
         </>
