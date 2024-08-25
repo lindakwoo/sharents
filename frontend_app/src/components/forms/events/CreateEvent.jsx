@@ -4,11 +4,14 @@ import { useNavigate } from "react-router-dom";
 import { Box, styled } from "@mui/material";
 import { AuthContext } from "../../../context/AuthContext";
 import { ChildContext } from "../../../context/ChildContext";
+import CreateWishlist from "./CreateWishlist";
 
 const Button = styled("button")({});
 
 const CreateEvent = () => {
   const [eventData, setEventData] = useState({ datetime: "", description: "", title: "", location: "", notes: "" });
+  const [openModal, setOpenModal] = useState(false);
+  const [eventId, setEventId] = useState(null);
   const navigate = useNavigate();
   const { child } = useContext(ChildContext);
   const { isGuardian } = useContext(AuthContext);
@@ -25,105 +28,117 @@ const CreateEvent = () => {
 
     try {
       const response = await customFetch(url, options);
-      console.log(response);
-      navigate("/events");
+      setEventId(response.id);
     } catch (error) {
       console.error("Error creating event: ", error);
     }
   };
 
   return (
-    <Box className='shadow p-4 mt-4'>
-      <h1>Create an event for {child.name} </h1>
-      <form onSubmit={handleSubmit}>
-        <Box
-          sx={{
-            mt: "16px",
-          }}
-          className='form-group'
-        >
-          <label>Title </label>
-          <input
-            type='text'
-            className='form-control'
-            value={eventData.title}
-            name='title'
-            onChange={(e) => handleChange(e)}
-            placeholder='Enter event title'
-          />
-        </Box>
-        <Box
-          sx={{
-            mt: "16px",
-          }}
-          className='form-group'
-        >
-          <label>Date and Time</label>
-          <input
-            type='datetime-local'
-            className='form-control'
-            value={eventData.datetime}
-            name='datetime'
-            onChange={(e) => handleChange(e)}
-          />
-        </Box>
-        <Box
-          sx={{
-            mt: "16px",
-          }}
-          className='form-group'
-        >
-          <label>Location</label>
-          <input
-            type='text'
-            className='form-control'
-            value={eventData.location}
-            name='location'
-            onChange={(e) => handleChange(e)}
-            placeholder='Enter event location'
-          />
-        </Box>
-        <Box
-          sx={{
-            mt: "16px",
-          }}
-          className='form-group'
-        >
-          <label>Description</label>
-          <textarea
-            className='form-control'
-            value={eventData.description}
-            name='description'
-            onChange={(e) => handleChange(e)}
-            placeholder='Enter event description'
-          />
-        </Box>
-        <Box
-          sx={{
-            mt: "16px",
-          }}
-          className='form-group'
-        >
-          <label>Notes</label>
-          <textarea
-            className='form-control'
-            value={eventData.notes}
-            name='notes'
-            onChange={(e) => handleChange(e)}
-            placeholder='Enter event notes'
-          />
-        </Box>
-        <Button
-          sx={{
-            mt: "16px",
-          }}
-          type='submit'
-          className='btn btn-primary'
-        >
-          Create
-        </Button>
-      </form>
-    </Box>
+    <>
+      <Box className='shadow p-4 mt-4'>
+        <h1>Create an event for {child.name} </h1>
+        <form onSubmit={handleSubmit}>
+          <Box
+            sx={{
+              mt: "16px",
+            }}
+            className='form-group'
+          >
+            <label>Title </label>
+            <input
+              type='text'
+              className='form-control'
+              value={eventData.title}
+              name='title'
+              onChange={(e) => handleChange(e)}
+              placeholder='Enter event title'
+            />
+          </Box>
+          <Box
+            sx={{
+              mt: "16px",
+            }}
+            className='form-group'
+          >
+            <label>Date and Time</label>
+            <input
+              type='datetime-local'
+              className='form-control'
+              value={eventData.datetime}
+              name='datetime'
+              onChange={(e) => handleChange(e)}
+            />
+          </Box>
+          <Box
+            sx={{
+              mt: "16px",
+            }}
+            className='form-group'
+          >
+            <label>Location</label>
+            <input
+              type='text'
+              className='form-control'
+              value={eventData.location}
+              name='location'
+              onChange={(e) => handleChange(e)}
+              placeholder='Enter event location'
+            />
+          </Box>
+          <Box
+            sx={{
+              mt: "16px",
+            }}
+            className='form-group'
+          >
+            <label>Description</label>
+            <textarea
+              className='form-control'
+              value={eventData.description}
+              name='description'
+              onChange={(e) => handleChange(e)}
+              placeholder='Enter event description'
+            />
+          </Box>
+          <Box
+            sx={{
+              mt: "16px",
+            }}
+            className='form-group'
+          >
+            <label>Notes</label>
+            <textarea
+              className='form-control'
+              value={eventData.notes}
+              name='notes'
+              onChange={(e) => handleChange(e)}
+              placeholder='Enter event notes'
+            />
+          </Box>
+          <Button
+            sx={{
+              mt: "16px",
+            }}
+            type='submit'
+            className='btn btn-primary'
+          >
+            Create
+          </Button>
+        </form>
+        {eventId && (
+          <Button
+            sx={{ mt: "16px" }}
+            className='btn btn-secondary'
+            onClick={() => setOpenModal(true)}
+            disabled={!eventId} // Disable if event is not yet created
+          >
+            Add Wishlist
+          </Button>
+        )}
+      </Box>
+      <CreateWishlist />
+    </>
   );
 };
 
