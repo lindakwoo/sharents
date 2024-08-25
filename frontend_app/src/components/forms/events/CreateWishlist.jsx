@@ -8,12 +8,13 @@ import CreateWishlistItem from "./CreateWishlistItem";
 
 const Button = styled("button")({});
 
-const CreateWishlist = ({ eventId, open, handleClose }) => {
+const CreateWishlist = ({ eventId, open, handleClose, updatingEvent = false, fetchWishlists }) => {
   const [name, setName] = useState(null);
   const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
   const { child } = useContext(ChildContext);
   const { role } = useContext(AuthContext);
+  const destination = updatingEvent ? `/events/${eventId}` : `/events`;
 
   const handleWishlistNameChange = (e) => {
     setName(e.target.value);
@@ -65,11 +66,20 @@ const CreateWishlist = ({ eventId, open, handleClose }) => {
       }
 
       console.log("Wishlist and items created successfully");
-      navigate("/events");
+      const destination = updatingEvent ? `/events/${eventId}` : `/events`;
+      if (updatingEvent) {
+        fetchWishlists();
+        handleClose();
+      } else {
+        navigate("/events");
+      }
     } catch (error) {
       console.error("Error creating wishlist or items: ", error);
     }
   };
+
+  console.log("updating", updatingEvent);
+  console.log(destination);
 
   return (
     <Modal open={open} onClose={handleClose}>
