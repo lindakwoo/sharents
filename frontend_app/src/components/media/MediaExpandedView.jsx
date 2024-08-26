@@ -19,8 +19,8 @@ const MediaExpandedView = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const { role } = useContext(AuthContext);
   const navigate = useNavigate();
-
   const { id } = useParams();
+
   const fetchMedia = async () => {
     const url = `http://localhost/api/media/${id}/`;
     try {
@@ -40,7 +40,6 @@ const MediaExpandedView = () => {
     try {
       const commentsResponse = await customFetch(commentsUrl);
       const comments = commentsResponse.comments;
-
       if (comments.length > 0) {
         for (let comment of comments) {
           deleteComment(comment.id);
@@ -98,11 +97,9 @@ const MediaExpandedView = () => {
                       border: "none",
                       backgroundColor: "orange",
                       mx: "16px",
-
                       padding: "16px",
                       borderRadius: "10px",
                       "& p": { my: 0 },
-
                       "&:hover": {
                         backgroundColor: "red",
                       },
@@ -110,16 +107,14 @@ const MediaExpandedView = () => {
                     onClick={deleteMedia}
                   >
                     Delete Media
-                  </Button>{" "}
+                  </Button>
                   <Button
                     sx={{
                       border: "none",
                       backgroundColor: "orange",
                       padding: "16px",
-
                       borderRadius: "10px",
                       "& p": { my: 0 },
-
                       "&:hover": {
                         backgroundColor: "yellow",
                       },
@@ -131,28 +126,32 @@ const MediaExpandedView = () => {
                 </>
               )}
             </Box>
-            <Category> {media.category}</Category>
+            <Category>{media.category}</Category>
           </Box>
-
-          <Box
-            sx={{
-              width: "70%",
-            }}
-          >
-            <Box>{formatDate(media.date, false)}</Box>
-            <Img
-              sx={{
-                width: "65%",
-                my: "16px",
-              }}
-              src={media.url}
-            />
-            <Box sx={{ mb: "32px", fontSize: "24px" }}>{media.description}</Box>
-            <Box>
-              <Comments id={id} type='media' />
+          {media.type === "photo" && (
+            <Box sx={{ width: "70%" }}>
+              <Box>{formatDate(media.date, false)}</Box>
+              <Img sx={{ width: "65%", my: "16px" }} src={media.url} />
+              <Box sx={{ mb: "32px", fontSize: "24px" }}>{media.description}</Box>
+              <Box>
+                <Comments id={id} type='media' />
+              </Box>
             </Box>
-          </Box>
-
+          )}
+          {media.type === "video" && (
+            <>
+              <iframe
+                width='899'
+                height='471'
+                src={media.url}
+                title={media.description}
+                frameBorder='0'
+                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+                referrerPolicy='strict-origin-when-cross-origin'
+                allowFullScreen
+              ></iframe>
+            </>
+          )}
           <UpdateMedia fetchMedia={fetchMedia} media={media} open={modalOpen} handleClose={handleClose} id={id} />
         </>
       )}
