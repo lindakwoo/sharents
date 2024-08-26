@@ -3,7 +3,7 @@ import { Box, styled } from "@mui/material";
 
 const Button = styled("button")({});
 
-const UpdateWishlistItem = ({ id, description, price, url, handleItemChange, handleRemoveItem }) => {
+const UpdateWishlistItem = ({ id, index, item, description, price, url, handleItemChange, handleAddItem, handleWishlistChange, handleRemoveItem, handleDeleteItem }) => {
 
 
   return (
@@ -13,7 +13,7 @@ const UpdateWishlistItem = ({ id, description, price, url, handleItemChange, han
       }}
       className='form-group'
     >
-      <Box sx={{ fontWeight: "bold" }}>Wishlist Item {id}</Box>
+      <Box sx={{ fontWeight: "bold" }}>Wishlist Item</Box>
       <label>Description</label>
       <input
         type='text'
@@ -41,11 +41,11 @@ const UpdateWishlistItem = ({ id, description, price, url, handleItemChange, han
         step='0.01' // Restrict to two decimal places
         onChange={(e) => handleItemChange(id, e)}
         placeholder='Enter price'
-        className='form-control mt-2'
-      />
+        className='form-control mt-2' />
       <Button sx={{ mt: "8px" }} onClick={() => handleRemoveItem(id)} className='btn btn-danger'>
         Remove Item
       </Button>
+
     </Box>
   );
 };

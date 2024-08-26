@@ -37,7 +37,7 @@ function App() {
           {/* <Route path='/create_child' element={<CreateChild />} /> */}
           <Route element={<ProtectedGuardianRoute />}>
             <Route path="/guardian_dashboard" element={<GuardianDashboard />} />
-            <Route path='/update_wishlist/:id' element={<UpdateWishlist />} />
+            <Route path='/updateWishlist/:id' element={<UpdateWishlist />} />
           </Route>
           <Route path='unauthorized' element={<UnauthorizedPage />} />
           <Route path='member_signup/:id/:token' element={<MemberSignup />} />
