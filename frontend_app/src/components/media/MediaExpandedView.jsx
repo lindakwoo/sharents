@@ -12,7 +12,6 @@ import UpdateMedia from "../forms/media/UpdateMedia";
 
 const Img = styled("img")({});
 const Button = styled("button")({});
-const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 
 const MediaExpandedView = () => {
   const [media, setMedia] = useState(null);
@@ -66,11 +65,12 @@ const MediaExpandedView = () => {
       {media && (
         <>
           <Box sx={{ display: "flex", justifyContent: "space-between", width: "70%" }}>
-            <Box sx={{ justifySelf: "start" }}>
-              <StyledLink
-                to='/media'
+            <Box sx={{ display: "flex", justifyContent: "start", alignItems: "center" }}>
+              <Button
+                onClick={() => navigate("/media")}
                 sx={{
                   backgroundColor: "orange",
+                  border: "none",
                   padding: "16px",
                   borderRadius: "10px",
                   "&:hover": {
@@ -80,7 +80,46 @@ const MediaExpandedView = () => {
                 }}
               >
                 <ArrowBack style={{ marginRight: 8, verticalAlign: "middle" }} /> All media
-              </StyledLink>
+              </Button>
+              {role === "guardian" && (
+                <>
+                  <Button
+                    sx={{
+                      border: "none",
+                      backgroundColor: "orange",
+                      mx: "16px",
+
+                      padding: "16px",
+                      borderRadius: "10px",
+                      "& p": { my: 0 },
+
+                      "&:hover": {
+                        backgroundColor: "red",
+                      },
+                    }}
+                    onClick={deleteMedia}
+                  >
+                    Delete Media
+                  </Button>{" "}
+                  <Button
+                    sx={{
+                      border: "none",
+                      backgroundColor: "orange",
+                      padding: "16px",
+
+                      borderRadius: "10px",
+                      "& p": { my: 0 },
+
+                      "&:hover": {
+                        backgroundColor: "yellow",
+                      },
+                    }}
+                    onClick={handleOpen}
+                  >
+                    Update Media
+                  </Button>
+                </>
+              )}
             </Box>
             <Category> {media.category}</Category>
           </Box>
@@ -103,46 +142,7 @@ const MediaExpandedView = () => {
               <Comments id={id} type='media' />
             </Box>
           </Box>
-          {role === "guardian" && (
-            <Box sx={{ position: "fixed", bottom: "16px", right: "16px" }}>
-              <Button
-                sx={{
-                  border: "none",
-                  backgroundColor: "red",
-                  mr: "16px",
-                  color: "white",
-                  padding: "8px",
-                  borderRadius: "10px",
-                  "& p": { my: 0 },
-                  maxHeight: "50px",
-                  "&:hover": {
-                    backgroundColor: "#0288d1",
-                    color: "white",
-                  },
-                }}
-                onClick={deleteMedia}
-              >
-                Delete Media
-              </Button>{" "}
-              <Button
-                sx={{
-                  border: "none",
-                  backgroundColor: "yellow",
-                  padding: "8px",
-                  borderRadius: "10px",
-                  "& p": { my: 0 },
-                  maxHeight: "50px",
-                  "&:hover": {
-                    backgroundColor: "#0288d1",
-                    color: "white",
-                  },
-                }}
-                onClick={handleOpen}
-              >
-                Update Media
-              </Button>
-            </Box>
-          )}
+
           <UpdateMedia fetchMedia={fetchMedia} media={media} open={modalOpen} handleClose={handleClose} id={id} />
         </>
       )}

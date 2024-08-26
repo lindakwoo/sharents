@@ -9,7 +9,7 @@ const Button = styled("button")({});
 const GuardianSignup = ({ open, handleClose }) => {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
-  const [user, setUser] = useState({ name: "", username: "", password: "", confirmPassword: "" });
+  const [user, setUser] = useState({ name: "", username: "", email: "", password: "", confirmPassword: "" });
   const [error, setError] = useState("");
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,7 +55,7 @@ const GuardianSignup = ({ open, handleClose }) => {
         className='shadow p-4 mt-4'
       >
         <Box sx={{ width: "100%" }} className='shadow p-4 mt-4'>
-          <h2>Signup</h2>
+          <h2>Signup as a Guardian</h2>
           <form onSubmit={handleSubmit}>
             <Box
               sx={{
@@ -71,6 +71,23 @@ const GuardianSignup = ({ open, handleClose }) => {
                 value={user.name}
                 onChange={handleChange}
                 placeholder='Name'
+                required
+              />
+            </Box>
+            <Box
+              sx={{
+                mt: "16px",
+              }}
+              className='form-group'
+            >
+              <label>Email address</label>
+              <input
+                type='email'
+                name='email'
+                className='form-control'
+                value={user.email}
+                onChange={handleChange}
+                placeholder='Email address'
                 required
               />
             </Box>
