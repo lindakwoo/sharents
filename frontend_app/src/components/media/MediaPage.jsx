@@ -5,12 +5,26 @@ import { Box, styled } from "@mui/material";
 import { Link } from "react-router-dom";
 import { ArrowForward } from "@mui/icons-material";
 import MediaBox from "./MediaBox";
+import Category from "../Category";
 // This is the page that will render a bunch of little Media boxes to click on for expanded view
 const Img = styled("img")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
+const Select = styled("select")({
+  appearance: "none", // Remove default browser styling for select items
+  width: "100%",
+  padding: "8px 40px 8px 8px",
+  borderRadius: "4px",
+  background: `url('data:image/svg+xml;utf8,<svg fill="%23000000" height="32" viewBox="0 0 24 24" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat`, // Custom dropdown arrow (enlarged)
+  backgroundSize: "24px", // size of the icon
+  backgroundPosition: "calc(100% - 4px) center", // Move icon 4px from the right
+  backgroundColor: "white",
+  fontSize: "16px",
+});
 
 const MediaPage = () => {
   const [media, setMedia] = useState([]);
+  const [filteredMedia, setFilteredMedia] = useState([]);
+  const [category, setCategory] = useState("");
   const { child } = useContext(ChildContext);
   const fetchMedia = async () => {
     const url = `http://localhost/api/media/children/${child.id}`;
@@ -29,9 +43,22 @@ const MediaPage = () => {
       setMedia([]);
     }
   };
+
+  const filterByCategory = () => {
+    if (category === "") {
+      setFilteredMedia(media);
+    } else {
+      const filtered = media.filter((media) => media.category === category);
+      setFilteredMedia(filtered);
+    }
+  };
   useEffect(() => {
     fetchMedia(); // Fetch media when id changes
   }, [child]);
+
+  useEffect(() => {
+    filterByCategory(); // Filter media when category changes
+  }, [category, media]);
 
   return (
     <Box
@@ -42,6 +69,7 @@ const MediaPage = () => {
         alignItems: "center",
         flexDirection: "column",
         marginBottom: "64px",
+        padding: "64px",
       }}
     >
       <Box
@@ -53,6 +81,42 @@ const MediaPage = () => {
           alignItems: "center",
         }}
       >
+        <Box
+          sx={{
+            mt: "16px",
+          }}
+          className='form-group'
+        >
+          <form>
+            <Box
+              sx={{
+                mt: "16px",
+              }}
+              className='form-group'
+            >
+              <Select
+                className='form-control'
+                value={category}
+                required
+                name='category'
+                onChange={(e) => {
+                  setCategory(e.target.value);
+                }}
+                placeholder='filter by category'
+              >
+                <option value=''>filter by category</option>
+                <option value=''>all categories</option>
+                <option value='growth'>growth</option>
+                <option value='food'>food</option>
+                <option value='health'>health</option>
+                <option value='speech'>speech</option>
+                <option value='physical'>physical</option>
+                <option value='cognitive'>cognitive</option>
+                <option value='other'>other</option>
+              </Select>
+            </Box>
+          </form>
+        </Box>{" "}
         <h1>All media</h1>
         {media.length > 0 && (
           <Box
@@ -76,14 +140,20 @@ const MediaPage = () => {
               },
             }}
           >
-            {media.map((media) => (
-              <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            {filteredMedia.map((media) => (
+              <Box sx={{ position: "relative" }}>
+                <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px" }}>
+                  {media.category}
+                </Category>
                 <StyledLink to={`/media/${media.id}`}>
                   <Img sx={{ width: "100%", maxWidth: "300px", height: "auto" }} src={media.url} />
                 </StyledLink>
               </Box>
             ))}
           </Box>
+        )}
+        {filteredMedia.length === 0 && media.length > 0 && (
+          <Box>{`There are no media in the ${category} category `}</Box>
         )}
         {media.length === 0 && <Box>There are no photos or videos for this child</Box>}
       </Box>

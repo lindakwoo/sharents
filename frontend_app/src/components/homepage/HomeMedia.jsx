@@ -4,6 +4,7 @@ import { ChildContext } from "../../context/ChildContext";
 import { Box, styled } from "@mui/material";
 import { Link } from "react-router-dom";
 import { ArrowForward } from "@mui/icons-material";
+import Category from "../Category";
 
 const Img = styled("img")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
@@ -69,7 +70,10 @@ const HomeMedia = () => {
             }}
           >
             {media.map((media) => (
-              <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }} key={media.id}>
+              <Box sx={{ position: "relative" }} key={media.id}>
+                <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px" }}>
+                  {media.category}
+                </Category>
                 <StyledLink to={`/media/${media.id}`}>
                   <Img sx={{ width: "80%" }} src={media.url} />
                 </StyledLink>

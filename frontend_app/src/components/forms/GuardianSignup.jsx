@@ -24,6 +24,7 @@ const GuardianSignup = ({ open, handleClose }) => {
     }
     try {
       // hard code for now until Caleb does his thing...
+      // Caleb will pass back the access token, id of the user and whethe
       login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
       navigate("/member_landing");
       // const response = await axios.post("http://localhost:8000/signup/", user, {

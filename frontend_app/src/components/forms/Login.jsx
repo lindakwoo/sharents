@@ -21,6 +21,7 @@ function Login({ open, handleClose }) {
     e.preventDefault();
     try {
       // hard code for now until Caleb does his thing...
+      // with just the username and password, caleb will pass back the access token, id of the user and whether or not they are a guardian or member
       login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
       navigate("/member_landing");
       // const response = await axios.post("http://localhost/auth/token/", user, {
