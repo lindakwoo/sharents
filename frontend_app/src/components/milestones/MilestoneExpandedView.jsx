@@ -34,10 +34,31 @@ const MilestoneExpandedView = () => {
     }
   };
 
+  const deleteComment = async (commentId) => {
+    console.log(commentId);
+    const url = `http://localhost/api/comments/${commentId}`;
+    const options = { method: "DELETE" };
+    console.log(url);
+    try {
+      const response = await customFetch(url, options);
+      console.log(response);
+    } catch (error) {
+      console.error("Error deleting comment: ", error);
+    }
+  };
+
   const deleteMilestone = async () => {
     const url = `http://localhost/api/milestones/${id}`;
+    const commentsUrl = `http://localhost/api/milestones/${id}/comments/`;
     const options = { method: "DELETE" };
     try {
+      const commentsResponse = await customFetch(commentsUrl);
+      const comments = commentsResponse.comments;
+      if (comments.length > 0) {
+        for (let comment of comments) {
+          deleteComment(comment.id);
+        }
+      }
       const response = await customFetch(url, options);
       console.log(response);
       navigate("/milestones");

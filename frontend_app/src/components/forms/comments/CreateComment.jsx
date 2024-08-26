@@ -20,6 +20,7 @@ const CreateComment = ({ fetchComments, open, handleClose, type, id }) => {
     e.preventDefault();
 
     const getUserUrl =
+      // TODO: make sure these endpoints work cuz they don't right now...
       role === "guardian" ? `http://localhost/api/guardians/${user}/` : `http://localhost/api/members/${user}/`;
     try {
       const userResponse = await customFetch(getUserUrl);
