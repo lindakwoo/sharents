@@ -14,10 +14,6 @@ const HomeMilestone = ({ milestone }) => {
         width: "80%",
         padding: "64px",
         borderRadius: "10px",
-        transition: "transform 0.3s ease-in-out", // Smooth transition
-        "&:hover": {
-          transform: "scale(1.1)", // Grow the image to 110% of its original size on hover
-        },
       }}
     >
       <Category> {milestone.category}</Category>

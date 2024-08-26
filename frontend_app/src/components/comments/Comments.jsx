@@ -5,7 +5,7 @@ import { Box, styled } from "@mui/material";
 import CreateComment from "../forms/comments/CreateComment";
 import UpdateComment from "../forms/comments/UpdateComment";
 import UpdateIcon from "@mui/icons-material/Update";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { AuthContext } from "../../context/AuthContext";
 
 const Button = styled("button")({});
@@ -86,7 +86,7 @@ const Comments = ({ id, type }) => {
           comments.map((comment) => {
             const isCommentOwner = comment.member === user || comment.guardian === user;
             return (
-              <Box key={comment.id}>
+              <>
                 {comment.creator_name && (
                   <Box sx={{ color: "orange", fontWeight: "bold", fontStyle: "italic" }}>{comment.creator_name}:</Box>
                 )}
@@ -128,30 +128,17 @@ const Comments = ({ id, type }) => {
                           },
                         }}
                         onClick={() => {
-                          deleteComment(comment.id);
-                        }}
-                      />
+                          deleteComment(comment.id)
+                        }} />
                     </>
                   )}
                 </Box>
-              </Box>
+              </>
             );
           })}
       </Box>
-      <CreateComment
-        fetchComments={fetchComments}
-        open={createModalOpen}
-        handleClose={handleCloseCreateModal}
-        type={type}
-        id={id}
-      />
-      <UpdateComment
-        fetchComments={fetchComments}
-        open={updateModalOpen}
-        handleClose={handleCloseUpdateModal}
-        type={type}
-        comment={selectedComment}
-      />
+      <CreateComment fetchComments={fetchComments} open={createModalOpen} handleClose={handleCloseCreateModal} type={type} id={id} />
+      <UpdateComment fetchComments={fetchComments} open={updateModalOpen} handleClose={handleCloseUpdateModal} type={type} comment={selectedComment} />
     </>
   );
 };

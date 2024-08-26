@@ -9,45 +9,36 @@ const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 
 const MilestoneBox = ({ milestone }) => {
   return (
-    <Box
+    <StyledLink
       sx={{
-        transition: "transform 0.3s ease-in-out", // Smooth transition
-        "&:hover": {
-          transform: "scale(1.1)", // Grow the image to 110% of its original size on hover
-        },
+        height: "150px",
+        width: "50vw",
+        backgroundColor: "#b5d4f6",
+        color: "black",
+        padding: "16px",
+        borderRadius: "10px",
+        display: "flex",
+        justifyContent: "center",
+        flexDirection: "column",
+        alignItems: "center",
+        position: "relative",
       }}
+      to={`/milestones/${milestone.id}`}
     >
-      <StyledLink
+      <Category
         sx={{
-          height: "150px",
-          width: "50vw",
-          backgroundColor: "#b5d4f6",
-          color: "black",
-          padding: "16px",
-          borderRadius: "10px",
-          display: "flex",
-          justifyContent: "center",
-          flexDirection: "column",
-          alignItems: "center",
-          position: "relative",
+          position: "absolute",
+          top: "20px",
+          left: "20px",
         }}
-        to={`/milestones/${milestone.id}`}
       >
-        <Category
-          sx={{
-            position: "absolute",
-            top: "20px",
-            left: "20px",
-          }}
-        >
-          {milestone.category}
-        </Category>
+        {milestone.category}
+      </Category>
 
-        <Box sx={{ mt: "16px" }}>{formatDate(milestone.date, false)}</Box>
+      <Box sx={{ mt: "16px" }}>{formatDate(milestone.date, false)}</Box>
 
-        <h1>{milestone.name}</h1>
-      </StyledLink>
-    </Box>
+      <h1>{milestone.name}</h1>
+    </StyledLink>
   );
 };
 
