@@ -72,23 +72,27 @@ const EventExpandedView = () => {
 
   const deleteEvent = async () => {
     const url = `http://localhost/api/events/${id}`;
-    const wishListUrl = `http://localhost/api/wishlists/${wishlists[0].id}/`;
-    const wishListItemsUrl = `http://localhost/api/wishlists/${wishlists[0].id}/wishlistItems/`;
+
     const options = { method: "DELETE" };
     try {
       // delete all wishlist items first
-      const response = await customFetch(wishListItemsUrl);
-      const wishlistItems = response.wishlistItems;
-      const promises = wishlistItems.map((item) => {
-        const url = `http://localhost/api/wishlistItems/${item.id}`;
-        const deleteItemReponse = customFetch(url, options);
-        console.log(deleteItemReponse);
-        return deleteItemReponse;
-      });
-      await Promise.all(promises);
-      // delete wishlist
-      const deleteWishlistResponse = await customFetch(wishListUrl, options);
-      console.log(deleteWishlistResponse);
+      if (wishlists.length > 0) {
+        const wishListUrl = `http://localhost/api/wishlists/${wishlists[0].id}/`;
+        const wishListItemsUrl = `http://localhost/api/wishlists/${wishlists[0].id}/wishlistItems/`;
+        const response = await customFetch(wishListItemsUrl);
+        const wishlistItems = response.wishlistItems;
+        const promises = wishlistItems.map((item) => {
+          const url = `http://localhost/api/wishlistItems/${item.id}`;
+          const deleteItemReponse = customFetch(url, options);
+          console.log(deleteItemReponse);
+          return deleteItemReponse;
+        });
+        await Promise.all(promises);
+        // delete wishlist
+
+        const deleteWishlistResponse = await customFetch(wishListUrl, options);
+        console.log(deleteWishlistResponse);
+      }
       // delete event
       const deleteEventReponse = await customFetch(url, options);
       console.log(deleteEventReponse);
