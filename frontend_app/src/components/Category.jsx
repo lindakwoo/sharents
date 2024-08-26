@@ -1,17 +1,17 @@
 import React from "react";
 import { Box, styled } from "@mui/material";
 
-const Category = styled(Box)(({ theme }) => ({
+const Category = styled(Box)(({ theme, size }) => ({
   backgroundColor: theme.palette.info.main, // You can customize this color
   color: theme.palette.info.contrastText, // Text color
-  padding: "16px",
+  padding: size === "small" ? "4px 8px" : "16px",
   borderRadius: "12px",
   textAlign: "center",
-  fontSize: "16px",
+  fontSize: size === "small" ? "12px" : "16px",
   fontWeight: "bold",
-  marginBottom: "16px",
+  marginBottom: size === "small" ? "8px" : "16px",
   boxShadow: "0px 4px 8px rgba(0, 0, 0, 0.1)", // Adds a shadow for emphasis
-  width: "100px",
+  width: size === "small" ? "80px" : "100px",
 }));
 
 export default Category;

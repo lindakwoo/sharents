@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import customFetch from "../../fetchWrapper";
-import { Link } from "react-router-dom";
+
 import { Box, styled } from "@mui/material";
-import { formatDate } from "../../utils";
-import { ArrowBack } from "@mui/icons-material";
-import Category from "../Category";
-import Comments from "../comments/Comments";
+
+import { AuthContext } from "../../context/AuthContext";
 
 const Button = styled("button")({});
 
@@ -22,6 +20,8 @@ const MemberSignup = () => {
   const navigate = useNavigate();
 
   const { id, token } = useParams();
+
+  const { login } = useContext(AuthContext);
 
   const verifyToken = async () => {
     const url = `http://localhost/auth/verify_invite/${id}/${token}/`;
@@ -75,7 +75,8 @@ const MemberSignup = () => {
       // const response = await customFetch(url, options);
       // console.log("success!!!", response);
       console.log("Form submitted successfully");
-      navigate("/home");
+      login("some Access token", id, "member");
+      navigate("/member_landing");
     } catch (error) {
       console.error("Error signing up member: ", error);
     }
