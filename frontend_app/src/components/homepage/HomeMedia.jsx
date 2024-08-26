@@ -42,6 +42,7 @@ const HomeMedia = () => {
     <Box
       sx={{
         padding: "16px",
+        padding: "64px",
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
