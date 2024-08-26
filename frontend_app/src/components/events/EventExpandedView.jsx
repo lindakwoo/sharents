@@ -111,13 +111,23 @@ const EventExpandedView = () => {
   const handleWishlistlose = () => setWishlistModalOpen(false);
 
   return (
-    <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", mt: "64px" }}>
-      <Box sx={{ display: "flex", width: "80vw", justifyContent: "space-between", mb: "64px" }}>
-        <Box sx={{ justifySelf: "start" }}>
-          <StyledLink
-            to='/events'
+    <Box
+      sx={{
+        mt: "64px",
+        padding: "64px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <Box sx={{ display: "flex", justifyContent: "space-between", width: "70%" }}>
+        <Box sx={{ display: "flex", justifyContent: "start", alignItems: "center" }}>
+          <Button
+            onClick={() => navigate("/events")}
             sx={{
               backgroundColor: "orange",
+              border: "none",
               padding: "16px",
               borderRadius: "10px",
               "&:hover": {
@@ -127,7 +137,66 @@ const EventExpandedView = () => {
             }}
           >
             <ArrowBack style={{ marginRight: 8, verticalAlign: "middle" }} /> All events
-          </StyledLink>
+          </Button>
+          {role === "guardian" && (
+            <>
+              <Button
+                sx={{
+                  border: "none",
+                  backgroundColor: "orange",
+                  mx: "16px",
+
+                  padding: "16px",
+                  borderRadius: "10px",
+                  "& p": { my: 0 },
+
+                  "&:hover": {
+                    backgroundColor: "red",
+                  },
+                }}
+                onClick={deleteEvent}
+              >
+                Delete Event
+              </Button>{" "}
+              <Button
+                sx={{
+                  border: "none",
+                  backgroundColor: "orange",
+                  padding: "16px",
+
+                  borderRadius: "10px",
+                  "& p": { my: 0 },
+
+                  "&:hover": {
+                    backgroundColor: "yellow",
+                  },
+                }}
+                onClick={handleOpen}
+              >
+                Update Event
+              </Button>
+            </>
+          )}
+          {wishlists.length === 0 && (
+            <Button
+              sx={{
+                border: "none",
+                backgroundColor: "orange",
+                mx: "16px",
+
+                padding: "16px",
+                borderRadius: "10px",
+                "& p": { my: 0 },
+
+                "&:hover": {
+                  backgroundColor: "yellow",
+                },
+              }}
+              onClick={handleWishlistOpen}
+            >
+              Add a Wishlist
+            </Button>
+          )}
         </Box>
 
         {wishlists.length > 0 && (
@@ -174,66 +243,6 @@ const EventExpandedView = () => {
         )}
       </Box>
 
-      {role === "guardian" && (
-        <Box sx={{ position: "fixed", bottom: "16px", right: "16px" }}>
-          <Button
-            sx={{
-              border: "none",
-              backgroundColor: "red",
-              mr: "16px",
-              color: "white",
-              padding: "8px",
-              borderRadius: "10px",
-              "& p": { my: 0 },
-              maxHeight: "50px",
-              "&:hover": {
-                backgroundColor: "#0288d1",
-                color: "white",
-              },
-            }}
-            onClick={deleteEvent}
-          >
-            Delete Event
-          </Button>{" "}
-          <Button
-            sx={{
-              border: "none",
-              backgroundColor: "yellow",
-              padding: "8px",
-              borderRadius: "10px",
-              mr: "16px",
-              "& p": { my: 0 },
-              maxHeight: "50px",
-              "&:hover": {
-                backgroundColor: "#0288d1",
-                color: "white",
-              },
-            }}
-            onClick={handleOpen}
-          >
-            Update Event
-          </Button>
-          {wishlists.length === 0 && (
-            <Button
-              sx={{
-                border: "none",
-                backgroundColor: "yellow",
-                padding: "8px",
-                borderRadius: "10px",
-                "& p": { my: 0 },
-                maxHeight: "50px",
-                "&:hover": {
-                  backgroundColor: "#0288d1",
-                  color: "white",
-                },
-              }}
-              onClick={handleWishlistOpen}
-            >
-              Add a Wishlist
-            </Button>
-          )}
-        </Box>
-      )}
       <UpdateEvent fetchEvent={fetchEvent} event={event} open={modalOpen} handleClose={handleClose} id={id} />
       <CreateWishlist
         fetchWishlists={fetchWishlists}

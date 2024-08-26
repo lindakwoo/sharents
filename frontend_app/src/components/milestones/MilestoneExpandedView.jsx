@@ -11,7 +11,6 @@ import UpdateMilestone from "../forms/milestones/UpdateMilestone";
 import { AuthContext } from "../../context/AuthContext";
 
 const Button = styled("button")({});
-const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 const H1 = styled("h1")({});
 const H2 = styled("h2")({});
 
@@ -118,7 +117,7 @@ const MilestoneExpandedView = () => {
                     }}
                     onClick={handleOpen}
                   >
-                    Update Media
+                    Update Milestone
                   </Button>
                 </>
               )}
