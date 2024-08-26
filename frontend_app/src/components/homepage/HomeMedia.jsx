@@ -71,7 +71,16 @@ const HomeMedia = () => {
             }}
           >
             {media.map((media) => (
-              <Box sx={{ position: "relative" }} key={media.id}>
+              <Box
+                sx={{
+                  position: "relative",
+                  transition: "transform 0.3s ease-in-out", // Smooth transition
+                  "&:hover": {
+                    transform: "scale(1.1)", // Grow the image to 110% of its original size on hover
+                  },
+                }}
+                key={media.id}
+              >
                 <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px" }}>
                   {media.category}
                 </Category>

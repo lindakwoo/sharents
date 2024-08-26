@@ -65,4 +65,4 @@ Love Sharents? Give us a star on Gitlab and spread the word!
 
 ---
 
-Built with ❤️ by Next Chapter / Hack Reactor Cohort Attendees Summer 2024
+Built with ❤️ by Next Chapter / Hack Reactor Cohort Attendees Summer 2024.
