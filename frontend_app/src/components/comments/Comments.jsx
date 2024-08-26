@@ -1,15 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import customFetch from "../../fetchWrapper";
 import { Link } from "react-router-dom";
 import { Box, styled } from "@mui/material";
 import CreateComment from "../forms/comments/CreateComment";
+import UpdateComment from "../forms/comments/UpdateComment";
+import UpdateIcon from "@mui/icons-material/Update";
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { AuthContext } from "../../context/AuthContext";
 
 const Button = styled("button")({});
 
 const Comments = ({ id, type }) => {
   const [comments, setComments] = useState([]);
-  const [modalOpen, setModalOpen] = useState(false);
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [selectedComment, setSelectedComment] = useState("");
   const urlType = type === "milestone" ? "milestones" : type;
+  const { user } = useContext(AuthContext);
 
   const fetchComments = async () => {
     const url = `http://localhost/api/${urlType}/${id}/comments/`;
@@ -22,8 +29,30 @@ const Comments = ({ id, type }) => {
     }
   };
 
-  const handleOpen = () => setModalOpen(true);
-  const handleClose = () => setModalOpen(false);
+  const handleOpenCreateModal = () => setCreateModalOpen(true);
+  const handleCloseCreateModal = () => setCreateModalOpen(false);
+
+  const handleOpenUpdateModal = (comment) => {
+    setSelectedComment(comment);
+    setUpdateModalOpen(true);
+  };
+
+  const handleCloseUpdateModal = () => {
+    setSelectedComment("");
+    setUpdateModalOpen(false);
+  };
+
+  const deleteComment = async (commentId) => {
+    const url = `http://localhost/api/comments/${commentId}`;
+    const options = { method: "DELETE" };
+    try {
+      const response = await customFetch(url, options);
+      console.log(response);
+      fetchComments();
+    } catch (error) {
+      console.error("Error deleting comment: ", error);
+    }
+  };
 
   useEffect(() => {
     fetchComments(); // Fetch media when id changes
@@ -47,7 +76,7 @@ const Comments = ({ id, type }) => {
               color: "white",
             },
           }}
-          onClick={handleOpen}
+          onClick={handleOpenCreateModal}
         >
           Add a comment
         </Button>
@@ -55,6 +84,7 @@ const Comments = ({ id, type }) => {
       <Box>
         {comments.length > 0 &&
           comments.map((comment) => {
+            const isCommentOwner = comment.member === user || comment.guardian === user;
             return (
               <>
                 {comment.creator_name && (
@@ -71,12 +101,44 @@ const Comments = ({ id, type }) => {
                   }}
                 >
                   {comment.text}
+                  {isCommentOwner && (
+                    <>
+                      <UpdateIcon
+                        sx={{
+                          float: "right",
+                          cursor: "pointer",
+                          color: "orange",
+                          "&:hover": {
+                            backgroundColor: "orange",
+                            color: "white",
+                          },
+                        }}
+                        onClick={() => {
+                          handleOpenUpdateModal(comment);
+                        }}
+                      />
+                      <DeleteForeverIcon
+                        sx={{
+                          float: "right",
+                          cursor: "pointer",
+                          color: "red",
+                          "&:hover": {
+                            backgroundColor: "red",
+                            color: "white",
+                          },
+                        }}
+                        onClick={() => {
+                          deleteComment(comment.id)
+                        }} />
+                    </>
+                  )}
                 </Box>
               </>
             );
           })}
       </Box>
-      <CreateComment fetchComments={fetchComments} open={modalOpen} handleClose={handleClose} type={type} id={id} />
+      <CreateComment fetchComments={fetchComments} open={createModalOpen} handleClose={handleCloseCreateModal} type={type} id={id} />
+      <UpdateComment fetchComments={fetchComments} open={updateModalOpen} handleClose={handleCloseUpdateModal} type={type} comment={selectedComment} />
     </>
   );
 };
