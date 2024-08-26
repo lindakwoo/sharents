@@ -177,7 +177,7 @@ const EventExpandedView = () => {
               </Button>
             </>
           )}
-          {wishlists.length === 0 && (
+          {wishlists.length === 0 && role === "guardian" && (
             <Button
               sx={{
                 border: "none",
