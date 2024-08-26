@@ -10,7 +10,6 @@ import Comments from "../comments/Comments";
 import UpdateMilestone from "../forms/milestones/UpdateMilestone";
 import { AuthContext } from "../../context/AuthContext";
 
-
 const Button = styled("button")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 const H1 = styled("h1")({});
@@ -68,11 +67,12 @@ const MilestoneExpandedView = () => {
       {milestone && (
         <>
           <Box sx={{ display: "flex", justifyContent: "space-between", width: "70%" }}>
-            <Box sx={{ justifySelf: "start" }}>
-              <StyledLink
-                to='/milestones'
+            <Box sx={{ display: "flex", justifyContent: "start", alignItems: "center" }}>
+              <Button
+                onClick={() => navigate("/milestones")}
                 sx={{
                   backgroundColor: "orange",
+                  border: "none",
                   padding: "16px",
                   borderRadius: "10px",
                   "&:hover": {
@@ -82,7 +82,46 @@ const MilestoneExpandedView = () => {
                 }}
               >
                 <ArrowBack style={{ marginRight: 8, verticalAlign: "middle" }} /> All milestones
-              </StyledLink>
+              </Button>
+              {role === "guardian" && (
+                <>
+                  <Button
+                    sx={{
+                      border: "none",
+                      backgroundColor: "orange",
+                      mx: "16px",
+
+                      padding: "16px",
+                      borderRadius: "10px",
+                      "& p": { my: 0 },
+
+                      "&:hover": {
+                        backgroundColor: "red",
+                      },
+                    }}
+                    onClick={deleteMilestone}
+                  >
+                    Delete Milestone
+                  </Button>{" "}
+                  <Button
+                    sx={{
+                      border: "none",
+                      backgroundColor: "orange",
+                      padding: "16px",
+
+                      borderRadius: "10px",
+                      "& p": { my: 0 },
+
+                      "&:hover": {
+                        backgroundColor: "yellow",
+                      },
+                    }}
+                    onClick={handleOpen}
+                  >
+                    Update Media
+                  </Button>
+                </>
+              )}
             </Box>
             <Category> {milestone.category}</Category>
           </Box>
@@ -98,48 +137,6 @@ const MilestoneExpandedView = () => {
               <Comments id={id} type='milestone' />
             </Box>
           </Box>
-          {role === "guardian" && (
-            <Box sx={{ position: "fixed", bottom: "16px", right: "16px" }}>
-              <Button
-                sx={{
-                  border: "none",
-                  backgroundColor: "red",
-                  mr: "16px",
-                  color: "white",
-                  padding: "8px",
-                  borderRadius: "10px",
-                  "& p": { my: 0 },
-                  maxHeight: "50px",
-                  "&:hover": {
-                    backgroundColor: "#0288d1",
-                    color: "white",
-                  },
-                }}
-                onClick={deleteMilestone}
-              >
-                Delete Milestone
-              </Button>{" "}
-              <Button
-                sx={{
-                  border: "none",
-
-                  backgroundColor: "yellow",
-                  padding: "8px",
-                  borderRadius: "10px",
-                  "& p": { my: 0 },
-                  maxHeight: "50px",
-                  "&:hover": {
-                    backgroundColor: "#0288d1",
-                    color: "white",
-                  },
-                }}
-                onClick={handleOpen}
-              >
-                Update Milestone
-              </Button>
-            </Box>
-          )}
-
           <UpdateMilestone
             fetchMilestone={fetchMilestone}
             milestone={milestone}

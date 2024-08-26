@@ -12,7 +12,6 @@ import UpdateMedia from "../forms/media/UpdateMedia";
 
 const Img = styled("img")({});
 const Button = styled("button")({});
-const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 
 const MediaExpandedView = () => {
   const [media, setMedia] = useState(null);
