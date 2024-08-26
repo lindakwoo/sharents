@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import customFetch from "../../fetchWrapper";
 import { Box, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
@@ -13,7 +13,7 @@ const WishlistPage = () => {
   const [wishlist, setWishlist] = useState({});
   const [wishlistItems, setWishlistItems] = useState([]);
   const { role } = useContext(AuthContext);
-  const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
   const { id } = useParams();
 
   const fetchWishlist = async () => {
@@ -54,6 +54,10 @@ const WishlistPage = () => {
     } else {
       alert("there is no vendor listed for this item");
     }
+  };
+
+  const handleWishlistClick = (id) => {
+    navigate(`/updateWishlist/${id}`);
   };
 
   const formatPrice = (price) => {
@@ -128,14 +132,14 @@ const WishlistPage = () => {
         <Box>
           <Box sx={{ position: "fixed", bottom: "16px", right: "16px" }}>
 
-            <StyledLink to='/updateWishlist/${wishlist.id}' sx={{ backgroundColor: "orange", padding: "16px", borderRadius: "10px" }}>
+            <StyledLink onClick={() => handleWishlistClick(wishlist.id)} sx={{ backgroundColor: "orange", padding: "16px", borderRadius: "10px" }}>
               Update wishlist
             </StyledLink>
           </Box>
-        </Box>
+        </Box >
       )}
 
-    </Box>
+    </Box >
   );
 };
 

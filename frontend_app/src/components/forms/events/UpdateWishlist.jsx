@@ -6,7 +6,7 @@ import UpdateWishlistItem from "./UpdateWishlistItem";
 
 const Button = styled("button")({});
 
-const UpdateWishlist = () => {
+const UpdateWishlist = (id) => {
   const [wishlistData, setWishlistData] = useState({});
   const [items, setItems] = useState([]);
 
@@ -15,16 +15,16 @@ const UpdateWishlist = () => {
     setWishlistData({ ...wishlistData, [name]: value });
   }
 
-  const handleItemChange = (index, e) => {
-    const { name, value } = e.target;
-    const newItems = [...items];
-    newItems[index] = { ...newItems[index], [name]: value };
-    setItems(newItems);
-  }
+  // const handleItemChange = (index, e) => {
+  //   const { name, value } = e.target;
+  //   const newItems = [...items];
+  //   newItems[index] = { ...newItems[index], [name]: value };
+  //   setItems(newItems);
+  // }
 
-  const handleDeleteItem = (index) => {
-    console.log("delete item", index);
-  }
+  // const handleDeleteItem = (index) => {
+  //   console.log("delete item", index);
+  // }
 
 
   //  change the name of the wishlist
