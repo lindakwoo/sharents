@@ -7,6 +7,7 @@ import UpdateComment from "../forms/comments/UpdateComment";
 import UpdateIcon from "@mui/icons-material/Update";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { AuthContext } from "../../context/AuthContext";
+import Tooltip from "@mui/material/Tooltip";
 
 const Button = styled("button")({});
 
@@ -117,20 +118,22 @@ const Comments = ({ id, type }) => {
                           handleOpenUpdateModal(comment);
                         }}
                       />
-                      <DeleteForeverIcon
-                        sx={{
-                          float: "right",
-                          cursor: "pointer",
-                          color: "red",
-                          "&:hover": {
-                            backgroundColor: "red",
-                            color: "white",
-                          },
-                        }}
-                        onClick={() => {
-                          deleteComment(comment.id);
-                        }}
-                      />
+                      <Tooltip placement='top' title='delete comment'>
+                        <DeleteForeverIcon
+                          sx={{
+                            float: "right",
+                            cursor: "pointer",
+                            color: "red",
+                            "&:hover": {
+                              backgroundColor: "red",
+                              color: "white",
+                            },
+                          }}
+                          onClick={() => {
+                            deleteComment(comment.id);
+                          }}
+                        />
+                      </Tooltip>
                     </>
                   )}
                 </Box>
