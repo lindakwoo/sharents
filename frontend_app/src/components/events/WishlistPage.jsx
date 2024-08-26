@@ -1,12 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 import customFetch from "../../fetchWrapper";
 import { Box, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import UpdateWishlist from "../forms/events/UpdateWishlist";
 
 const Input = styled("input")({});
+const Button = styled("button")({});
+
 const WishlistPage = () => {
   const [wishlist, setWishlist] = useState({});
   const [wishlistItems, setWishlistItems] = useState([]);
+  const { role } = useContext(AuthContext);
+  const [modalOpen, setModalOpen] = useState(false);
   const { id } = useParams();
 
   const fetchWishlist = async () => {
@@ -48,6 +54,9 @@ const WishlistPage = () => {
       alert("there is no vendor listed for this item");
     }
   };
+
+  const handleOpen = () => setModalOpen(true);
+  const handleClose = () => setModalOpen(false);
 
   const formatPrice = (price) => {
     return parseFloat(price).toLocaleString("en-US", {
@@ -117,6 +126,33 @@ const WishlistPage = () => {
           </TableBody>
         </Table>
       </TableContainer>
+      {role === "guardian" && (
+        <Box>
+          <Box sx={{ position: "fixed", bottom: "16px", right: "16px" }}>
+
+            <Button
+              sx={{
+                border: "none",
+                backgroundColor: "yellow",
+                padding: "8px",
+                borderRadius: "10px",
+                mr: "16px",
+                "& p": { my: 0 },
+                maxHeight: "50px",
+                "&:hover": {
+                  backgroundColor: "#0288d1",
+                  color: "white",
+                },
+              }}
+              onClick={handleOpen}
+            >
+              Update Wishlist
+            </Button>
+            <UpdateWishlist fetchWishlist={fetchWishlist} open={modalOpen} wishlist={wishlist} wishlistItems={wishlistItems} handleClose={handleClose} id={id} />
+          </Box>
+        </Box>
+      )}
+
     </Box>
   );
 };
