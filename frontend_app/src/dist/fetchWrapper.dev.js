@@ -62,33 +62,53 @@ var customFetch = function customFetch(url) {
         case 6:
           response = _context.sent;
 
-          if (response.ok) {
+          if (!(response.status === 204)) {
             _context.next = 9;
+            break;
+          }
+
+          return _context.abrupt("return", {});
+
+        case 9:
+          if (response.ok) {
+            _context.next = 11;
             break;
           }
 
           throw new Error("HTTP error! status: ".concat(response.status));
 
-        case 9:
-          _context.next = 11;
+        case 11:
+          _context.prev = 11;
+          _context.next = 14;
           return regeneratorRuntime.awrap(response.json());
 
-        case 11:
+        case 14:
           data = _context.sent;
           return _context.abrupt("return", data);
 
-        case 15:
-          _context.prev = 15;
-          _context.t0 = _context["catch"](3);
-          console.error("Error during fetch:", _context.t0);
-          throw _context.t0;
+        case 18:
+          _context.prev = 18;
+          _context.t0 = _context["catch"](11);
+          // Handle cases where response is not valid JSON
+          console.error("Failed to parse JSON:", _context.t0);
+          throw new Error("Response is not valid JSON");
 
-        case 19:
+        case 22:
+          _context.next = 28;
+          break;
+
+        case 24:
+          _context.prev = 24;
+          _context.t1 = _context["catch"](3);
+          console.error("Error during fetch:", _context.t1);
+          throw _context.t1;
+
+        case 28:
         case "end":
           return _context.stop();
       }
     }
-  }, null, null, [[3, 15]]);
+  }, null, null, [[3, 24], [11, 18]]);
 };
 
 var _default = customFetch;

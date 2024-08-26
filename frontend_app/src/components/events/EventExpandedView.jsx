@@ -20,6 +20,7 @@ const H3 = styled("h3")({});
 const EventExpandedView = () => {
   const [event, setEvent] = useState({});
   const [wishlists, setWishlists] = useState([]);
+  const [wishlistItems, setWishlistItems] = useState([]);
   const { role } = useContext(AuthContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [wishListModalOpen, setWishlistModalOpen] = useState(false);
@@ -36,6 +37,18 @@ const EventExpandedView = () => {
       console.log(response);
     } catch (error) {
       console.error("Error fetching event", error);
+    }
+  };
+
+  const fetchWishlistItems = async (wishlistId) => {
+    const url = `http://localhost/api/wishlists/${wishlistId}/wishlistItems/`;
+    try {
+      const response = await customFetch(url);
+      console.log("response", response);
+      setWishlistItems(response.wishlistItems);
+    } catch (error) {
+      console.error("Error fetching wishlists", error);
+      setWishlistItems([]);
     }
   };
 
@@ -59,10 +72,26 @@ const EventExpandedView = () => {
 
   const deleteEvent = async () => {
     const url = `http://localhost/api/events/${id}`;
+    const wishListUrl = `http://localhost/api/wishlists/${wishlists[0].id}/`;
+    const wishListItemsUrl = `http://localhost/api/wishlists/${wishlists[0].id}/wishlistItems/`;
     const options = { method: "DELETE" };
     try {
-      const response = await customFetch(url, options);
-      console.log(response);
+      // delete all wishlist items first
+      const response = await customFetch(wishListItemsUrl);
+      const wishlistItems = response.wishlistItems;
+      const promises = wishlistItems.map((item) => {
+        const url = `http://localhost/api/wishlistItems/${item.id}`;
+        const deleteItemReponse = customFetch(url, options);
+        console.log(deleteItemReponse);
+        return deleteItemReponse;
+      });
+      await Promise.all(promises);
+      // delete wishlist
+      const deleteWishlistResponse = await customFetch(wishListUrl, options);
+      console.log(deleteWishlistResponse);
+      // delete event
+      const deleteEventReponse = await customFetch(url, options);
+      console.log(deleteEventReponse);
       navigate("/events");
     } catch (error) {
       console.error("Error deleting event: ", error);
