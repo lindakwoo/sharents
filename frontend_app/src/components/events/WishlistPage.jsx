@@ -42,7 +42,20 @@ const WishlistPage = () => {
 
   const handleRowClick = (url) => {
     // Navigate to the event details page
-    window.open(url, "_blank", "noopener,noreferrer");
+    if (url) {
+      window.open(url, "_blank", "noopener,noreferrer");
+    } else {
+      alert("there is no vendor listed for this item");
+    }
+  };
+
+  const formatPrice = (price) => {
+    return parseFloat(price).toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    });
   };
 
   const handleCheckboxChange = async (index) => {
@@ -87,7 +100,9 @@ const WishlistPage = () => {
                 }}
               >
                 <TableCell>{item.description}</TableCell>
-                <TableCell sx={{ width: "100px", textAlign: "center" }}>${item.price}</TableCell>
+                <TableCell sx={{ width: "100px", textAlign: "center" }}>
+                  {item.price ? formatPrice(item.price) : ``}
+                </TableCell>
                 <TableCell sx={{ width: "100px", textAlign: "center" }}>
                   <Input
                     sx={{ width: "20px", height: "20px" }}

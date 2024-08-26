@@ -7,6 +7,7 @@ import { ArrowBack } from "@mui/icons-material";
 import { ArrowForward } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthContext";
 import UpdateEvent from "../forms/events/UpdateEvent";
+import CreateWishlist from "../forms/events/CreateWishlist";
 
 import moment from "moment";
 
@@ -21,6 +22,7 @@ const EventExpandedView = () => {
   const [wishlists, setWishlists] = useState([]);
   const { role } = useContext(AuthContext);
   const [modalOpen, setModalOpen] = useState(false);
+  const [wishListModalOpen, setWishlistModalOpen] = useState(false);
   const { id } = useParams();
   const navigate = useNavigate();
 
@@ -67,10 +69,13 @@ const EventExpandedView = () => {
     }
   };
   const dateObj = moment(event.datetime);
-  const formattedDate = dateObj.format("MMMM Do YYYY, h:mm:ss a");
+  const formattedDate = dateObj.format("MMMM Do YYYY, h:mm a");
 
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
+
+  const handleWishlistOpen = () => setWishlistModalOpen(true);
+  const handleWishlistlose = () => setWishlistModalOpen(false);
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", mt: "64px" }}>
@@ -163,6 +168,7 @@ const EventExpandedView = () => {
               backgroundColor: "yellow",
               padding: "8px",
               borderRadius: "10px",
+              mr: "16px",
               "& p": { my: 0 },
               maxHeight: "50px",
               "&:hover": {
@@ -174,9 +180,35 @@ const EventExpandedView = () => {
           >
             Update Event
           </Button>
+          {wishlists.length === 0 && (
+            <Button
+              sx={{
+                border: "none",
+                backgroundColor: "yellow",
+                padding: "8px",
+                borderRadius: "10px",
+                "& p": { my: 0 },
+                maxHeight: "50px",
+                "&:hover": {
+                  backgroundColor: "#0288d1",
+                  color: "white",
+                },
+              }}
+              onClick={handleWishlistOpen}
+            >
+              Add a Wishlist
+            </Button>
+          )}
         </Box>
       )}
       <UpdateEvent fetchEvent={fetchEvent} event={event} open={modalOpen} handleClose={handleClose} id={id} />
+      <CreateWishlist
+        fetchWishlists={fetchWishlists}
+        updatingEvent={true}
+        open={wishListModalOpen}
+        handleClose={handleWishlistlose}
+        eventId={id}
+      />
     </Box>
   );
 };

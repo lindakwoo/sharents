@@ -45,6 +45,7 @@ const CreateChild = () => {
             type='text'
             className='form-control'
             value={childData.name}
+            required
             name='name'
             onChange={(e) => handleChange(e)}
             placeholder="Enter child's name"
@@ -61,6 +62,7 @@ const CreateChild = () => {
             type='date'
             className='form-control'
             value={childData.birthdate}
+            required
             name='birthdate'
             onChange={(e) => handleChange(e)}
             placeholder='select a date'
@@ -76,6 +78,7 @@ const CreateChild = () => {
             type='url'
             className='form-control'
             value={childData.profile_picture}
+            required
             name='profile_picture'
             onChange={(e) => handleChange(e)}
             placeholder='https://example.com/'

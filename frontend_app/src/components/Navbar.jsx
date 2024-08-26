@@ -14,6 +14,17 @@ import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material";
 
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
+const Select = styled("select")({
+  appearance: "none", // Remove default browser styling for select items
+  width: "100%",
+  padding: "8px 40px 8px 8px",
+  borderRadius: "4px",
+  background: `url('data:image/svg+xml;utf8,<svg fill="%23000000" height="32" viewBox="0 0 24 24" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat`, // Custom dropdown arrow (enlarged)
+  backgroundSize: "24px", // size of the icon
+  backgroundPosition: "calc(100% - 4px) center", // Move icon 4px from the right
+  backgroundColor: "white",
+  fontSize: "16px",
+});
 const Button = styled("button")({
   border: "none",
   color: "white",
@@ -90,22 +101,21 @@ const Navbar = () => {
     <AppBar position='static' sx={{ backgroundColor: "#0288d1" }}>
       <Toolbar>
         <Typography variant='h6' sx={{ flexGrow: 1, fontWeight: "bold", fontSize: "24px" }}>
-          Sharents
+          <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/'>
+            Sharents
+          </StyledLink>
         </Typography>
+
         {childrenList.length > 0 && (
           <Box sx={{ minWidth: 120 }}>
-            <select
-              value={selectedChildId || ""}
-              onChange={handleChildChange}
-              style={{ padding: "8px", borderRadius: "4px" }}
-            >
+            <Select value={selectedChildId || ""} onChange={handleChildChange}>
               <option value=''>Select Child</option>
               {childrenList.map((child) => (
                 <option key={child.id} value={child.id}>
                   {child.name}
                 </option>
               ))}
-            </select>
+            </Select>
           </Box>
         )}
         <Box sx={{ display: { xs: "none", md: "block" } }}>

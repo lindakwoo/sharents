@@ -37,16 +37,20 @@ const InviteMember = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const data = { member: memberData, children: childrenData };
-    const url = `http://localhost/auth/guardians/${user}/invite/`;
-    const options = { body: JSON.stringify(data), method: "POST" };
+    if (childrenData.length === 0) {
+      alert("Please select at least one child");
+    } else {
+      const data = { member: memberData, children: childrenData };
+      const url = `http://localhost/auth/guardians/${user}/invite/`;
+      const options = { body: JSON.stringify(data), method: "POST" };
 
-    try {
-      const response = await customFetch(url, options);
-      console.log(response);
-      navigate("/home");
-    } catch (error) {
-      console.error("Error creating and sending invite: ", error);
+      try {
+        const response = await customFetch(url, options);
+        console.log(response);
+        navigate("/home");
+      } catch (error) {
+        console.error("Error creating and sending invite: ", error);
+      }
     }
   };
 
@@ -73,6 +77,7 @@ const InviteMember = () => {
             type='text'
             className='form-control'
             value={memberData.name}
+            aria-required
             name='name'
             onChange={(e) => handleChange(e)}
             placeholder="Enter member's name"
@@ -89,6 +94,7 @@ const InviteMember = () => {
             type='email'
             className='form-control'
             value={memberData.email}
+            required
             name='email'
             onChange={(e) => handleChange(e)}
             placeholder='Enter member email address'

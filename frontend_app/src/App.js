@@ -40,6 +40,7 @@ function App() {
           <Route path='unauthorized' element={<UnauthorizedPage />} />
           <Route path='member_signup/:id/:token' element={<MemberSignup />} />
 
+
           {/* <Route path='inventory/manufacturers'>
               <Route index element={<Manufacturers />} />
               <Route path='create' element={<CreateManufacturerForm />} />

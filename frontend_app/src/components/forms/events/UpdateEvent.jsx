@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import customFetch from "../../../fetchWrapper";
 import { Box, styled, Modal } from "@mui/material";
-import { AuthContext } from "../../../context/AuthContext";
 
 const Button = styled("button")({});
 
@@ -14,16 +13,6 @@ const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
   };
 
   const Button = styled("button")({});
-
-  const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
-    console.log("event on modal: ", event);
-    const [eventData, setEventData] = useState({});
-
-    const handleChange = (e) => {
-      const { name, value } = e.target;
-      setEventData({ ...eventData, [name]: value });
-    };
-  };
 
   let myDate = "";
   if (event.datetime !== undefined && event.datetime !== "") {
@@ -144,13 +133,5 @@ const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
     </Modal>
   );
 };
-
-// {
-//   "datetime": "string",
-//     "description": "string",
-//       "title": "string",
-//         "location": "string",
-//           "notes": "string"
-// }
 
 export default UpdateEvent;
