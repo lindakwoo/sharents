@@ -9,7 +9,7 @@ import Category from "../Category";
 import Comments from "../comments/Comments";
 import UpdateMilestone from "../forms/milestones/UpdateMilestone";
 import { AuthContext } from "../../context/AuthContext";
-import UpdateIcon from "@mui/icons-material/Update";
+
 
 const Button = styled("button")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
