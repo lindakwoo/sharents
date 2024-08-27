@@ -16,6 +16,7 @@ const WishlistPage = () => {
   const navigate = useNavigate();
   const { event_id, title, id } = useParams();
 
+
   const fetchWishlist = async () => {
     const url = `http://localhost/api/wishlists/${id}/`;
     try {
@@ -68,6 +69,25 @@ const WishlistPage = () => {
       maximumFractionDigits: 2,
     });
   };
+
+  const handelDeleteWishlist = async (id) => {
+    const wistlistUrl = `http://localhost/api/wishlists/${id}/`;
+    const options = { method: "DELETE" };
+    try {
+      const promises = wishlistItems.map((item) => {
+        const itemUrl = `http://localhost/api/wishlistItems/${item.id}/`;
+        const itemResponse = customFetch(itemUrl, options);
+        console.log(itemResponse);
+      });
+      await Promise.all(promises);
+      const response = await customFetch(wistlistUrl, options);
+      console.log("response", response);
+      navigate(`/events/${event_id}`);
+    } catch (error) {
+      console.error("Error deleting wishlist and items", error);
+    }
+  };
+
 
   const handleCheckboxChange = async (index) => {
     const item = wishlistItems[index];
@@ -128,24 +148,44 @@ const WishlistPage = () => {
               <ArrowBack style={{ marginRight: 8, verticalAlign: "middle" }} /> {title}
             </Button>
             {role === "guardian" && (
-              <Box sx={{ ml: "24px" }}>
-                <Button
-                  onClick={() => handleWishlistClick(wishlist.id)}
-                  sx={{
-                    backgroundColor: "orange",
-                    color: "black",
-                    border: "none",
-                    padding: "16px",
-                    borderRadius: "10px",
-                    "&:hover": {
-                      backgroundColor: "#0288d1",
-                      color: "white",
-                    },
-                  }}
-                >
-                  Update wishlist
-                </Button>
-              </Box>
+              <>
+                <Box sx={{ ml: "24px" }}>
+                  <Button
+                    sx={{
+                      backgroundColor: "orange",
+                      color: "black",
+                      border: "none",
+                      padding: "16px",
+                      borderRadius: "10px",
+                      "&:hover": {
+                        backgroundColor: "red",
+                        color: "white",
+                      },
+                    }}
+                    onClick={() => handelDeleteWishlist(wishlist.id)}
+                  >
+                    Delete Wishlist
+                  </Button>
+                </Box>
+                <Box sx={{ ml: "24px" }}>
+                  <Button
+                    onClick={() => handleWishlistClick(wishlist.id)}
+                    sx={{
+                      backgroundColor: "orange",
+                      color: "black",
+                      border: "none",
+                      padding: "16px",
+                      borderRadius: "10px",
+                      "&:hover": {
+                        backgroundColor: "#0288d1",
+                        color: "white",
+                      },
+                    }}
+                  >
+                    Update wishlist
+                  </Button>
+                </Box>
+              </>
             )}
           </Box>
         </Box>
