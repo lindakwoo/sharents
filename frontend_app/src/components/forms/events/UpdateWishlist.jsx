@@ -4,8 +4,6 @@ import { Box, styled, Modal } from "@mui/material";
 import UpdateWishlistItem from "./UpdateWishlistItem";
 import { useParams, useNavigate } from "react-router-dom";
 
-
-
 const Button = styled("button")({});
 
 const UpdateWishlist = () => {
@@ -18,24 +16,12 @@ const UpdateWishlist = () => {
   const handleWishlistChange = (e) => {
     const { name, value } = e.target;
     setWishlistData({ ...wishlistData, [name]: value });
-  }
-  // const handleItemChange = (itemId, e) => {
-  //   const { name, value } = e.target;
-  //   const updatedItems = items.map((item) =>
-  //     item.id === itemId ? { ...item, [name]: value } : item
-  //   );
-  //   setItems(updatedItems);
-  // };
-  const handleItemChange = (itemId, e) => {
-    const { name, value } = e.target;
-    setItems(prevItems =>
-      prevItems.map(item =>
-        item.id === itemId ? { ...item, [name]: value } : item
-      )
-    );
   };
 
-
+  const handleItemChange = (itemId, e) => {
+    const { name, value } = e.target;
+    setItems((prevItems) => prevItems.map((item) => (item.id === itemId ? { ...item, [name]: value } : item)));
+  };
 
   const handleAddItem = () => {
     setAddedItems([...addedItems, { description: "", url: "", price: 0 }]);
@@ -46,8 +32,7 @@ const UpdateWishlist = () => {
     const updatedItems = [...addedItems];
     updatedItems[index] = { ...updatedItems[index], [name]: value };
     setAddedItems(updatedItems);
-  }
-
+  };
 
   const handleDeleteItem = (id) => {
     // Remove item by id from items
@@ -74,7 +59,6 @@ const UpdateWishlist = () => {
       const response = await customFetch(url);
       console.log("response", response);
       setWishlistData(response);
-      console.log(response);
     } catch (error) {
       console.error("Error fetching event", error);
     }
@@ -100,21 +84,12 @@ const UpdateWishlist = () => {
     fetchData();
   }, [id]);
 
-
-  useEffect(() => {
-    console.log("items:", items);
-  }, [items]);
-
-  //  change the name of the wishlist
   const handleSubmit = async (e) => {
     e.preventDefault();
     const url = `http://localhost/api/wishlists/${id}/`;
     const options = {
       body: JSON.stringify({ name: wishlistData.name }),
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
     };
     try {
       const response = await customFetch(url, options);
@@ -122,15 +97,12 @@ const UpdateWishlist = () => {
     } catch (error) {
       console.error("Error updating wishlist", error);
     }
-    // update the items in the wishlist.
+    // update the old items in the wishlist.
     for (let item of items) {
       const itemUrl = `http://localhost/api/wishlistItems/${item.id}/`;
       const itemOptions = {
         body: JSON.stringify(item),
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
       };
       try {
         await customFetch(itemUrl, itemOptions);
@@ -138,26 +110,22 @@ const UpdateWishlist = () => {
         console.error("Error updating wishlist item", error);
       }
     }
+    // add new items to wishlist
     for (let item of addedItems) {
-      const itemUrl = `http://localhost/api/wishlists/${id}/wishlistItems/`;
+      const newItemUrl = `http://localhost/api/wishlists/${id}/wishlistItems/`;
       const itemOptions = {
         body: JSON.stringify(item),
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        }
       };
       try {
-        const response = await customFetch(itemUrl, itemOptions);
+        const response = await customFetch(newItemUrl, itemOptions);
         console.log("response", response);
       } catch (error) {
         console.error("Error creating wishlist item", error);
       }
     }
     navigate(`/wishlists/${id}`);
-  }
-
-
+  };
 
   return (
     <Box
@@ -165,7 +133,8 @@ const UpdateWishlist = () => {
         display: "flex",
         justifyContent: "center",
         alignItems: "center",
-      }}>
+      }}
+    >
       <Box
         sx={{
           width: "50%",
@@ -193,7 +162,8 @@ const UpdateWishlist = () => {
           </Box>
           {items.length > 0 &&
             items.map((item) => (
-              <Box key={item.id}
+              <Box
+                key={item.id}
                 sx={{
                   mt: "16px",
                 }}
@@ -276,14 +246,39 @@ const UpdateWishlist = () => {
                 </Button>
               </Box>
             ))}
-          <Button sx={{ mt: "16px", backgroundColor: "blue", color: "white", padding: "8px", borderRadius: "10px", border: "none" }} type='button' onClick={handleAddItem} className='btn btn-secondary'>
+          <Button
+            sx={{
+              mt: "16px",
+              backgroundColor: "blue",
+              color: "white",
+              padding: "8px",
+              borderRadius: "10px",
+              border: "none",
+            }}
+            type='button'
+            onClick={handleAddItem}
+            className='btn btn-secondary'
+          >
             Add Item
           </Button>
-          <Button type='submit' style={{ mt: "16px", backgroundColor: "blue", color: "white", padding: "8px", borderRadius: "10px", border: "none", float: "right" }}>Update Wishlist</Button>
+          <Button
+            type='submit'
+            style={{
+              mt: "16px",
+              backgroundColor: "blue",
+              color: "white",
+              padding: "8px",
+              borderRadius: "10px",
+              border: "none",
+              float: "right",
+            }}
+          >
+            Update Wishlist
+          </Button>
         </form>
       </Box>
     </Box>
   );
-}
+};
 
 export default UpdateWishlist;
