@@ -5,8 +5,9 @@ import { Box, styled } from "@mui/material";
 import CreateComment from "../forms/comments/CreateComment";
 import UpdateComment from "../forms/comments/UpdateComment";
 import UpdateIcon from "@mui/icons-material/Update";
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { AuthContext } from "../../context/AuthContext";
+import Tooltip from "@mui/material/Tooltip";
 
 const Button = styled("button")({});
 
@@ -86,7 +87,7 @@ const Comments = ({ id, type }) => {
           comments.map((comment) => {
             const isCommentOwner = comment.member === user || comment.guardian === user;
             return (
-              <>
+              <Box key={comment.id}>
                 {comment.creator_name && (
                   <Box sx={{ color: "orange", fontWeight: "bold", fontStyle: "italic" }}>{comment.creator_name}:</Box>
                 )}
@@ -117,28 +118,43 @@ const Comments = ({ id, type }) => {
                           handleOpenUpdateModal(comment);
                         }}
                       />
-                      <DeleteForeverIcon
-                        sx={{
-                          float: "right",
-                          cursor: "pointer",
-                          color: "red",
-                          "&:hover": {
-                            backgroundColor: "red",
-                            color: "white",
-                          },
-                        }}
-                        onClick={() => {
-                          deleteComment(comment.id)
-                        }} />
+                      <Tooltip placement='top' title='delete comment'>
+                        <DeleteForeverIcon
+                          sx={{
+                            float: "right",
+                            cursor: "pointer",
+                            color: "red",
+                            "&:hover": {
+                              backgroundColor: "red",
+                              color: "white",
+                            },
+                          }}
+                          onClick={() => {
+                            deleteComment(comment.id);
+                          }}
+                        />
+                      </Tooltip>
                     </>
                   )}
                 </Box>
-              </>
+              </Box>
             );
           })}
       </Box>
-      <CreateComment fetchComments={fetchComments} open={createModalOpen} handleClose={handleCloseCreateModal} type={type} id={id} />
-      <UpdateComment fetchComments={fetchComments} open={updateModalOpen} handleClose={handleCloseUpdateModal} type={type} comment={selectedComment} />
+      <CreateComment
+        fetchComments={fetchComments}
+        open={createModalOpen}
+        handleClose={handleCloseCreateModal}
+        type={type}
+        id={id}
+      />
+      <UpdateComment
+        fetchComments={fetchComments}
+        open={updateModalOpen}
+        handleClose={handleCloseUpdateModal}
+        type={type}
+        comment={selectedComment}
+      />
     </>
   );
 };

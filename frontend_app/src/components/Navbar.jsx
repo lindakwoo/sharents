@@ -84,7 +84,6 @@ const Navbar = () => {
 
     try {
       const response = await customFetch(url);
-      console.log("from nav", response);
       setChildrenList(response.children);
     } catch (error) {
       console.error("Error fetching children", error);

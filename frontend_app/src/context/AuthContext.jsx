@@ -36,14 +36,10 @@ const AuthProvider = ({ children }) => {
     const accessToken = localStorage.getItem("access_token");
     const storedUser = JSON.parse(localStorage.getItem("user"));
     const storedRole = JSON.parse(localStorage.getItem("role"));
-    console.log("accessToken", accessToken);
 
     if (accessToken && storedUser) {
       // fetch the endpoint that validates the current accessToken is still valid...
 
-      console.log("access", accessToken);
-      console.log(storedUser);
-      setIsAuth(true);
       setUser(storedUser);
       setRole(storedRole || false);
     } else {
@@ -51,8 +47,6 @@ const AuthProvider = ({ children }) => {
       navigate("/");
     }
   }, [navigate]);
-
-  console.log(isAuth);
 
   return (
     <AuthContext.Provider value={{ isAuth, login, logout, user, role, isLogin, setIsLogin, isSignup, setIsSignup }}>
