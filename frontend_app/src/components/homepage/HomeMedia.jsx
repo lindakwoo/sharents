@@ -7,6 +7,7 @@ import { ArrowForward } from "@mui/icons-material";
 import Category from "../Category";
 
 const Img = styled("img")({});
+const IFrame = styled("iframe")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 
 const HomeMedia = () => {
@@ -68,11 +69,16 @@ const HomeMedia = () => {
               gridTemplateColumns: "1fr 1fr 1fr",
               marginTop: "32px",
               marginBottom: "64px",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             {media.map((media) => (
               <Box
                 sx={{
+                  display: "flex", // Add this line to enable flexbox
+                  justifyContent: "center", // Centers content horizontally
+                  alignItems: "center", //
                   position: "relative",
                   transition: "transform 0.3s ease-in-out", // Smooth transition
                   "&:hover": {
@@ -81,12 +87,43 @@ const HomeMedia = () => {
                 }}
                 key={media.id}
               >
-                <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px" }}>
-                  {media.category}
-                </Category>
-                <StyledLink to={`/media/${media.id}`}>
-                  <Img sx={{ width: "80%" }} src={media.url} />
-                </StyledLink>
+                {media.type === "photo" && (
+                  <>
+                    <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px" }}>
+                      {media.category}
+                    </Category>
+                    <StyledLink to={`/media/${media.id}`}>
+                      <Img sx={{ width: "80%" }} src={media.url} />
+                    </StyledLink>
+                  </>
+                )}
+                {media.type === "video" && (
+                  <>
+                    <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px", zIndex: "500" }}>
+                      {media.category}
+                    </Category>
+                    <StyledLink sx={{ height: "100%" }} to={`/media/${media.id}`}>
+                      <Box
+                        sx={{
+                          position: "relative",
+                          width: "100%",
+                          height: "100%",
+
+                          overflow: "hidden",
+                          pointerEvents: "none", // Prevent interaction with the iframe
+                        }}
+                      >
+                        <IFrame
+                          sx={{ width: "100%", height: "100%", pointerEvents: "none", alignSelf: "center" }}
+                          src={media.url}
+                          title={media.description}
+                          allowFullScreen
+                          referrerPolicy='strict-origin-when-cross-origin'
+                        ></IFrame>
+                      </Box>
+                    </StyledLink>
+                  </>
+                )}
               </Box>
             ))}
           </Box>
