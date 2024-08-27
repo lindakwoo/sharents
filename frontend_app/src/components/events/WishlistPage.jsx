@@ -4,10 +4,9 @@ import { AuthContext } from "../../context/AuthContext";
 import customFetch from "../../fetchWrapper";
 import { Box, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 
-
 const Input = styled("input")({});
 const Button = styled("button")({});
-const StyledLink = styled("a")({ textDecoration: "none", color: "white" });
+const H1 = styled("h1")({});
 
 const WishlistPage = () => {
   const [wishlist, setWishlist] = useState({});
@@ -87,59 +86,96 @@ const WishlistPage = () => {
     }
   };
   return (
-    <Box>
-      <h1>{wishlist.name}</h1>
-      <TableContainer sx={{ width: "60%" }} component={Paper}>
-        <Table sx={{ width: "100%" }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Item</TableCell>
-              <TableCell sx={{ width: "100px", textAlign: "center" }}>Price</TableCell>
-              <TableCell sx={{ width: "100px", textAlign: "center" }}>Purchased</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {wishlistItems.map((item, index) => (
-              <TableRow
-                key={item.id}
-                onClick={() => handleRowClick(item.url)}
+    <Box
+      sx={{
+        backgroundColor: "#f8f8f8",
+        pt: "128px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "start",
+        position: "relative",
+        overflow: "hidden",
+        height: "100vh",
+      }}
+    >
+      <Box
+        sx={{
+          width: "60%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          "& h1": { marginBottom: "48px" },
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: "64px", width: "100%" }}>
+          <H1 sx={{ marginBottom: `0 !important` }}>{wishlist.name}</H1>
+          {role === "guardian" && (
+            <Box sx={{ ml: "24px" }}>
+              <Button
+                onClick={() => handleWishlistClick(wishlist.id)}
                 sx={{
+                  backgroundColor: "orange",
+                  color: "black",
+                  border: "none",
+                  padding: "16px",
+                  borderRadius: "10px",
                   "&:hover": {
-                    backgroundColor: "aqua",
+                    backgroundColor: "#0288d1",
+                    color: "white",
                   },
-                  cursor: "pointer",
                 }}
               >
-                <TableCell>{item.description}</TableCell>
-                <TableCell sx={{ width: "100px", textAlign: "center" }}>
-                  {item.price ? formatPrice(item.price) : ``}
+                Update wishlist
+              </Button>
+            </Box>
+          )}
+        </Box>
+        <TableContainer sx={{ width: "100%" }} component={Paper}>
+          <Table sx={{ width: "100%" }}>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontSize: "24px", fontWeight: "bold" }}>Item</TableCell>
+                <TableCell sx={{ width: "100px", textAlign: "center", fontSize: "24px", fontWeight: "bold" }}>
+                  Price
                 </TableCell>
-                <TableCell sx={{ width: "100px", textAlign: "center" }}>
-                  <Input
-                    sx={{ width: "20px", height: "20px" }}
-                    onClick={(e) => e.stopPropagation()}
-                    onChange={() => handleCheckboxChange(index)}
-                    type='checkbox'
-                    checked={item.is_purchased}
-                  />
+                <TableCell sx={{ width: "100px", textAlign: "center", fontSize: "24px", fontWeight: "bold" }}>
+                  Purchased
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-      {role === "guardian" && (
-        <Box>
-          <Box sx={{ position: "fixed", bottom: "16px", right: "16px" }}>
-
-            <StyledLink onClick={() => handleWishlistClick(wishlist.id)} sx={{ backgroundColor: "orange", padding: "16px", borderRadius: "10px" }}>
-              Update wishlist
-            </StyledLink>
-          </Box>
-        </Box >
-      )}
-
-    </Box >
+            </TableHead>
+            <TableBody>
+              {wishlistItems.map((item, index) => (
+                <TableRow
+                  key={item.id}
+                  onClick={() => handleRowClick(item.url)}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "aqua",
+                    },
+                    cursor: "pointer",
+                  }}
+                >
+                  <TableCell sx={{ fontSize: "24px" }}>{item.description}</TableCell>
+                  <TableCell sx={{ width: "100px", textAlign: "center", fontSize: "24px" }}>
+                    {item.price ? formatPrice(item.price) : ``}
+                  </TableCell>
+                  <TableCell sx={{ width: "100px", textAlign: "center" }}>
+                    <Input
+                      sx={{ width: "20px", height: "20px" }}
+                      onClick={(e) => e.stopPropagation()}
+                      onChange={() => handleCheckboxChange(index)}
+                      type='checkbox'
+                      checked={item.is_purchased}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
+    </Box>
   );
 };
 

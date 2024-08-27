@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import customFetch from "../../../fetchWrapper";
 import { Box, styled, Modal } from "@mui/material";
-import UpdateWishlistItem from "./UpdateWishlistItem";
 import { useParams, useNavigate } from "react-router-dom";
+import CreateWishlistItem from "./CreateWishlistItem";
 
 const Button = styled("button")({});
 
@@ -185,7 +185,7 @@ const UpdateWishlist = () => {
                   type='url'
                   name='url'
                   defaultValue={item.url}
-                  onChange={(e) => handleItemChange(id, e)}
+                  onChange={(e) => handleItemChange(item.id, e)}
                   placeholder='Enter URL'
                   className='form-control mt-2'
                 />
@@ -195,7 +195,7 @@ const UpdateWishlist = () => {
                   name='price'
                   defaultValue={item.price}
                   step='0.01' // Restrict to two decimal places
-                  onChange={(e) => handleItemChange(id, e)}
+                  onChange={(e) => handleItemChange(item.id, e)}
                   placeholder='Enter price'
                   className='form-control mt-2'
                 />
@@ -206,45 +206,13 @@ const UpdateWishlist = () => {
             ))}
           {addedItems.length > 0 &&
             addedItems.map((item, index) => (
-              <Box
-                sx={{
-                  mt: "16px",
-                }}
-                className='form-group'
-              >
-                <label>Description</label>
-                <input
-                  type='text'
-                  name='description'
-                  defaultValue={item.description}
-                  onChange={(e) => handleAddNewItemChange(index, e)}
-                  placeholder='Enter description'
-                  required
-                  className='form-control'
-                />
-                <label>Item url</label>
-                <input
-                  type='url'
-                  name='url'
-                  defaultValue={item.url}
-                  onChange={(e) => handleAddNewItemChange(index, e)}
-                  placeholder='Enter URL'
-                  className='form-control mt-2'
-                />
-                <label>Price</label>
-                <input
-                  type='number'
-                  name='price'
-                  defaultValue={item.price}
-                  step='0.01' // Restrict to two decimal places
-                  onChange={(e) => handleAddNewItemChange(index, e)}
-                  placeholder='Enter price'
-                  className='form-control mt-2'
-                />
-                <Button sx={{ mt: "8px" }} onClick={() => handleRemoveItem(index)} className='btn btn-danger'>
-                  Remove Item
-                </Button>
-              </Box>
+              <CreateWishlistItem
+                key={index}
+                item={item}
+                index={index}
+                handleItemChange={handleAddNewItemChange}
+                handleRemoveItem={handleRemoveItem}
+              />
             ))}
           <Button
             sx={{
