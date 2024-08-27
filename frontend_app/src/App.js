@@ -15,6 +15,7 @@ import GuardianDashboard from "./components/forms/GuardianDashboard";
 import UnauthorizedPage from "./components/UnauthorizedPage";
 import ProtectedGuardianRoute from "./components/ProtectedGuardianRoute";
 import MemberSignup from "./components/forms/MemberSignup";
+import UpdateWishlist from "./components/forms/events/UpdateWishlist";
 
 function App() {
   return (
@@ -31,11 +32,12 @@ function App() {
           <Route path='/media/:id' element={<MediaExpandedView />} />
           <Route path='/media' element={<MediaPage />} />
           <Route path='/events/:id' element={<EventExpandedView />} />
-          <Route path='/wishlists/:id' element={<WishlistPage />} />
+          <Route path='/wishlists/:event_id/:title/:id' element={<WishlistPage />} />
           <Route path='/events' element={<EventsPage />} />
           {/* <Route path='/create_child' element={<CreateChild />} /> */}
           <Route element={<ProtectedGuardianRoute />}>
             <Route path="/guardian_dashboard" element={<GuardianDashboard />} />
+            <Route path='/updateWishlist/:event_id/:title/:id' element={<UpdateWishlist />} />
           </Route>
           <Route path='unauthorized' element={<UnauthorizedPage />} />
           <Route path='member_signup/:id/:token' element={<MemberSignup />} />

@@ -1,13 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
+import { ArrowBack } from "@mui/icons-material";
 import customFetch from "../../fetchWrapper";
 import { Box, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 
 const Input = styled("input")({});
+const Button = styled("button")({});
+const H1 = styled("h1")({});
+
 const WishlistPage = () => {
   const [wishlist, setWishlist] = useState({});
   const [wishlistItems, setWishlistItems] = useState([]);
-  const { id } = useParams();
+  const { role } = useContext(AuthContext);
+  const navigate = useNavigate();
+  const { event_id, title, id } = useParams();
 
   const fetchWishlist = async () => {
     const url = `http://localhost/api/wishlists/${id}/`;
@@ -49,6 +56,10 @@ const WishlistPage = () => {
     }
   };
 
+  const handleWishlistClick = (id) => {
+    navigate(`/updateWishlist/${event_id}/${title}/${id}`);
+  };
+
   const formatPrice = (price) => {
     return parseFloat(price).toLocaleString("en-US", {
       style: "currency",
@@ -76,47 +87,112 @@ const WishlistPage = () => {
     }
   };
   return (
-    <Box>
-      <h1>{wishlist.name}</h1>
-      <TableContainer sx={{ width: "60%" }} component={Paper}>
-        <Table sx={{ width: "100%" }}>
-          <TableHead>
-            <TableRow>
-              <TableCell>Item</TableCell>
-              <TableCell sx={{ width: "100px", textAlign: "center" }}>Price</TableCell>
-              <TableCell sx={{ width: "100px", textAlign: "center" }}>Purchased</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {wishlistItems.map((item, index) => (
-              <TableRow
-                key={item.id}
-                onClick={() => handleRowClick(item.url)}
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "aqua",
-                  },
-                  cursor: "pointer",
-                }}
-              >
-                <TableCell>{item.description}</TableCell>
-                <TableCell sx={{ width: "100px", textAlign: "center" }}>
-                  {item.price ? formatPrice(item.price) : ``}
+    <Box
+      sx={{
+        backgroundColor: "#f8f8f8",
+        pt: "128px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "start",
+        position: "relative",
+        overflow: "hidden",
+        height: "100vh",
+      }}
+    >
+      <Box
+        sx={{
+          width: "60%",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          "& h1": { marginBottom: "48px" },
+        }}
+      >
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: "64px", width: "100%" }}>
+          <H1 sx={{ marginBottom: `0 !important` }}>{wishlist.name}</H1>
+          <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Button
+              onClick={() => navigate(`/events/${event_id}`)}
+              sx={{
+                backgroundColor: "orange",
+                border: "none",
+                padding: "16px",
+                borderRadius: "10px",
+                "&:hover": {
+                  backgroundColor: "#0288d1",
+                  color: "white",
+                },
+              }}
+            >
+              <ArrowBack style={{ marginRight: 8, verticalAlign: "middle" }} /> {title}
+            </Button>
+            {role === "guardian" && (
+              <Box sx={{ ml: "24px" }}>
+                <Button
+                  onClick={() => handleWishlistClick(wishlist.id)}
+                  sx={{
+                    backgroundColor: "orange",
+                    color: "black",
+                    border: "none",
+                    padding: "16px",
+                    borderRadius: "10px",
+                    "&:hover": {
+                      backgroundColor: "#0288d1",
+                      color: "white",
+                    },
+                  }}
+                >
+                  Update wishlist
+                </Button>
+              </Box>
+            )}
+          </Box>
+        </Box>
+        <TableContainer sx={{ width: "100%" }} component={Paper}>
+          <Table sx={{ width: "100%" }}>
+            <TableHead>
+              <TableRow>
+                <TableCell sx={{ fontSize: "24px", fontWeight: "bold" }}>Item</TableCell>
+                <TableCell sx={{ width: "100px", textAlign: "center", fontSize: "24px", fontWeight: "bold" }}>
+                  Price
                 </TableCell>
-                <TableCell sx={{ width: "100px", textAlign: "center" }}>
-                  <Input
-                    sx={{ width: "20px", height: "20px" }}
-                    onClick={(e) => e.stopPropagation()}
-                    onChange={() => handleCheckboxChange(index)}
-                    type='checkbox'
-                    checked={item.is_purchased}
-                  />
+                <TableCell sx={{ width: "100px", textAlign: "center", fontSize: "24px", fontWeight: "bold" }}>
+                  Purchased
                 </TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {wishlistItems.map((item, index) => (
+                <TableRow
+                  key={item.id}
+                  onClick={() => handleRowClick(item.url)}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "aqua",
+                    },
+                    cursor: "pointer",
+                  }}
+                >
+                  <TableCell sx={{ fontSize: "24px" }}>{item.description}</TableCell>
+                  <TableCell sx={{ width: "100px", textAlign: "center", fontSize: "24px" }}>
+                    {item.price ? formatPrice(item.price) : ``}
+                  </TableCell>
+                  <TableCell sx={{ width: "100px", textAlign: "center" }}>
+                    <Input
+                      sx={{ width: "20px", height: "20px" }}
+                      onClick={(e) => e.stopPropagation()}
+                      onChange={() => handleCheckboxChange(index)}
+                      type='checkbox'
+                      checked={item.is_purchased}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Box>
     </Box>
   );
 };

@@ -40,18 +40,6 @@ const EventExpandedView = () => {
     }
   };
 
-  const fetchWishlistItems = async (wishlistId) => {
-    const url = `http://localhost/api/wishlists/${wishlistId}/wishlistItems/`;
-    try {
-      const response = await customFetch(url);
-      console.log("response", response);
-      setWishlistItems(response.wishlistItems);
-    } catch (error) {
-      console.error("Error fetching wishlists", error);
-      setWishlistItems([]);
-    }
-  };
-
   const fetchWishlists = async () => {
     const url = `http://localhost/api/events/${id}/wishlists/`;
     try {
@@ -152,6 +140,7 @@ const EventExpandedView = () => {
 
                   "&:hover": {
                     backgroundColor: "red",
+                    color: "white",
                   },
                 }}
                 onClick={deleteEvent}
@@ -183,11 +172,9 @@ const EventExpandedView = () => {
                 border: "none",
                 backgroundColor: "orange",
                 mx: "16px",
-
                 padding: "16px",
                 borderRadius: "10px",
                 "& p": { my: 0 },
-
                 "&:hover": {
                   backgroundColor: "yellow",
                 },
@@ -201,16 +188,21 @@ const EventExpandedView = () => {
 
         {wishlists.length > 0 && (
           <Box sx={{ justifySelf: "start" }}>
-            <StyledLink
-              to={`/wishlists/${wishlists[0].id}`}
+            <Button
+              onClick={() => navigate(`/wishlists/${id}/${event.title}/${wishlists[0].id}`)}
               sx={{
-                backgroundColor: "yellow",
+                backgroundColor: "orange",
                 padding: "16px",
+                border: "none",
                 borderRadius: "10px",
+                "&:hover": {
+                  backgroundColor: "#0288d1",
+                  color: "white",
+                },
               }}
             >
               WishList <ArrowForward style={{ marginLeft: 8, verticalAlign: "middle" }} />
-            </StyledLink>
+            </Button>
           </Box>
         )}
       </Box>
