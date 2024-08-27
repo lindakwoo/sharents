@@ -77,7 +77,7 @@ const HomeMedia = () => {
               <Box
                 sx={{
                   display: "flex", // Add this line to enable flexbox
-                  justifyContent: "center", // Centers content horizontally
+                  justifyContent: "start", // Centers content horizontally
                   alignItems: "center", //
                   position: "relative",
                   width: "100%", // Ensures it takes full width of grid item
@@ -111,7 +111,7 @@ const HomeMedia = () => {
                         height: "100%",
                         display: "flex",
                         alignItems: "center",
-                        justifyContent: "center",
+                        justifyContent: "start",
                       }}
                     >
                       <StyledLink sx={{ width: "100%", height: "auto" }} to={`/media/${media.id}`}>
