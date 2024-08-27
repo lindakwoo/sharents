@@ -139,7 +139,8 @@ const MediaExpandedView = () => {
             </Box>
           )}
           {media.type === "video" && (
-            <>
+            <Box sx={{ width: "70%" }}>
+              <Box>{formatDate(media.date, false)}</Box>
               <iframe
                 width='899'
                 height='471'
@@ -150,7 +151,11 @@ const MediaExpandedView = () => {
                 referrerPolicy='strict-origin-when-cross-origin'
                 allowFullScreen
               ></iframe>
-            </>
+              <Box sx={{ mb: "32px", fontSize: "24px" }}>{media.description}</Box>
+              <Box>
+                <Comments id={id} type='media' />
+              </Box>
+            </Box>
           )}
           <UpdateMedia fetchMedia={fetchMedia} media={media} open={modalOpen} handleClose={handleClose} id={id} />
         </>

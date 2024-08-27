@@ -151,12 +151,16 @@ const MediaPage = () => {
                 }}
                 key={media.id}
               >
-                <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px" }}>
-                  {media.category}
-                </Category>
-                <StyledLink to={`/media/${media.id}`}>
-                  <Img sx={{ width: "100%", maxWidth: "300px", height: "auto" }} src={media.url} />
-                </StyledLink>
+                {media.type === "photo" && (
+                  <>
+                    <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px" }}>
+                      {media.category}
+                    </Category>
+                    <StyledLink to={`/media/${media.id}`}>
+                      <Img sx={{ width: "100%", maxWidth: "300px", height: "auto" }} src={media.url} />
+                    </StyledLink>
+                  </>
+                )}
               </Box>
             ))}
           </Box>
