@@ -28,7 +28,6 @@ const CreateWishlist = ({ eventId, open, handleClose, updatingEvent = false, fet
   };
 
   const handleAddItem = () => {
-    console.log("Inside");
     setWishlistItems([...wishlistItems, { description: "", url: "", price: 0 }]);
   };
 
@@ -44,9 +43,6 @@ const CreateWishlist = ({ eventId, open, handleClose, updatingEvent = false, fet
     const wishlistOptions = {
       body: JSON.stringify({ name: name }),
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
     };
     try {
       const wishlistResponse = await customFetch(wishlistUrl, wishlistOptions);
@@ -58,15 +54,11 @@ const CreateWishlist = ({ eventId, open, handleClose, updatingEvent = false, fet
         const itemOptions = {
           body: JSON.stringify(item),
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
         };
         await customFetch(itemUrl, itemOptions);
       }
 
       console.log("Wishlist and items created successfully");
-      const destination = updatingEvent ? `/events/${eventId}` : `/events`;
       if (updatingEvent) {
         fetchWishlists();
         handleClose();
@@ -86,6 +78,8 @@ const CreateWishlist = ({ eventId, open, handleClose, updatingEvent = false, fet
       <Box
         sx={{
           width: "50%",
+          maxHeight: "80vh",
+          overflowY: "auto",
           backgroundColor: "white",
           padding: 4,
           position: "absolute",

@@ -54,6 +54,7 @@ const EventsPage = () => {
         alignItems: "center",
         position: "relative",
         overflow: "hidden",
+        height: "100vh",
       }}
     >
       <Box
