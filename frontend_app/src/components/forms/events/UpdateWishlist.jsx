@@ -10,7 +10,7 @@ const UpdateWishlist = () => {
   const [wishlistData, setWishlistData] = useState({});
   const [items, setItems] = useState([]);
   const [addedItems, setAddedItems] = useState([]);
-  const { id } = useParams();
+  const { event_id, title, id } = useParams();
   const navigate = useNavigate();
 
   const handleWishlistChange = (e) => {
@@ -124,7 +124,7 @@ const UpdateWishlist = () => {
         console.error("Error creating wishlist item", error);
       }
     }
-    navigate(`/wishlists/${id}`);
+    navigate(`/wishlists/${event_id}/${title}/${id}`);
   };
 
   return (

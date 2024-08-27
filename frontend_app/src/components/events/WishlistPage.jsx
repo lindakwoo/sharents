@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
+import { ArrowBack } from "@mui/icons-material";
 import customFetch from "../../fetchWrapper";
 import { Box, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 
@@ -13,7 +14,7 @@ const WishlistPage = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const { role } = useContext(AuthContext);
   const navigate = useNavigate();
-  const { id } = useParams();
+  const { event_id, title, id } = useParams();
 
   const fetchWishlist = async () => {
     const url = `http://localhost/api/wishlists/${id}/`;
@@ -56,7 +57,7 @@ const WishlistPage = () => {
   };
 
   const handleWishlistClick = (id) => {
-    navigate(`/updateWishlist/${id}`);
+    navigate(`/updateWishlist/${event_id}/${title}/${id}`);
   };
 
   const formatPrice = (price) => {
@@ -110,26 +111,43 @@ const WishlistPage = () => {
       >
         <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: "64px", width: "100%" }}>
           <H1 sx={{ marginBottom: `0 !important` }}>{wishlist.name}</H1>
-          {role === "guardian" && (
-            <Box sx={{ ml: "24px" }}>
-              <Button
-                onClick={() => handleWishlistClick(wishlist.id)}
-                sx={{
-                  backgroundColor: "orange",
-                  color: "black",
-                  border: "none",
-                  padding: "16px",
-                  borderRadius: "10px",
-                  "&:hover": {
-                    backgroundColor: "#0288d1",
-                    color: "white",
-                  },
-                }}
-              >
-                Update wishlist
-              </Button>
-            </Box>
-          )}
+          <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+            <Button
+              onClick={() => navigate(`/events/${event_id}`)}
+              sx={{
+                backgroundColor: "orange",
+                border: "none",
+                padding: "16px",
+                borderRadius: "10px",
+                "&:hover": {
+                  backgroundColor: "#0288d1",
+                  color: "white",
+                },
+              }}
+            >
+              <ArrowBack style={{ marginRight: 8, verticalAlign: "middle" }} /> {title}
+            </Button>
+            {role === "guardian" && (
+              <Box sx={{ ml: "24px" }}>
+                <Button
+                  onClick={() => handleWishlistClick(wishlist.id)}
+                  sx={{
+                    backgroundColor: "orange",
+                    color: "black",
+                    border: "none",
+                    padding: "16px",
+                    borderRadius: "10px",
+                    "&:hover": {
+                      backgroundColor: "#0288d1",
+                      color: "white",
+                    },
+                  }}
+                >
+                  Update wishlist
+                </Button>
+              </Box>
+            )}
+          </Box>
         </Box>
         <TableContainer sx={{ width: "100%" }} component={Paper}>
           <Table sx={{ width: "100%" }}>
