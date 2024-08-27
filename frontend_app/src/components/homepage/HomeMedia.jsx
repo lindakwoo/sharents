@@ -80,6 +80,8 @@ const HomeMedia = () => {
                   justifyContent: "center", // Centers content horizontally
                   alignItems: "center", //
                   position: "relative",
+                  width: "100%", // Ensures it takes full width of grid item
+                  height: "100%", //
                   transition: "transform 0.3s ease-in-out", // Smooth transition
                   "&:hover": {
                     transform: "scale(1.1)", // Grow the image to 110% of its original size on hover
@@ -102,26 +104,37 @@ const HomeMedia = () => {
                     <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px", zIndex: "500" }}>
                       {media.category}
                     </Category>
-                    <StyledLink sx={{ height: "100%" }} to={`/media/${media.id}`}>
-                      <Box
-                        sx={{
-                          position: "relative",
-                          width: "100%",
-                          height: "100%",
+                    <Box
+                      sx={{
+                        backgroundColor: "black",
+                        width: "80%",
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <StyledLink sx={{ width: "100%", height: "auto" }} to={`/media/${media.id}`}>
+                        <Box
+                          sx={{
+                            position: "relative",
+                            width: "100%",
+                            height: "auto",
 
-                          overflow: "hidden",
-                          pointerEvents: "none", // Prevent interaction with the iframe
-                        }}
-                      >
-                        <IFrame
-                          sx={{ width: "100%", height: "100%", pointerEvents: "none", alignSelf: "center" }}
-                          src={media.url}
-                          title={media.description}
-                          allowFullScreen
-                          referrerPolicy='strict-origin-when-cross-origin'
-                        ></IFrame>
-                      </Box>
-                    </StyledLink>
+                            overflow: "hidden",
+                            pointerEvents: "none", // Prevent interaction with the iframe
+                          }}
+                        >
+                          <IFrame
+                            sx={{ width: "100%", height: "auto", pointerEvents: "none" }}
+                            src={media.url}
+                            title={media.description}
+                            allowFullScreen
+                            referrerPolicy='strict-origin-when-cross-origin'
+                          ></IFrame>
+                        </Box>
+                      </StyledLink>
+                    </Box>
                   </>
                 )}
               </Box>
