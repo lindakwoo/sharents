@@ -1,3 +1,5 @@
+import customFetch from "./fetchWrapper";
+
 export const formatDate = (date, withTime = true) => {
     const dateObj = new Date(date);
     // const hasTime = dateObj.getHours() !== 0 || dateObj.getMinutes() !== 0;
@@ -41,4 +43,17 @@ export const getAge = (birthdate) => {
 
     // Return 0 for years or months if they are 0
     return { years: years || 0, months: months || 0 };
+};
+
+export const deleteComment = async (commentId) => {
+    console.log(commentId);
+    const url = `http://localhost/api/comments/${commentId}`;
+    const options = { method: "DELETE" };
+    console.log(url);
+    try {
+        const response = await customFetch(url, options);
+        console.log(response);
+    } catch (error) {
+        console.error("Error deleting comment: ", error);
+    }
 };

@@ -9,6 +9,7 @@ import Category from "../Category";
 import Comments from "../comments/Comments";
 import { AuthContext } from "../../context/AuthContext";
 import UpdateMedia from "../forms/media/UpdateMedia";
+import { deleteComment } from "../../utils";
 
 const Img = styled("img")({});
 const Button = styled("button")({});
@@ -34,8 +35,17 @@ const MediaExpandedView = () => {
 
   const deleteMedia = async () => {
     const url = `http://localhost/api/media/${id}`;
+    const commentsUrl = `http://localhost/api/media/${id}/comments/`;
     const options = { method: "DELETE" };
     try {
+      const commentsResponse = await customFetch(commentsUrl);
+      const comments = commentsResponse.comments;
+
+      if (comments.length > 0) {
+        for (let comment of comments) {
+          deleteComment(comment.id);
+        }
+      }
       const response = await customFetch(url, options);
       console.log(response);
       navigate("/media");

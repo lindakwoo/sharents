@@ -3,7 +3,11 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getAge = exports.formatDate = void 0;
+exports.deleteComment = exports.getAge = exports.formatDate = void 0;
+
+var _fetchWrapper = _interopRequireDefault(require("./fetchWrapper"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
@@ -60,3 +64,40 @@ var getAge = function getAge(birthdate) {
 };
 
 exports.getAge = getAge;
+
+var deleteComment = function deleteComment(commentId) {
+  var url, options, response;
+  return regeneratorRuntime.async(function deleteComment$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          console.log(commentId);
+          url = "http://localhost/api/comments/".concat(commentId);
+          options = {
+            method: "DELETE"
+          };
+          console.log(url);
+          _context.prev = 4;
+          _context.next = 7;
+          return regeneratorRuntime.awrap((0, _fetchWrapper["default"])(url, options));
+
+        case 7:
+          response = _context.sent;
+          console.log(response);
+          _context.next = 14;
+          break;
+
+        case 11:
+          _context.prev = 11;
+          _context.t0 = _context["catch"](4);
+          console.error("Error deleting comment: ", _context.t0);
+
+        case 14:
+        case "end":
+          return _context.stop();
+      }
+    }
+  }, null, null, [[4, 11]]);
+};
+
+exports.deleteComment = deleteComment;
