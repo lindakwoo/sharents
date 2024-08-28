@@ -10,3 +10,7 @@ Today I worked on creating endpoints and testing them out in swagger.
 ## Thursday, August 15, 2024
 
 Today I worked on refacturing endpoints, creating more endpoints and testing them out in swagger. Caleb dockerized our project, so I tested that to make sure it was up and running.
+
+## Wednesday, August 28, 2024
+
+Today I worked on the flowchart and did some final touchups on it with Linda. I did the form to update a child.
