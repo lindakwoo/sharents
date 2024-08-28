@@ -63,3 +63,15 @@ I also started on the Member signup page, where the member lands after receiving
 ## Friday, August 23, 2024
 
 Today I fixed the entire user flow so that when a user comes to any page, if they are not logged in with an access code, they will be directed to the "/" page with the option to signup or login.
+
+## Monday, August 26, 2024
+
+Today I added filter functionality
+
+## Tuesday, August 27, 2024
+
+Today I added the videos to the site using Iframe and did all the styling for that. I also figured out how to create a async pytest for one of our post endpoints which was running two database methods (two separte await calls) and run tests in the Dockerfile.
+
+## Wednesday, August 28, 2024
+
+Today I am working on writing the descriptions of the microservices in our readme and adding all endpoints to the tables...
