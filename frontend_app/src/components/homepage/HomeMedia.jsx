@@ -7,6 +7,7 @@ import { ArrowForward } from "@mui/icons-material";
 import Category from "../Category";
 
 const Img = styled("img")({});
+const IFrame = styled("iframe")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 
 const HomeMedia = () => {
@@ -68,12 +69,19 @@ const HomeMedia = () => {
               gridTemplateColumns: "1fr 1fr 1fr",
               marginTop: "32px",
               marginBottom: "64px",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
             {media.map((media) => (
               <Box
                 sx={{
+                  display: "flex", // Add this line to enable flexbox
+                  justifyContent: "start", // Centers content horizontally
+                  alignItems: "center", //
                   position: "relative",
+                  width: "100%", // Ensures it takes full width of grid item
+                  height: "100%", //
                   transition: "transform 0.3s ease-in-out", // Smooth transition
                   "&:hover": {
                     transform: "scale(1.1)", // Grow the image to 110% of its original size on hover
@@ -81,12 +89,54 @@ const HomeMedia = () => {
                 }}
                 key={media.id}
               >
-                <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px" }}>
-                  {media.category}
-                </Category>
-                <StyledLink to={`/media/${media.id}`}>
-                  <Img sx={{ width: "80%" }} src={media.url} />
-                </StyledLink>
+                {media.type === "photo" && (
+                  <>
+                    <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px" }}>
+                      {media.category}
+                    </Category>
+                    <StyledLink to={`/media/${media.id}`}>
+                      <Img sx={{ width: "80%" }} src={media.url} />
+                    </StyledLink>
+                  </>
+                )}
+                {media.type === "video" && (
+                  <>
+                    <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px", zIndex: "500" }}>
+                      {media.category}
+                    </Category>
+                    <Box
+                      sx={{
+                        backgroundColor: "black",
+                        width: "80%",
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "start",
+                      }}
+                    >
+                      <StyledLink sx={{ width: "100%", height: "auto" }} to={`/media/${media.id}`}>
+                        <Box
+                          sx={{
+                            position: "relative",
+                            width: "100%",
+                            height: "auto",
+
+                            overflow: "hidden",
+                            pointerEvents: "none", // Prevent interaction with the iframe
+                          }}
+                        >
+                          <IFrame
+                            sx={{ width: "100%", height: "auto", pointerEvents: "none" }}
+                            src={media.url}
+                            title={media.description}
+                            allowFullScreen
+                            referrerPolicy='strict-origin-when-cross-origin'
+                          ></IFrame>
+                        </Box>
+                      </StyledLink>
+                    </Box>
+                  </>
+                )}
               </Box>
             ))}
           </Box>

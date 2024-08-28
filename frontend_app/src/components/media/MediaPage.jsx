@@ -8,6 +8,7 @@ import MediaBox from "./MediaBox";
 import Category from "../Category";
 // This is the page that will render a bunch of little Media boxes to click on for expanded view
 const Img = styled("img")({});
+const IFrame = styled("iframe")({});
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
 const Select = styled("select")({
   appearance: "none", // Remove default browser styling for select items
@@ -143,7 +144,12 @@ const MediaPage = () => {
             {filteredMedia.map((media) => (
               <Box
                 sx={{
+                  display: "flex", // Add this line to enable flexbox
+                  justifyContent: "center", // Centers content horizontally
+                  alignItems: "center", // Centers content vertically
                   position: "relative",
+                  height: "100%",
+                  width: "100%",
                   transition: "transform 0.3s ease-in-out", // Smooth transition
                   "&:hover": {
                     transform: "scale(1.1)", // Grow the image to 110% of its original size on hover
@@ -151,12 +157,54 @@ const MediaPage = () => {
                 }}
                 key={media.id}
               >
-                <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px" }}>
-                  {media.category}
-                </Category>
-                <StyledLink to={`/media/${media.id}`}>
-                  <Img sx={{ width: "100%", maxWidth: "300px", height: "auto" }} src={media.url} />
-                </StyledLink>
+                {media.type === "photo" && (
+                  <>
+                    <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px" }}>
+                      {media.category}
+                    </Category>
+                    <StyledLink to={`/media/${media.id}`}>
+                      <Img sx={{ width: "100%", maxWidth: "300px", height: "auto" }} src={media.url} />
+                    </StyledLink>
+                  </>
+                )}
+                {media.type === "video" && (
+                  <>
+                    <Category size='small' sx={{ position: "absolute", top: "8px", left: "8px", zIndex: "500" }}>
+                      {media.category}
+                    </Category>
+                    <Box
+                      sx={{
+                        backgroundColor: "black",
+                        width: "100%",
+                        height: "100%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <StyledLink to={`/media/${media.id}`}>
+                        <Box
+                          sx={{
+                            position: "relative",
+                            width: "100%",
+                            maxWidth: "300px",
+                            height: "auto",
+                            overflow: "hidden",
+                            pointerEvents: "none", // Prevent interaction with the iframe
+                          }}
+                        >
+                          <IFrame
+                            sx={{ width: "100%", maxWidth: "300px", height: "auto", pointerEvents: "none" }}
+                            src={media.url}
+                            title={media.description}
+                            allowFullScreen
+                            referrerPolicy='strict-origin-when-cross-origin'
+                          ></IFrame>
+                        </Box>
+                      </StyledLink>
+                    </Box>
+                  </>
+                )}
               </Box>
             ))}
           </Box>
