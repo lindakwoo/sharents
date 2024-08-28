@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useContext } from "react";
 import customFetch from "../../../fetchWrapper";
 import { ChildContext } from "../../../context/ChildContext";
 
@@ -8,9 +7,7 @@ import { Box, styled, Modal } from "@mui/material";
 const Button = styled("button")({});
 
 const UpdateChild = ({ child, open, handleClose }) => {
-
-  const [childData, setChildData] = useState({})
-  const navigate = useNavigate();
+  const [childData, setChildData] = useState({});
   const { updateChild } = useContext(ChildContext);
 
   const handleChange = (e) => {
@@ -31,8 +28,7 @@ const UpdateChild = ({ child, open, handleClose }) => {
     } catch (error) {
       console.error("Error updating child: ", error);
     }
-  }
-
+  };
 
   return (
     <Modal open={open} onClose={handleClose}>
