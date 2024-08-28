@@ -74,6 +74,7 @@ services:
       - ./sharents_dev/milestones_media_service:/app
     environment:
       - ATLAS_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/milestones_media_db?retryWrites=true&w=majority&appName=Sharents
+      - TEST_MODE=true
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.milestones.rule=PathPrefix(`/api/milestones`) && !PathPrefix(`/api/milestones/docs`) && !PathPrefix(`/api/milestones/openapi.json`)"
