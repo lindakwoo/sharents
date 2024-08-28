@@ -66,7 +66,7 @@ const HomeMedia = () => {
             sx={{
               display: "grid",
               gap: "24px",
-              gridTemplateColumns: "1fr 1fr 1fr",
+              gridTemplateColumns: { xs: "1fr", lg: "1fr 1fr 1fr" },
               marginTop: "32px",
               marginBottom: "64px",
               justifyContent: "center",
@@ -109,6 +109,7 @@ const HomeMedia = () => {
                         backgroundColor: "black",
                         width: "80%",
                         height: "100%",
+                        minHeight: { xs: "300px", lg: "0" },
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "start",

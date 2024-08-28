@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { formatDate } from "../../../utils";
 import Category from "../../Category";
 const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
+const H1 = styled("h1")({});
 
 const HomeMilestone = ({ milestone }) => {
   return (
@@ -14,6 +15,10 @@ const HomeMilestone = ({ milestone }) => {
         width: "80%",
         padding: "64px",
         borderRadius: "10px",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "start",
+        alignItems: { xs: "center", lg: "start" },
         transition: "transform 0.3s ease-in-out", // Smooth transition
         "&:hover": {
           transform: "scale(1.1)", // Grow the image to 110% of its original size on hover
@@ -31,12 +36,12 @@ const HomeMilestone = ({ milestone }) => {
         }}
       >
         <StyledLink
-          sx={{ display: "flex", flexDirection: "column", justifyContent: "center" }}
+          sx={{ display: "flex", flexDirection: "column", alignItems: { xs: "center", lg: "start" } }}
           to={`/milestones/${milestone.id}`}
         >
-          <Box>{formatDate(milestone.date)}</Box>
+          <Box sx={{ textAlign: { xs: "center", lg: "left" } }}>{formatDate(milestone.date)}</Box>
 
-          <h1>{milestone.name}</h1>
+          <H1 sx={{ textAlign: { xs: "center", lg: "left" } }}>{milestone.name}</H1>
         </StyledLink>
       </Box>
     </Box>

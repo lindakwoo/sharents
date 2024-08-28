@@ -28,6 +28,7 @@ const HomeHero = () => {
       sx={{
         display: "flex",
         alignItems: "center",
+        flexDirection: { xs: "column", lg: "row" },
         my: "64px",
         position: "relative",
         overflow: "hidden",
@@ -60,15 +61,26 @@ const HomeHero = () => {
       <Box
         sx={{ width: "50%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
       >
-        <Img sx={{ height: "350px" }} src={child.profile_picture} />
+        <Img
+          sx={{ height: { xs: "auto", lg: "350px" }, width: { xs: "80vw", lg: "auto" } }}
+          src={child.profile_picture}
+        />
       </Box>
-      <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          mt: { xs: "24px", lg: 0 },
+          ml: { xs: 0, lg: "32px", xl: 0 },
+        }}
+      >
         <Box
           sx={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "start",
-            alignItems: "start",
+            justifyContent: { xs: "center", lg: "start" },
+            alignItems: { xs: "center", lg: "start" },
             width: "100%",
           }}
         >
@@ -77,18 +89,34 @@ const HomeHero = () => {
           <h2>
             {years} {months}
           </h2>
-          <Box sx={{ display: "flex", flexDirection: "column", alignItems: "start", justifyContent: "start" }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: { xs: "center", lg: "start" },
+              justifyContent: "start",
+            }}
+          >
             {child.favorite_color && (
-              <Box sx={{ display: "flex", justifyContent: "center", alignItems: "start" }}>
+              <Box sx={{ display: "flex", justifyContent: "center", alignItems: { xs: "center", lg: "start" } }}>
                 <H2 sx={{ whiteSpace: "nowrap" }}>Favorite color: </H2>
                 <Box sx={{ fontSize: "24px", ml: "16px" }}>{child.favorite_color}</Box>
               </Box>
             )}
             {child.current_thing && (
-              <Box sx={{ display: "flex", justifyContent: "center", alignItems: "start" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: { xs: "column", lg: "row" },
+                  alignItems: { xs: "center", lg: "start" },
+                }}
+              >
                 {" "}
                 <H2 sx={{ whiteSpace: "nowrap" }}>Latest Thing: </H2>
-                <Box sx={{ fontSize: "24px", ml: "16px" }}>{child.current_thing}</Box>
+                <Box sx={{ fontSize: "24px", ml: "16px", width: { xs: "50vw", lg: "auto" } }}>
+                  {child.current_thing}
+                </Box>
               </Box>
             )}
           </Box>

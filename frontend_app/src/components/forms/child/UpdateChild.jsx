@@ -7,8 +7,8 @@ import { Box, styled, Modal } from "@mui/material";
 
 const Button = styled("button")({});
 
-const UpdateChild = (child, open, handleClose) => {
-  const [childData, setChildData] = useState({})
+const UpdateChild = ({ child, open, handleClose }) => {
+  const [childData, setChildData] = useState({});
   const navigate = useNavigate();
   const { updateChild } = useContext(ChildContext);
 
@@ -29,11 +29,10 @@ const UpdateChild = (child, open, handleClose) => {
     } catch (error) {
       console.error("Error updating child: ", error);
     }
-  }
-
+  };
 
   return (
-    <Modal open={false} onClose={handleClose}>
+    <Modal open={open} onClose={handleClose}>
       <Box
         sx={{
           width: "50%",
