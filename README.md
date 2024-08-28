@@ -52,7 +52,7 @@ We're committed to clean, efficient code. Our toolkit includes:
 Sharets is made up of a React frontend and four backend microservices which interact with one another
 
 - **Users**
-- **Child**
+- **Children**
 - **Milestones and Media**
 - **Events**
 
@@ -74,13 +74,17 @@ The Users microservice is the part of Sharents that handles the creation of a gu
 - **Member Model**: Respresents a member, who is invited by a guardian to view a particular child. It inclues an "invited_by" key, which is the id of the guardian who invited them. This is a one to many relationship: A guardian can have many members that he/she invited, but a member can only have one guardian who invite them.
 - **Invite Model**: Represents an invite, which includes a specific child, their guardian and the member that is invited. A separate invite is created for each child that a member can view.
 
-### Integration with Child Microservice
+### Integration with Children Microservice
 
-A separate invite is created in the database for each child, member and guardian that invited the member. Invites specify which children a member can view. In order to retrieve all children for a specific member to view, all invitations with a member's id on it are retrieved, and then the children on those invites are then retrieved from the Child microservice.
+A separate invite is created in the database for each child, member and guardian that invited the member. Invites specify which children a member can view. In order to retrieve all children for a specific member to view, all invitations with a member's id on it are retrieved, and then the children on those invites are then retrieved from the Children microservice.
 
-## Child Microservice
+### API Endpoints
 
-The Child microservice handles the creation, updating, deletion and retrieval of a child, or all children of a guardian or member. Each child is related to a specific guardian and the invites specificy which child is related to which members.
+The User endpoints can be viewed [here](http://localhost/auth/docs) (after the app is up and running)
+
+## Children Microservice
+
+The Children microservice handles the creation, updating, deletion and retrieval of a child, or all children of a guardian or member. Each child is related to a specific guardian and the invites specificy which child is related to which members.
 
 ### Models
 
@@ -93,6 +97,10 @@ The Child microservice handles the creation, updating, deletion and retrieval of
 ### Integration with Milestones and Media and Events microservices
 
 Children can have associated milestones, media, events and wishlists and these are managed by their respective services. Each milestone, media or event will have a child key, creating a one to many relationship. For example, a child can have many milestones, but a milestone can only have one child. The same is true for media and events. When a specific child is viewed, all their milestones and media are fetched from the Milestones and Media service and their events are fetched from the Events microservice.
+
+### API Endpoints
+
+The Children endpoints can be viewed [here](http://localhost/api/children/docs) (after the app is up and running)
 
 ## Milestones and Media Microservice
 
@@ -120,6 +128,10 @@ The Milestones and Media also handles the creation, updaing deletion and retriev
 - **Media Model**: Represents a media with type "photo" or "video". Each one has a child key, creating a one to many relationship. For example a child can have many photos, but a photo can only have one child
 - **Comment Model**: Represents a comment by a member or guardian on a milestone or a media. It has either a milestone or a media key creating a one to many relationship. For example a particular milestone can have many comments, but a comment can only have one milestone.
 
+### API Endpoints
+
+The Milestones and Media endpoints can be viewed [here](http://localhost/api/milestones/docs) (after the app is up and running)
+
 ## Events Microservice
 
 The Events microservice handles the creation, updating, deletion and retrieval of events associated with children. It also handles the creation, updating, deletion and retrieval of a wishlist and wishlist items associated with events.
@@ -135,6 +147,10 @@ The Events microservice handles the creation, updating, deletion and retrieval o
 - **Event Model**: Represents a event that has a child key, creating a one to many relationship. For example a child can have many events, but a event can only have one child
 - **Wishlist Model**: Represents a wishlist that has an event key, creating a one to many relationship. A wishlist has just one event, but it is possible for events to have more than one wishlist (although, in practice, an event will only have one wishlist).
 - **Wisthlist Item Model**: Represents a wishlist item on a particular wishlist. Each item has a wishlist key creating a one to many relationship. For example a particular wishlist can have many items, but a item can belong to only one wishlist
+
+### API Endpoints
+
+The Events endpoints can be viewed [here](http://localhost/api/events/docs) (after the app is up and running)
 
 ## 👀 Meet the Dream Team
 
