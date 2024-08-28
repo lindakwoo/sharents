@@ -24,13 +24,21 @@ const ChildProvider = ({ children }) => {
     localStorage.setItem("selectedChildId", id);
   };
 
+  const updateChild = (updatedChild) => {
+    setChild(updatedChild);
+  };
+
   useEffect(() => {
     if (selectedChildId) {
       selectChild(selectedChildId); // Fetch details when ID changes
     }
   }, [selectedChildId]);
 
-  return <ChildContext.Provider value={{ selectChild, child, selectedChildId }}>{children}</ChildContext.Provider>;
+  return (
+    <ChildContext.Provider value={{ selectChild, child, selectedChildId, updateChild }}>
+      {children}
+    </ChildContext.Provider>
+  );
 };
 
 export { ChildContext, ChildProvider };
