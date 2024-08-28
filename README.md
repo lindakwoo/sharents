@@ -20,6 +20,8 @@ docker-compose up
 
 Now view the app at http://localhost:3000/
 
+![Img](/images/sharents.jpg)
+
 ## 🛠 Tech Stack
 
 - **Backend**: FastAPI 🚀
