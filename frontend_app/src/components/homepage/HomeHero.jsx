@@ -54,7 +54,7 @@ const HomeHero = () => {
           }}
           onClick={handleOpen}
         >
-          Update Milestone
+          Update Child
         </Button>
       )}
       <Box
