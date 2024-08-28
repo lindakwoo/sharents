@@ -55,7 +55,7 @@ Sharets is made up of a React frontend and four backend microservices which inte
 
 ![Img](/images/excalii.png) (placeholder image for clarissa's excalidraw)
 
-## Users
+## Users Microservice
 
 The Users microservice is the part of Sharents that handles the creation of a guardian and members and the invitation of members through a secure, tokenized email link. It also handles user login authentification and authorization.
 
@@ -75,7 +75,7 @@ The Users microservice is the part of Sharents that handles the creation of a gu
 
 A separate invite is created in the database for each child, member and guardian that invited the member. Invites specify which children a member can view. In order to retrieve all children for a specific member to view, all invitations with a member's id on it are retrieved, and then the children on those invites are then retrieved from the Child microservice.
 
-## Child
+## Child Microservice
 
 The Child microservice handles the creation, updating, deletion and retrieval of a child, or all children of a guardian or member. Each child is related to a specific guardian and the invites specificy which child is related to which members.
 
@@ -91,7 +91,7 @@ The Child microservice handles the creation, updating, deletion and retrieval of
 
 Children can have associated milestones, media, events and wishlists and these are managed by their respective services. Each milestone, media or event will have a child key, creating a one to many relationship. For example, a child can have many milestones, but a milestone can only have one child. The same is true for media and events. When a specific child is viewed, all their milestones and media are fetched from the Milestones and Media service and their events are fetched from the Events microservice.
 
-## Milestones and Media
+## Milestones and Media Microservice
 
 The Milestones and Media microservice handles the creation, updating, deletion and retrieval of all milestones and media associated with a child. Media includes both photos and videos, while milestones are text descriptions of a child's latest activity. Both milestones and media have specific dates attached to them and are also categorized into one of the following categories:
 
@@ -117,7 +117,7 @@ The Milestones and Media also handles the creation, updaing deletion and retriev
 - **Media Model**: Represents a media with type "photo" or "video". Each one has a child key, creating a one to many relationship. For example a child can have many photos, but a photo can only have one child
 - **Comment Model**: Represents a comment by a member or guardian on a milestone or a media. It has either a milestone or a media key creating a one to many relationship. For example a particular milestone can have many comments, but a comment can only have one milestone.
 
-## Events
+## Events Microservice
 
 The Events microservice handles the creation, updating, deletion and retrieval of events associated with children. It also handles the creation, updating, deletion and retrieval of a wishlist and wishlist items associated with events.
 
