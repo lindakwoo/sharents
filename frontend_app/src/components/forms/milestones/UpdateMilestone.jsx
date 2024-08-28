@@ -1,21 +1,19 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import customFetch from "../../../fetchWrapper";
-import { Box, styled, Modal } from "@mui/material";
-import { AuthContext } from "../../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-
-const Button = styled("button")({});
-
+import { Box, Modal } from "@mui/material";
+import { Button } from "../../typography/Styled";
 
 const UpdateMilestone = ({ fetchMilestone, milestone, open, handleClose, id }) => {
-  const [milestoneData, setMilestoneData] = useState({ name: milestone.name, description: milestone.description, category: milestone.category });
-  const navigate = useNavigate();
-
+  const [milestoneData, setMilestoneData] = useState({
+    name: milestone.name,
+    description: milestone.description,
+    category: milestone.category,
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setMilestoneData({ ...milestoneData, [name]: value });
-  }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,11 +25,10 @@ const UpdateMilestone = ({ fetchMilestone, milestone, open, handleClose, id }) =
       console.log(response);
       fetchMilestone();
       handleClose();
-
     } catch (error) {
       console.error("Error updating milestone: ", error);
     }
-  }
+  };
 
   return (
     <Modal open={open} onClose={handleClose}>
@@ -107,10 +104,9 @@ const UpdateMilestone = ({ fetchMilestone, milestone, open, handleClose, id }) =
             Update Milestone
           </Button>
         </form>
-      </Box >
-    </Modal >
-  )
-
+      </Box>
+    </Modal>
+  );
 };
 
 // {

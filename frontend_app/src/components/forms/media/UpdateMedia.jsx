@@ -1,14 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState } from "react";
 import customFetch from "../../../fetchWrapper";
-import { Box, styled, Modal } from "@mui/material";
-import { AuthContext } from "../../../context/AuthContext";
-import { useNavigate } from "react-router-dom";
-
-const Button = styled("button")({});
+import { Box, Modal } from "@mui/material";
+import { Button } from "../../typography/Styled";
 
 const UpdateMedia = ({ fetchMedia, media, open, handleClose, id }) => {
   const [mediaData, setMediaData] = useState({ description: media.description, category: media.category });
-  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;

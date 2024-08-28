@@ -8,14 +8,8 @@ import { ArrowForward } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthContext";
 import UpdateEvent from "../forms/events/UpdateEvent";
 import CreateWishlist from "../forms/events/CreateWishlist";
-
+import { Button, H1, H2, H3 } from "../typography/Styled";
 import moment from "moment";
-
-const Button = styled("button")({});
-const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
-const H1 = styled("h1")({});
-const H2 = styled("h2")({});
-const H3 = styled("h3")({});
 
 const EventExpandedView = () => {
   const [event, setEvent] = useState({});

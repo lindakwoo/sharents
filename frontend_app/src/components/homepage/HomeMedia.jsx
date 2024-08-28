@@ -5,10 +5,7 @@ import { Box, styled } from "@mui/material";
 import { Link } from "react-router-dom";
 import { ArrowForward } from "@mui/icons-material";
 import Category from "../Category";
-
-const Img = styled("img")({});
-const IFrame = styled("iframe")({});
-const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
+import { StyledLink, Img, IFrame } from "../typography/Styled";
 
 const HomeMedia = () => {
   const [media, setMedia] = useState([]);

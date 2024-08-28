@@ -2,9 +2,8 @@ import React, { useState, useContext } from "react";
 import customFetch from "../../../fetchWrapper";
 import { ChildContext } from "../../../context/ChildContext";
 
-import { Box, styled, Modal } from "@mui/material";
-
-const Button = styled("button")({});
+import { Box, Modal } from "@mui/material";
+import { Button } from "../../typography/Styled";
 
 const UpdateChild = ({ child, open, handleClose }) => {
   const [childData, setChildData] = useState({});

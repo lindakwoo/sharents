@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import customFetch from "../../../fetchWrapper";
-import { Box, styled, Modal } from "@mui/material";
+import { Box } from "@mui/material";
 import { useParams, useNavigate } from "react-router-dom";
 import CreateWishlistItem from "./CreateWishlistItem";
-
-const Button = styled("button")({});
+import { Button } from "../../typography/Styled";
 
 const UpdateWishlist = () => {
   const [wishlistData, setWishlistData] = useState({});

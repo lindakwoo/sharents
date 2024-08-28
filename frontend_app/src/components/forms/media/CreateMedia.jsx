@@ -1,17 +1,14 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import customFetch from "../../../fetchWrapper";
-import { Box, styled } from "@mui/material";
-import { AuthContext } from "../../../context/AuthContext";
+import { Box } from "@mui/material";
 import { ChildContext } from "../../../context/ChildContext";
-
-const Button = styled("button")({});
+import { Button } from "../../typography/Styled";
 
 const CreateMedia = () => {
   const [mediaData, setMediaData] = useState({ description: "", category: "", date: "", type: "", url: "" });
   const navigate = useNavigate();
   const { child } = useContext(ChildContext);
-  const { isGuardian } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

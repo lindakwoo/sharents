@@ -2,8 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import customFetch from "../../../fetchWrapper";
 import { Box, styled, Modal } from "@mui/material";
 import { AuthContext } from "../../../context/AuthContext";
-
-const Button = styled("button")({});
+import { Button } from "../../typography/Styled";
 
 const CreateComment = ({ fetchComments, open, handleClose, type, id }) => {
   const [commentData, setCommentData] = useState({ text: "" });

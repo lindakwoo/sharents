@@ -1,7 +1,6 @@
 import React from "react";
-import { Box, styled } from "@mui/material";
-
-const Button = styled("button")({});
+import { Box } from "@mui/material";
+import { Button } from "../../typography/Styled";
 
 const CreateWishlistItem = ({ item, index, handleItemChange, handleRemoveItem }) => {
   const handlePriceChange = (e) => {

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { ChildContext } from "../../context/ChildContext";
 import { Box, styled } from "@mui/material";
 import { getAge } from "../../utils";

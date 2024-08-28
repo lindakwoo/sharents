@@ -3,11 +3,8 @@ import { useParams, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { ArrowBack } from "@mui/icons-material";
 import customFetch from "../../fetchWrapper";
-import { Box, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
-
-const Input = styled("input")({});
-const Button = styled("button")({});
-const H1 = styled("h1")({});
+import { Input, Button, H1 } from "../typography/Styled";
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 
 const WishlistPage = () => {
   const [wishlist, setWishlist] = useState({});
@@ -15,7 +12,6 @@ const WishlistPage = () => {
   const { role } = useContext(AuthContext);
   const navigate = useNavigate();
   const { event_id, title, id } = useParams();
-
 
   const fetchWishlist = async () => {
     const url = `http://localhost/api/wishlists/${id}/`;
@@ -87,7 +83,6 @@ const WishlistPage = () => {
       console.error("Error deleting wishlist and items", error);
     }
   };
-
 
   const handleCheckboxChange = async (index) => {
     const item = wishlistItems[index];

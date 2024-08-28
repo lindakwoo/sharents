@@ -1,19 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import customFetch from "../../../fetchWrapper";
 import { useNavigate } from "react-router-dom";
-import { Box, styled, Modal } from "@mui/material";
-import { AuthContext } from "../../../context/AuthContext";
-import { ChildContext } from "../../../context/ChildContext";
+import { Box, Modal } from "@mui/material";
 import CreateWishlistItem from "./CreateWishlistItem";
-
-const Button = styled("button")({});
+import { Button } from "../../typography/Styled";
 
 const CreateWishlist = ({ eventId, open, handleClose, updatingEvent = false, fetchWishlists }) => {
   const [name, setName] = useState(null);
   const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
-  const { child } = useContext(ChildContext);
-  const { role } = useContext(AuthContext);
   const destination = updatingEvent ? `/events/${eventId}` : `/events`;
 
   const handleWishlistNameChange = (e) => {

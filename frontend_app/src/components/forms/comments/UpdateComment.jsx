@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import customFetch from "../../../fetchWrapper";
-import { Box, styled, Modal } from "@mui/material";
-
-
-const Button = styled("button")({});
+import { Box, Modal } from "@mui/material";
+import { Button } from "../../typography/Styled";
 
 const UpdateComment = ({ fetchComments, comment, open, handleClose }) => {
   const [commentData, setCommentData] = useState({});
@@ -46,13 +44,13 @@ const UpdateComment = ({ fetchComments, comment, open, handleClose }) => {
             sx={{
               mt: "16px",
             }}
-            className="form-group"
+            className='form-group'
           >
             <label>text </label>
             <input
-              type="text"
-              className="form-control"
-              name="text"
+              type='text'
+              className='form-control'
+              name='text'
               defaultValue={comment.text}
               onChange={handleChange}
             />

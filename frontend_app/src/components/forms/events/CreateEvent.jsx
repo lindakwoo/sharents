@@ -1,12 +1,10 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import customFetch from "../../../fetchWrapper";
 import { useNavigate } from "react-router-dom";
-import { Box, styled } from "@mui/material";
-import { AuthContext } from "../../../context/AuthContext";
+import { Box } from "@mui/material";
 import { ChildContext } from "../../../context/ChildContext";
 import CreateWishlist from "./CreateWishlist";
-
-const Button = styled("button")({});
+import { Button } from "../../typography/Styled";
 
 const CreateEvent = () => {
   const [eventData, setEventData] = useState({ datetime: "", description: "", title: "", location: "", notes: "" });
@@ -14,7 +12,6 @@ const CreateEvent = () => {
   const [eventId, setEventId] = useState(null);
   const navigate = useNavigate();
   const { child } = useContext(ChildContext);
-  const { isGuardian } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

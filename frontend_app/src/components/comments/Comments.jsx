@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import customFetch from "../../fetchWrapper";
-import { Link } from "react-router-dom";
-import { Box, styled } from "@mui/material";
+import { Box } from "@mui/material";
 import CreateComment from "../forms/comments/CreateComment";
 import UpdateComment from "../forms/comments/UpdateComment";
 import UpdateIcon from "@mui/icons-material/Update";
 import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { AuthContext } from "../../context/AuthContext";
 import Tooltip from "@mui/material/Tooltip";
-
-const Button = styled("button")({});
+import { Button } from "../typography/Styled";
 
 const Comments = ({ id, type }) => {
   const [comments, setComments] = useState([]);

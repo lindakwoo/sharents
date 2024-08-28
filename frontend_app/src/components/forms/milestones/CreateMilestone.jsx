@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import customFetch from "../../../fetchWrapper";
 import { useNavigate } from "react-router-dom";
-import { Box, styled } from "@mui/material";
-import { AuthContext } from "../../../context/AuthContext";
+import { Box } from "@mui/material";
 import { ChildContext } from "../../../context/ChildContext";
-
-const Button = styled("button")({});
+import { Button } from "../../typography/Styled";
 
 const CreateMilestone = () => {
   const [milestoneData, setMilestoneData] = useState({ name: "", description: "", category: "", date: "" });
   const navigate = useNavigate();
   const { child } = useContext(ChildContext);
-  const { role } = useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

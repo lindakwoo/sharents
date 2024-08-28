@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import customFetch from "../../../fetchWrapper";
-import { Box, styled, Modal } from "@mui/material";
-
-const Button = styled("button")({});
+import { Box, Modal } from "@mui/material";
+import { Button } from "../../typography/Styled";
 
 const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
   const [eventData, setEventData] = useState({ ...event });
@@ -11,8 +10,6 @@ const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
     const { name, value } = e.target;
     setEventData({ ...eventData, [name]: value });
   };
-
-  const Button = styled("button")({});
 
   let myDate = "";
   if (event.datetime !== undefined && event.datetime !== "") {
