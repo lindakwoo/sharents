@@ -20,6 +20,7 @@ docker-compose up
 
 Now view the app at http://localhost:3000/
 
+![Img](/images/landing.jpg)
 ![Img](/images/sharents.jpg)
 
 ## 🛠 Tech Stack
