@@ -7,7 +7,13 @@ import { AuthContext } from "../../../context/AuthContext";
 const Button = styled("button")({});
 
 const CreateChild = () => {
-  const [childData, setChildData] = useState({ name: "", birthdate: "", profile_picture: "" });
+  const [childData, setChildData] = useState({
+    name: "",
+    birthdate: "",
+    profile_picture: "",
+    favorite_color: "",
+    current_thing: "",
+  });
   const { user, role } = useContext(AuthContext);
   const navigate = useNavigate();
 
@@ -82,6 +88,38 @@ const CreateChild = () => {
             name='profile_picture'
             onChange={(e) => handleChange(e)}
             placeholder='https://example.com/'
+          />
+        </Box>
+        <Box
+          sx={{
+            mt: "16px",
+          }}
+          className='form-group'
+        >
+          <label>Favorite Color</label>
+          <input
+            type='text'
+            className='form-control'
+            value={childData.favorite_color}
+            name='favorite_color'
+            onChange={(e) => handleChange(e)}
+            placeholder='Enter a color'
+          />
+        </Box>
+        <Box
+          sx={{
+            mt: "16px",
+          }}
+          className='form-group'
+        >
+          <label>Current Obsession</label>
+          <input
+            type='text'
+            className='form-control'
+            value={childData.current_thing}
+            name='current_thing'
+            onChange={(e) => handleChange(e)}
+            placeholder='Enter latest thing'
           />
         </Box>
         <Button

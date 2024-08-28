@@ -10,12 +10,16 @@ class ChildModelCreate(BaseModel):
     name: str = Field(...)
     birthdate: str = Field(...)
     profile_picture: str = Field(...)
+    current_thing: Optional[str] = Field(default=None)
+    favorite_color: Optional[str] = Field(default=None)
 
 
 class ChildModelUpdate(BaseModel):
     name: Optional[str] = Field(default=None)
     birthdate: Optional[str] = Field(default=None)
     profile_picture: Optional[str] = Field(default=None)
+    current_thing: Optional[str] = Field(default=None)
+    favorite_color: Optional[str] = Field(default=None)
 
 
 class ChildModel(BaseModel):
@@ -24,6 +28,8 @@ class ChildModel(BaseModel):
     birthdate: str = Field(...)
     profile_picture: str = Field(...)
     guardian: str = Field(...)
+    current_thing: str = Field(default=None)
+    favorite_color: str = Field(default=None)
 
 
 class ChildrenCollection(BaseModel):
