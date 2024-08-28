@@ -56,7 +56,7 @@ Sharets is made up of a React frontend and four backend microservices which inte
 - **Milestones and Media**
 - **Events**
 
-![Img](/images/excalii.png) (placeholder image for clarissa's excalidraw)
+![Img](/images/flowchart.png)
 
 ## Users Microservice
 
