@@ -60,7 +60,7 @@ const HomeMedia = () => {
           alignItems: "center",
         }}
       >
-        <h1>Latest photos</h1>
+        <h1>Latest photos and videos</h1>
         {media.length > 0 && (
           <Box
             sx={{
