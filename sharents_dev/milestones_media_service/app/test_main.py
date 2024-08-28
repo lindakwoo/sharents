@@ -54,9 +54,7 @@ async def test_post_comment_on_milestone_success(monkeypatch, test_app):
     async with AsyncClient(app=test_app, base_url="http://test") as ac:
         response = await ac.post(url, json=mock_comment_data)
 
-    # Debug the actual response
     response_json = response.json()
-    print("Actual Response JSON:", response_json)
 
     # Assertions to check if the response is as expected
     assert response.status_code == 200
