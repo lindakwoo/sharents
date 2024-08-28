@@ -113,6 +113,9 @@ class CommentModel(BaseModel):
     guardian: Optional[str] = Field(default=None)
     creator_name: Optional[str] = Field(default=None)
 
+    class Config:
+        allow_population_by_field_name = True
+
 
 class CommentCollection(BaseModel):
     comments: List[CommentModel]
