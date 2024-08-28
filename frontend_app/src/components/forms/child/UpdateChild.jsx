@@ -1,5 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import React, { useState, useContext } from "react";
 import customFetch from "../../../fetchWrapper";
 import { ChildContext } from "../../../context/ChildContext";
 
@@ -9,7 +8,6 @@ const Button = styled("button")({});
 
 const UpdateChild = ({ child, open, handleClose }) => {
   const [childData, setChildData] = useState({});
-  const navigate = useNavigate();
   const { updateChild } = useContext(ChildContext);
 
   const handleChange = (e) => {
@@ -26,6 +24,7 @@ const UpdateChild = ({ child, open, handleClose }) => {
       const response = await customFetch(url, options);
       console.log(response);
       updateChild(response);
+      handleClose();
     } catch (error) {
       console.error("Error updating child: ", error);
     }
@@ -61,23 +60,6 @@ const UpdateChild = ({ child, open, handleClose }) => {
               name='name'
               onChange={(e) => handleChange(e)}
               placeholder="Enter child's name"
-            />
-          </Box>
-          <Box
-            sx={{
-              mt: "16px",
-            }}
-            className='form-group'
-          >
-            <label>Birthdate</label>
-            <input
-              type='date'
-              className='form-control'
-              defaultValue={child.birthdate}
-              required
-              name='birthdate'
-              onChange={(e) => handleChange(e)}
-              placeholder='select a date'
             />
           </Box>
           <Box
