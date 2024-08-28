@@ -1,13 +1,16 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import customFetch from "../../../fetchWrapper";
-import { Box, styled } from "@mui/material";
+import { ChildContext } from "../../../context/ChildContext";
+
+import { Box, styled, Modal } from "@mui/material";
 
 const Button = styled("button")({});
 
 const UpdateChild = (child, open, handleClose) => {
   const [childData, setChildData] = useState({})
   const navigate = useNavigate();
+  const { updateChild } = useContext(ChildContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,7 +25,7 @@ const UpdateChild = (child, open, handleClose) => {
     try {
       const response = await customFetch(url, options);
       console.log(response);
-      navigate("/home");
+      updateChild(response);
     } catch (error) {
       console.error("Error updating child: ", error);
     }
@@ -30,7 +33,7 @@ const UpdateChild = (child, open, handleClose) => {
 
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal open={false} onClose={handleClose}>
       <Box
         sx={{
           width: "50%",
