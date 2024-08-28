@@ -158,10 +158,6 @@ The Events endpoints can be viewed [here](http://localhost/api/events/docs) (aft
 - **Caleb Saunders**
 - **Linda Woo**
 
-## 🤝 Contributing
-
-We welcome contributions! Check out our [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
 ## 🐛 Found a Bug?
 
 Issues and pull requests are welcome. For major changes, please open an issue first to discuss what you'd like to change.
