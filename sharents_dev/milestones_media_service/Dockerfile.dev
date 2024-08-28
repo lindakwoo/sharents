@@ -31,4 +31,5 @@ COPY . /app
 EXPOSE 8001
 
 # Command to run the application
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8004"]
+# CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8004"]
+CMD ["sh", "-c", "if [ \"$TEST_MODE\" = 'true' ]; then pytest && uvicorn app.main:app --host 0.0.0.0 --port 8004; else uvicorn app.main:app --host 0.0.0.0 --port 8004; fi"]

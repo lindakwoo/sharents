@@ -21,6 +21,9 @@ from .schemas import (
 )
 from .database import db
 from datetime import datetime
+import logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 router = APIRouter()
 
@@ -268,6 +271,7 @@ async def post_comment_on_milestone(milestone_id: str, comment: CommentModelCrea
     comment_dict = comment.model_dump()
     comment_dict["milestone"] = milestone_id
     result = await db.get_collection("comments").insert_one(comment_dict)
+    logger.info(f"Insert result: {result}")
     inserted_comment = await db.get_collection("comments").find_one(
         {"milestone": milestone_id, "_id": result.inserted_id}
     )
