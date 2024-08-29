@@ -24,6 +24,7 @@ export const getAge = (birthdate) => {
 
     let years = today.getFullYear() - birthDate.getFullYear();
     let months = today.getMonth() - birthDate.getMonth();
+    let days = today.getDate() - birthDate.getDate();
 
     // If the current month is earlier than the birth month, adjust years and months
     if (months < 0) {
@@ -31,9 +32,16 @@ export const getAge = (birthdate) => {
         months += 12;
     }
 
-    // If the current day of the month is earlier than the birth day, adjust months
-    if (today.getDate() < birthDate.getDate()) {
+    // If the current day of the month is earlier than the birth day, adjust months and days
+    if (days < 0) {
         months--;
+        // Get the number of days in the previous month
+        const previousMonth = (today.getMonth() - 1 + 12) % 12;
+        const previousMonthYear = previousMonth === 11 ? today.getFullYear() - 1 : today.getFullYear();
+        const daysInPreviousMonth = new Date(previousMonthYear, previousMonth + 1, 0).getDate();
+
+        days += daysInPreviousMonth;
+
         // Handle case where months go below zero
         if (months < 0) {
             years--;
@@ -41,8 +49,8 @@ export const getAge = (birthdate) => {
         }
     }
 
-    // Return 0 for years or months if they are 0
-    return { years: years || 0, months: months || 0 };
+    // Return 0 for years, months, or days if they are 0
+    return { years: years || 0, months: months || 0, days: days || 0 };
 };
 
 export const deleteComment = async (commentId) => {

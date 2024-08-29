@@ -39,27 +39,34 @@ var getAge = function getAge(birthdate) {
   var today = new Date();
   var birthDate = new Date(birthdate);
   var years = today.getFullYear() - birthDate.getFullYear();
-  var months = today.getMonth() - birthDate.getMonth(); // If the current month is earlier than the birth month, adjust years and months
+  var months = today.getMonth() - birthDate.getMonth();
+  var days = today.getDate() - birthDate.getDate(); // If the current month is earlier than the birth month, adjust years and months
 
   if (months < 0) {
     years--;
     months += 12;
-  } // If the current day of the month is earlier than the birth day, adjust months
+  } // If the current day of the month is earlier than the birth day, adjust months and days
 
 
-  if (today.getDate() < birthDate.getDate()) {
-    months--; // Handle case where months go below zero
+  if (days < 0) {
+    months--; // Get the number of days in the previous month
+
+    var previousMonth = (today.getMonth() - 1 + 12) % 12;
+    var previousMonthYear = previousMonth === 11 ? today.getFullYear() - 1 : today.getFullYear();
+    var daysInPreviousMonth = new Date(previousMonthYear, previousMonth + 1, 0).getDate();
+    days += daysInPreviousMonth; // Handle case where months go below zero
 
     if (months < 0) {
       years--;
       months += 12;
     }
-  } // Return 0 for years or months if they are 0
+  } // Return 0 for years, months, or days if they are 0
 
 
   return {
     years: years || 0,
-    months: months || 0
+    months: months || 0,
+    days: days || 0
   };
 };
 

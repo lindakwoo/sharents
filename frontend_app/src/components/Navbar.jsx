@@ -86,7 +86,7 @@ const Navbar = () => {
     if (user) {
       fetchChildren();
     }
-  }, [user]);
+  }, [user, child]);
 
   return (
     <AppBar position='static' sx={{ backgroundColor: "#0288d1" }}>
