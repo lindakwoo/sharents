@@ -70,13 +70,23 @@ const MediaExpandedView = () => {
     >
       {media && (
         <>
-          <Box sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            flexDirection: { xs: "column", lg: "row" },
-            width: "70%"
-          }}>
-            <Box sx={{ display: "flex", justifyContent: "start", alignItems: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: { xs: "column", lg: "row" },
+              width: "70%",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "start",
+                alignItems: "center",
+                mt: { xs: "10px" },
+                mb: { xs: "10px" },
+              }}
+            >
               <Button
                 onClick={() => navigate("/media")}
                 sx={{
@@ -101,9 +111,11 @@ const MediaExpandedView = () => {
                       mx: "16px",
                       padding: "16px",
                       borderRadius: "10px",
+
                       "& p": { my: 0 },
                       "&:hover": {
                         backgroundColor: "red",
+                        color: "white",
                       },
                     }}
                     onClick={deleteMedia}
@@ -119,6 +131,8 @@ const MediaExpandedView = () => {
                       "& p": { my: 0 },
                       "&:hover": {
                         backgroundColor: "yellow",
+                        color: "#0288d1",
+                        fontWeight: "bold",
                       },
                     }}
                     onClick={handleOpen}

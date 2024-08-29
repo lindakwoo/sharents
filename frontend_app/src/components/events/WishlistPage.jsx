@@ -124,9 +124,25 @@ const WishlistPage = () => {
           "& h1": { marginBottom: "48px" },
         }}
       >
-        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: "64px", width: "100%" }}>
-          <H1 sx={{ marginBottom: `0 !important` }}>{wishlist.name}</H1>
-          <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: { xs: "start", lg: "center" },
+            mb: "64px",
+            width: "100%",
+            flexDirection: { xs: "column", lg: "row" },
+          }}
+        >
+          <H1 sx={{ marginBottom: { xs: "16px !important", sm: `8px !important` } }}>{wishlist.name}</H1>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: { xs: "start", sm: "center" },
+              alignItems: { xs: "start", sm: "center" },
+              flexDirection: { xs: "column", sm: "row" },
+            }}
+          >
             <Button
               onClick={() => navigate(`/events/${event_id}`)}
               sx={{
@@ -134,6 +150,7 @@ const WishlistPage = () => {
                 border: "none",
                 padding: "16px",
                 borderRadius: "10px",
+                mb: { xs: "16px", sm: "0" },
                 "&:hover": {
                   backgroundColor: "#0288d1",
                   color: "white",
@@ -144,7 +161,7 @@ const WishlistPage = () => {
             </Button>
             {role === "guardian" && (
               <>
-                <Box sx={{ ml: "24px" }}>
+                <Box sx={{ ml: { xs: "0", sm: "24px" } }}>
                   <Button
                     sx={{
                       backgroundColor: "orange",
@@ -152,6 +169,7 @@ const WishlistPage = () => {
                       border: "none",
                       padding: "16px",
                       borderRadius: "10px",
+                      mb: { xs: "16px", sm: "0" },
                       "&:hover": {
                         backgroundColor: "red",
                         color: "white",
@@ -162,7 +180,7 @@ const WishlistPage = () => {
                     Delete Wishlist
                   </Button>
                 </Box>
-                <Box sx={{ ml: "24px" }}>
+                <Box sx={{ ml: { xs: "0", sm: "24px" } }}>
                   <Button
                     onClick={() => handleWishlistClick(wishlist.id)}
                     sx={{
@@ -172,8 +190,7 @@ const WishlistPage = () => {
                       padding: "16px",
                       borderRadius: "10px",
                       "&:hover": {
-                        backgroundColor: "#0288d1",
-                        color: "white",
+                        backgroundColor: "yellow",
                       },
                     }}
                   >

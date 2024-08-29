@@ -103,8 +103,24 @@ const EventExpandedView = () => {
         alignItems: "center",
       }}
     >
-      <Box sx={{ display: "flex", justifyContent: "space-between", width: "70%" }}>
-        <Box sx={{ display: "flex", justifyContent: "start", alignItems: "center" }}>
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          width: "70%",
+          flexDirection: { xs: "column", lg: "row" },
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "start",
+            flexDirection: { xs: "column", sm: "row" },
+            alignItems: { xs: "start", sm: "center" },
+            mt: { xs: "10px" },
+            mb: { xs: "10px" },
+          }}
+        >
           <Button
             onClick={() => navigate("/events")}
             sx={{
@@ -112,6 +128,7 @@ const EventExpandedView = () => {
               border: "none",
               padding: "16px",
               borderRadius: "10px",
+              mb: { xs: "10px", sm: "0" },
               "&:hover": {
                 backgroundColor: "#0288d1",
                 color: "white",
@@ -126,10 +143,10 @@ const EventExpandedView = () => {
                 sx={{
                   border: "none",
                   backgroundColor: "orange",
-                  mx: "16px",
-
+                  mx: { xs: "0", sm: "16px" },
                   padding: "16px",
                   borderRadius: "10px",
+                  mb: { xs: "10px", sm: "0" },
                   "& p": { my: 0 },
 
                   "&:hover": {
@@ -152,6 +169,8 @@ const EventExpandedView = () => {
 
                   "&:hover": {
                     backgroundColor: "yellow",
+                    color: "#0288d1",
+                    fontWeight: "bold",
                   },
                 }}
                 onClick={handleOpen}
@@ -166,11 +185,14 @@ const EventExpandedView = () => {
                 border: "none",
                 backgroundColor: "orange",
                 mx: "16px",
+                my: "10px",
                 padding: "16px",
                 borderRadius: "10px",
                 "& p": { my: 0 },
                 "&:hover": {
                   backgroundColor: "yellow",
+                  color: "#0288d1",
+                  fontWeight: "bold",
                 },
               }}
               onClick={handleWishlistOpen}
@@ -189,6 +211,7 @@ const EventExpandedView = () => {
                 padding: "16px",
                 border: "none",
                 borderRadius: "10px",
+                mt: { xs: "0", xm: "10px" },
                 "&:hover": {
                   backgroundColor: "#0288d1",
                   color: "white",
@@ -203,7 +226,7 @@ const EventExpandedView = () => {
       <Box
         sx={{
           mt: "64px",
-          padding: "128px",
+          padding: { xs: "16px", lg: "128px" },
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -218,6 +241,7 @@ const EventExpandedView = () => {
               alignItems: "center",
               justifyContent: "center",
               mb: "64px",
+              textAlign: "center",
             }}
           >
             <H1 sx={{ fontSize: "64px", my: "8px" }}>{event.title}</H1>
