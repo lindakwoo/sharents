@@ -111,7 +111,7 @@ const Navbar = () => {
 
         {childrenList.length > 0 && (
           <Box sx={{ minWidth: 120, mr: { xs: "100px", md: "0px" } }}>
-            <StyledSelect value={selectedChildId || ""} onChange={handleChildChange}>
+            <StyledSelect sx={{ border: "none" }} value={selectedChildId || ""} onChange={handleChildChange}>
               <option value=''>Select Child</option>
               {childrenList.map((child) => (
                 <option key={child.id} value={child.id}>
