@@ -82,8 +82,17 @@ const MilestoneExpandedView = () => {
     >
       {milestone && (
         <>
-          <Box sx={{ display: "flex", justifyContent: "space-between", width: "70%" }}>
-            <Box sx={{ display: "flex", justifyContent: "start", alignItems: "center" }}>
+          <Box sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: { xs: "column", lg: "row" },
+            width: "70%"
+          }}>
+            <Box sx={{
+              display: "flex",
+              justifyContent: "start",
+              alignItems: "center"
+            }}>
               <Button
                 onClick={() => navigate("/milestones")}
                 sx={{
@@ -106,7 +115,8 @@ const MilestoneExpandedView = () => {
                       border: "none",
                       backgroundColor: "orange",
                       mx: "16px",
-
+                      mt: { xs: "10px" },
+                      mb: { xs: "10px" },
                       padding: "16px",
                       borderRadius: "10px",
                       "& p": { my: 0 },
