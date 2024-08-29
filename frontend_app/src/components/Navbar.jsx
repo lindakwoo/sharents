@@ -12,7 +12,7 @@ import { ChildContext } from "../context/ChildContext";
 import customFetch from "../fetchWrapper";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { styled } from "@mui/material";
-import { StyledLink, StyledSelect } from "./typography/Styled";
+import { StyledLink, StyledSelect, Img } from "./typography/Styled";
 import DesktopMenuItem from "./DesktopMenuItem";
 import MobileMenuItem from "./MobileMeniItem";
 
@@ -91,23 +91,25 @@ const Navbar = () => {
   return (
     <AppBar position='static' sx={{ backgroundColor: "#0288d1" }}>
       <Toolbar>
-        <Typography
-          variant='h6'
-          sx={{
-            flexGrow: 1,
-            fontWeight: "bold",
-            fontSize: "24px",
-          }}
-        >
-          <StyledLink
+        <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "start", alignItems: "center" }}>
+          <Img src='./logo.png' sx={{ height: "70px", width: "auto" }} />
+          <Typography
+            variant='h6'
             sx={{
-              "&:hover": { color: "yellow" },
+              fontWeight: "bold",
+              fontSize: "24px",
             }}
-            to='/'
           >
-            Sharents
-          </StyledLink>
-        </Typography>
+            <StyledLink
+              sx={{
+                "&:hover": { color: "yellow" },
+              }}
+              to='/'
+            >
+              Sharents
+            </StyledLink>
+          </Typography>
+        </Box>
 
         {childrenList.length > 0 && (
           <Box sx={{ minWidth: 120, mr: { xs: "100px", md: "0px" } }}>

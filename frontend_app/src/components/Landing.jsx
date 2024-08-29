@@ -5,6 +5,7 @@ import GuardianSignup from "./forms/GuardianSignup";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { H1 } from "./typography/Styled";
+import { Img } from "./typography/Styled";
 
 const Landing = () => {
   // This page has sign up and login buttons and is just a SHARENTS overview
@@ -44,7 +45,7 @@ const Landing = () => {
       {" "}
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mt: "128px" }}>
-          <img src='./logo.png' />
+          <Img src='./logo.png' />
           <Box sx={{ width: "50%" }}>
             <H1 sx={{ fontSize: "64px" }}>Welcome to Sharents</H1>
             <Box sx={{ fontSize: "32px" }}>Share your children's milestones and memories with all your loved ones</Box>
