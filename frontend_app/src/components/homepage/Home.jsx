@@ -9,8 +9,17 @@ import HomeMedia from "./HomeMedia";
 
 const Home = () => {
   const { child } = useContext(ChildContext);
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    if (!child) {
+      navigate('/member_landing');
+    }
+  }, [child, navigate]);
 
   if (!child) {
+    // Return null or a loading spinner while redirecting
     return null;
   }
   return (
