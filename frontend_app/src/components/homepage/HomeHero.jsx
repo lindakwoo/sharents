@@ -1,14 +1,10 @@
 import React, { useState, useContext } from "react";
 import { ChildContext } from "../../context/ChildContext";
-import { Box, styled } from "@mui/material";
+import { Box } from "@mui/material";
 import { getAge } from "../../utils";
 import { AuthContext } from "../../context/AuthContext";
 import UpdateChild from "../forms/child/UpdateChild";
-
-const Img = styled("img")({});
-const H1 = styled("h1")({});
-const H2 = styled("h2")({});
-const Button = styled("button")({});
+import { H1, H2, Img, Button } from "../typography/Styled";
 
 const HomeHero = () => {
   const [modalOpen, setModalOpen] = useState(false);

@@ -1,23 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import customFetch from "../../fetchWrapper";
 import { ChildContext } from "../../context/ChildContext";
-import { Box, styled } from "@mui/material";
-import { ArrowForward } from "@mui/icons-material";
-import { Link } from "react-router-dom";
-import MilestoneBox from "./MilestoneBox";
+import { Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
-const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
-const Select = styled("select")({
-  appearance: "none", // Remove default browser styling for select items
-  width: "100%",
-  padding: "8px 40px 8px 8px",
-  borderRadius: "4px",
-  background: `url('data:image/svg+xml;utf8,<svg fill="%23000000" height="32" viewBox="0 0 24 24" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat`, // Custom dropdown arrow (enlarged)
-  backgroundSize: "24px", // size of the icon
-  backgroundPosition: "calc(100% - 4px) center", // Move icon 4px from the right
-  backgroundColor: "white",
-  fontSize: "16px",
-});
+import MilestoneBox from "./MilestoneBox";
+import { StyledSelect } from "../typography/Styled";
 
 const MilestonesPage = () => {
   const [milestones, setMilestones] = useState([]);
@@ -59,7 +47,7 @@ const MilestonesPage = () => {
     filterByCategory(); // Filter milestones when category changes
   }, [category, milestones]);
 
-  return (
+  return child ? (
     <Box
       sx={{
         display: "flex",
@@ -85,7 +73,7 @@ const MilestonesPage = () => {
             }}
             className='form-group'
           >
-            <Select
+            <StyledSelect
               className='form-control'
               value={category}
               required
@@ -104,7 +92,7 @@ const MilestonesPage = () => {
               <option value='physical'>physical</option>
               <option value='cognitive'>cognitive</option>
               <option value='other'>other</option>
-            </Select>
+            </StyledSelect>
           </Box>
         </form>
       </Box>{" "}
@@ -117,7 +105,7 @@ const MilestonesPage = () => {
       )}
       {milestones.length === 0 && <Box>{`There are no milestones for this child`}</Box>}
     </Box>
-  );
+  ) : null;
 };
 
 export default MilestonesPage;

@@ -1,10 +1,8 @@
 import React from "react";
-import { Box, styled } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box } from "@mui/material";
 import { formatDate } from "../../../utils";
 import Category from "../../Category";
-const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
-const H1 = styled("h1")({});
+import { H1, StyledLink } from "../../typography/Styled";
 
 const HomeMilestone = ({ milestone }) => {
   return (

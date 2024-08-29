@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Box, styled } from "@mui/material";
+import { Box } from "@mui/material";
 import Login from "./forms/Login";
 import GuardianSignup from "./forms/GuardianSignup";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-
-const Image = styled("img")({});
-const H1 = styled("h1")({});
+import { H1 } from "./typography/Styled";
 
 const Landing = () => {
   // This page has sign up and login buttons and is just a SHARENTS overview

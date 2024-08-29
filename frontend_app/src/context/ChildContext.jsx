@@ -1,5 +1,7 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import customFetch from "../fetchWrapper";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "./AuthContext";
 
 const ChildContext = createContext();
 
@@ -7,7 +9,9 @@ const ChildProvider = ({ children }) => {
   const [selectedChildId, setSelectedChildId] = useState(() => {
     return localStorage.getItem("selectedChildId") || null;
   });
-  const [child, setChild] = useState({});
+  const [child, setChild] = useState(null);
+  const { isAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const selectChild = async (id) => {
     setSelectedChildId(id);
@@ -20,6 +24,7 @@ const ChildProvider = ({ children }) => {
       }
     } else {
       setChild(null);
+      navigate("/member_landing");
     }
     localStorage.setItem("selectedChildId", id);
   };
@@ -33,6 +38,12 @@ const ChildProvider = ({ children }) => {
       selectChild(selectedChildId); // Fetch details when ID changes
     }
   }, [selectedChildId]);
+
+  useEffect(() => {
+    if (isAuth && child === null) {
+      navigate("/member_landing");
+    }
+  }, [child, isAuth]);
 
   return (
     <ChildContext.Provider value={{ selectChild, child, selectedChildId, updateChild }}>

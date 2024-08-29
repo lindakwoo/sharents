@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import customFetch from "../../fetchWrapper";
-import { Link } from "react-router-dom";
-import { Box, styled } from "@mui/material";
+import { Box } from "@mui/material";
 import { formatDate } from "../../utils";
 import { ArrowBack } from "@mui/icons-material";
 import Category from "../Category";
@@ -10,9 +9,7 @@ import Comments from "../comments/Comments";
 import { AuthContext } from "../../context/AuthContext";
 import UpdateMedia from "../forms/media/UpdateMedia";
 import { deleteComment } from "../../utils";
-
-const Img = styled("img")({});
-const Button = styled("button")({});
+import { Button, Img } from "../typography/Styled";
 
 const MediaExpandedView = () => {
   const [media, setMedia] = useState(null);

@@ -2,11 +2,9 @@ import React, { useEffect, useState, useContext } from "react";
 import customFetch from "../../../fetchWrapper";
 import { ChildContext } from "../../../context/ChildContext";
 import HomeMilestone from "./HomeMilestone";
-import { Box, styled } from "@mui/material";
+import { Box } from "@mui/material";
 import { ArrowForward } from "@mui/icons-material";
-import { Link } from "react-router-dom";
-
-const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
+import { StyledLink } from "../../typography/Styled";
 
 const HomeMilestones = () => {
   const [milestones, setMilestones] = useState([]);

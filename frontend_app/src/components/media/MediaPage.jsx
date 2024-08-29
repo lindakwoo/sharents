@@ -1,26 +1,11 @@
 import React, { useState, useContext, useEffect } from "react";
 import customFetch from "../../fetchWrapper";
 import { ChildContext } from "../../context/ChildContext";
-import { Box, styled } from "@mui/material";
-import { Link } from "react-router-dom";
-import { ArrowForward } from "@mui/icons-material";
-import MediaBox from "./MediaBox";
+import { Box } from "@mui/material";
 import Category from "../Category";
+import { IFrame, Img, StyledLink } from "../typography/Styled";
+import { StyledSelect } from "../typography/Styled";
 // This is the page that will render a bunch of little Media boxes to click on for expanded view
-const Img = styled("img")({});
-const IFrame = styled("iframe")({});
-const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
-const Select = styled("select")({
-  appearance: "none", // Remove default browser styling for select items
-  width: "100%",
-  padding: "8px 40px 8px 8px",
-  borderRadius: "4px",
-  background: `url('data:image/svg+xml;utf8,<svg fill="%23000000" height="32" viewBox="0 0 24 24" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat`, // Custom dropdown arrow (enlarged)
-  backgroundSize: "24px", // size of the icon
-  backgroundPosition: "calc(100% - 4px) center", // Move icon 4px from the right
-  backgroundColor: "white",
-  fontSize: "16px",
-});
 
 const MediaPage = () => {
   const [media, setMedia] = useState([]);
@@ -95,7 +80,7 @@ const MediaPage = () => {
               }}
               className='form-group'
             >
-              <Select
+              <StyledSelect
                 className='form-control'
                 value={category}
                 required
@@ -114,7 +99,7 @@ const MediaPage = () => {
                 <option value='physical'>physical</option>
                 <option value='cognitive'>cognitive</option>
                 <option value='other'>other</option>
-              </Select>
+              </StyledSelect>
             </Box>
           </form>
         </Box>{" "}

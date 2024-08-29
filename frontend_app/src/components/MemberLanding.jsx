@@ -1,18 +1,15 @@
 import React, { useState, useContext, useEffect } from "react";
 import customFetch from "../fetchWrapper";
-import { Link, useNavigate } from "react-router-dom";
-import { styled, Box } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Box } from "@mui/material";
 import { AuthContext } from "../context/AuthContext";
 import { ChildContext } from "../context/ChildContext";
-
-const P = styled("p")({});
-
-const Img = styled("img")({});
+import { P, Img } from "./typography/Styled";
 
 const MemberLanding = () => {
   const [childrenList, setChildrenList] = useState([]);
   const { user, role } = useContext(AuthContext);
-  const { selectChild, child, selectedChildId } = useContext(ChildContext);
+  const { selectChild } = useContext(ChildContext);
   const navigate = useNavigate();
 
   const fetchChildren = async () => {

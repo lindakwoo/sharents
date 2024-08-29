@@ -1,18 +1,14 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
 import customFetch from "../../fetchWrapper";
-import { Box, styled } from "@mui/material";
+import { Box } from "@mui/material";
 import { formatDate } from "../../utils";
 import { ArrowBack } from "@mui/icons-material";
 import Category from "../Category";
 import Comments from "../comments/Comments";
 import UpdateMilestone from "../forms/milestones/UpdateMilestone";
 import { AuthContext } from "../../context/AuthContext";
-
-const Button = styled("button")({});
-const H1 = styled("h1")({});
-const H2 = styled("h2")({});
+import { Button, H1, H2 } from "../typography/Styled";
 
 const MilestoneExpandedView = () => {
   const [milestone, setMilestone] = useState(null);

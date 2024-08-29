@@ -12,19 +12,8 @@ import { ChildContext } from "../context/ChildContext";
 import customFetch from "../fetchWrapper";
 import { Link, useNavigate } from "react-router-dom";
 import { styled } from "@mui/material";
+import { StyledLink, StyledSelect } from "./typography/Styled";
 
-const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
-const Select = styled("select")({
-  appearance: "none", // Remove default browser styling for select items
-  width: "100%",
-  padding: "8px 40px 8px 8px",
-  borderRadius: "4px",
-  background: `url('data:image/svg+xml;utf8,<svg fill="%23000000" height="32" viewBox="0 0 24 24" width="32" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>') no-repeat`, // Custom dropdown arrow (enlarged)
-  backgroundSize: "24px", // size of the icon
-  backgroundPosition: "calc(100% - 4px) center", // Move icon 4px from the right
-  backgroundColor: "white",
-  fontSize: "16px",
-});
 const Button = styled("button")({
   border: "none",
   color: "white",
@@ -107,23 +96,26 @@ const Navbar = () => {
 
         {childrenList.length > 0 && (
           <Box sx={{ minWidth: 120 }}>
-            <Select value={selectedChildId || ""} onChange={handleChildChange}>
+            <StyledSelect value={selectedChildId || ""} onChange={handleChildChange}>
               <option value=''>Select Child</option>
               {childrenList.map((child) => (
                 <option key={child.id} value={child.id}>
                   {child.name}
                 </option>
               ))}
-            </Select>
+            </StyledSelect>
           </Box>
         )}
         <Box sx={{ display: { xs: "none", md: "block" } }}>
-          <Button color='inherit'>
-            {" "}
-            <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/home'>
-              Home
-            </StyledLink>
-          </Button>
+          {child && (
+            <Button color='inherit'>
+              {" "}
+              <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/home'>
+                Home
+              </StyledLink>
+            </Button>
+          )}
+
           {!user && (
             <Button color='inherit' onClick={() => setIsSignup(true)}>
               {" "}
@@ -148,7 +140,7 @@ const Navbar = () => {
               </StyledLink>
             </Button>
           )}
-          {role === "guardian" && (
+          {role === "guardian" && child && (
             <Button sx={{ "&:hover": { color: "yellow" } }}>
               {" "}
               <StyledLink to='/guardian_dashboard'>Dashboard</StyledLink>
@@ -161,10 +153,12 @@ const Navbar = () => {
           </IconButton>
         </Box>
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-          <MenuItem onClick={handleMenuClose}>
-            {" "}
-            <StyledLink to='/home'>Home</StyledLink>
-          </MenuItem>
+          {child && (
+            <MenuItem onClick={handleMenuClose}>
+              {" "}
+              <StyledLink to='/home'>Home</StyledLink>
+            </MenuItem>
+          )}
           {!user && (
             <MenuItem onClick={handleSignup}>
               {" "}
@@ -183,7 +177,7 @@ const Navbar = () => {
               <StyledLink>Logout</StyledLink>
             </MenuItem>
           )}
-          {role === "guardian" && (
+          {role === "guardian" && child && (
             <MenuItem onClick={handleMenuClose}>
               {" "}
               <StyledLink to='/guardian_dashboard'>Dashboard</StyledLink>

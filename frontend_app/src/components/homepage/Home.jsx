@@ -1,4 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/AuthContext";
 import { ChildContext } from "../../context/ChildContext";
 import HomeHero from "./HomeHero";
@@ -7,8 +8,11 @@ import HomeEvents from "./HomeEvents";
 import HomeMedia from "./HomeMedia";
 
 const Home = () => {
-  const { user } = useContext(AuthContext);
   const { child } = useContext(ChildContext);
+
+  if (!child) {
+    return null;
+  }
   return (
     <>
       <HomeHero />

@@ -1,13 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Box, styled, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from "@mui/material";
 import customFetch from "../../fetchWrapper";
 import { ChildContext } from "../../context/ChildContext";
 import { formatDate } from "../../utils";
 import { ArrowForward } from "@mui/icons-material";
-import { Link } from "react-router-dom";
-
-const StyledLink = styled(Link)({ textDecoration: "none", color: "inherit" });
+import { StyledLink } from "../typography/Styled";
 
 const HomeEvents = () => {
   const [events, setEvents] = useState([]);
