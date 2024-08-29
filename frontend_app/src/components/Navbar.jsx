@@ -10,7 +10,7 @@ import Box from "@mui/material/Box";
 import { AuthContext } from "../context/AuthContext";
 import { ChildContext } from "../context/ChildContext";
 import customFetch from "../fetchWrapper";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { styled } from "@mui/material";
 import { StyledLink, StyledSelect } from "./typography/Styled";
 
@@ -29,6 +29,7 @@ const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [childrenList, setChildrenList] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -88,14 +89,21 @@ const Navbar = () => {
   return (
     <AppBar position='static' sx={{ backgroundColor: "#0288d1" }}>
       <Toolbar>
-        <Typography variant='h6' sx={{ flexGrow: 1, fontWeight: "bold", fontSize: "24px" }}>
-          <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/'>
+        <Typography variant='h6'
+          sx={{
+            flexGrow: 1,
+            fontWeight: "bold",
+            fontSize: "24px"
+          }}>
+          <StyledLink sx={{
+            "&:hover": { color: "yellow" }
+          }} to='/'>
             Sharents
           </StyledLink>
         </Typography>
 
         {childrenList.length > 0 && (
-          <Box sx={{ minWidth: 120 }}>
+          <Box sx={{ minWidth: 120, mr: { xs: "100px", md: "0px" } }}>
             <StyledSelect value={selectedChildId || ""} onChange={handleChildChange}>
               <option value=''>Select Child</option>
               {childrenList.map((child) => (
@@ -106,11 +114,19 @@ const Navbar = () => {
             </StyledSelect>
           </Box>
         )}
-        <Box sx={{ display: { xs: "none", md: "block" } }}>
+        <Box sx={{
+          display: { xs: "none", md: "block" },
+
+        }}>
           {child && (
-            <Button color='inherit'>
+            <Button
+              sx={{
+                "&:hover": { color: "yellow" },
+                color: location.pathname === "/home" ? "yellow" : "white",
+                backgroundColor: location.pathname === "/home" ? "#077eba" : "transparent"
+              }} color='inherit'>
               {" "}
-              <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/home'>
+              <StyledLink to='/home'>
                 Home
               </StyledLink>
             </Button>
@@ -141,7 +157,11 @@ const Navbar = () => {
             </Button>
           )}
           {role === "guardian" && child && (
-            <Button sx={{ "&:hover": { color: "yellow" } }}>
+            <Button sx={{
+              "&:hover": { color: "yellow" },
+              color: location.pathname === "/guardian_dashboard" ? "yellow" : "white",
+              backgroundColor: location.pathname === "/guardian_dashboard" ? "#077eba" : "transparent"
+            }}>
               {" "}
               <StyledLink to='/guardian_dashboard'>Dashboard</StyledLink>
             </Button>
@@ -154,7 +174,11 @@ const Navbar = () => {
         </Box>
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
           {child && (
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem
+              sx={{
+                backgroundColor: location.pathname === "/home" ? "#dce0e2" : "transparent"
+              }}
+              onClick={handleMenuClose}>
               {" "}
               <StyledLink to='/home'>Home</StyledLink>
             </MenuItem>
@@ -178,14 +202,18 @@ const Navbar = () => {
             </MenuItem>
           )}
           {role === "guardian" && child && (
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem
+              sx={{
+                backgroundColor: location.pathname === "/guardian_dashboard" ? "#dce0e2" : "transparent"
+              }}
+              onClick={handleMenuClose}>
               {" "}
               <StyledLink to='/guardian_dashboard'>Dashboard</StyledLink>
             </MenuItem>
           )}
         </Menu>
       </Toolbar>
-    </AppBar>
+    </AppBar >
   );
 };
 
