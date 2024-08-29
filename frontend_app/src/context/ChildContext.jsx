@@ -40,9 +40,9 @@ const ChildProvider = ({ children }) => {
   }, [selectedChildId]);
 
   useEffect(() => {
-    if (isAuth && child === null) {
-      navigate("/member_landing");
-    }
+    // if (isAuth && !child) {
+    //   navigate("/member_landing");
+    // }
   }, [child, isAuth]);
 
   return (
