@@ -73,7 +73,12 @@ const MediaExpandedView = () => {
     >
       {media && (
         <>
-          <Box sx={{ display: "flex", justifyContent: "space-between", width: "70%" }}>
+          <Box sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: { xs: "column", lg: "row" },
+            width: "70%"
+          }}>
             <Box sx={{ display: "flex", justifyContent: "start", alignItems: "center" }}>
               <Button
                 onClick={() => navigate("/media")}
