@@ -9,12 +9,15 @@ import HomeMedia from "./HomeMedia";
 
 const Home = () => {
   const { child } = useContext(ChildContext);
+  const { isAuth } = useContext(AuthContext);
   const navigate = useNavigate();
 
-
   useEffect(() => {
-    if (!child) {
-      navigate('/member_landing');
+    if (!child && isAuth) {
+      navigate("/member_landing");
+    }
+    if (!isAuth) {
+      navigate("/");
     }
   }, [child, navigate]);
 
