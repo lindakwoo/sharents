@@ -23,20 +23,19 @@ const GuardianSignup = ({ open, handleClose }) => {
       return;
     }
     try {
-      console.log("user: ", user);
       const userData = {
-        "name": user.name,
-        "username": user.username,
-        "email": user.email,
-        "password": user.password
-      }
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        password: user.password,
+      };
       const response = await axios.post("http://localhost/auth/register/", userData, {
         headers: {
           "Content-Type": "application/json",
         },
       });
       // if (response.status === 200) {
-      // login(response.data.access_token, response.data.user, response.data.role);
+      // login(response.data.access_token, response.data.user, "guardian");
       login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
       handleClose();
       navigate("/member_landing");
