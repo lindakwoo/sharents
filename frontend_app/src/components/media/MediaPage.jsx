@@ -1,10 +1,12 @@
 import React, { useState, useContext, useEffect } from "react";
 import customFetch from "../../fetchWrapper";
 import { ChildContext } from "../../context/ChildContext";
+import { AuthContext } from "../../context/AuthContext";
 import { Box } from "@mui/material";
 import Category from "../Category";
 import { IFrame, Img, StyledLink } from "../typography/Styled";
 import { StyledSelect } from "../typography/Styled";
+import { useNavigate } from "react-router-dom";
 // This is the page that will render a bunch of little Media boxes to click on for expanded view
 
 const MediaPage = () => {
@@ -12,6 +14,11 @@ const MediaPage = () => {
   const [filteredMedia, setFilteredMedia] = useState([]);
   const [category, setCategory] = useState("");
   const { child } = useContext(ChildContext);
+  const { isAuth } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+
+
   const fetchMedia = async () => {
     const url = `http://localhost/api/media/children/${child.id}`;
     try {
@@ -39,14 +46,25 @@ const MediaPage = () => {
     }
   };
   useEffect(() => {
-    fetchMedia(); // Fetch media when id changes
+    if (child) {
+      fetchMedia();
+    }
+    // Fetch media when id changes
   }, [child]);
 
   useEffect(() => {
     filterByCategory(); // Filter media when category changes
   }, [category, media]);
 
-  return (
+  useEffect(() => {
+    if (!isAuth) {
+      navigate("/");
+    }
+  }, [isAuth]);
+
+
+  return child ? (
+
     <Box
       sx={{
         padding: "16px",
@@ -200,7 +218,8 @@ const MediaPage = () => {
         {media.length === 0 && <Box>There are no photos or videos for this child</Box>}
       </Box>
     </Box>
-  );
+
+  ) : null;
 };
 
 export default MediaPage;
