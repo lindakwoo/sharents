@@ -99,6 +99,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     "/register", response_model=GuardianModel, status_code=status.HTTP_201_CREATED
 )
 async def register_user(guardian: GuardianModelCreate):
+    print("guardian: ", guardian)
     guardian_collection = db.get_collection("guardians")
     check_for_none(guardian_collection, "guardian collections not found")
 

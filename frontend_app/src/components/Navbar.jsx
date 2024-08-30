@@ -59,7 +59,7 @@ const Navbar = () => {
   };
 
   const handleSignup = () => {
-    setIsSignup(true);
+    setIsSignup(false);
     handleMenuClose();
     navigate("/");
   };
@@ -128,7 +128,7 @@ const Navbar = () => {
             display: { xs: "none", md: "block" },
           }}
         >
-          {child && <DesktopMenuItem path='/home' onClickHandler={() => {}} title='Home' />}
+          {child && <DesktopMenuItem path='/home' onClickHandler={() => { }} title='Home' />}
           {!user && (
             <DesktopMenuItem path='/' onClickHandler={() => setIsSignup(true)} title='Signup' highlight={false} />
           )}
@@ -137,7 +137,7 @@ const Navbar = () => {
           )}
           {user && <DesktopMenuItem path='#' onClickHandler={handleLogout} title='Logout' />}
           {role === "guardian" && child && (
-            <DesktopMenuItem path='/guardian_dashboard' onClickHandler={() => {}} title='Dashboard' />
+            <DesktopMenuItem path='/guardian_dashboard' onClickHandler={() => { }} title='Dashboard' />
           )}
         </Box>
         <Box sx={{ display: { xs: "block", md: "none" } }}>
