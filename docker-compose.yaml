@@ -1,4 +1,4 @@
-name: sharents-dev
+version: "3"
 
 services:
   traefik:
@@ -48,7 +48,7 @@ services:
       - ATLAS_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/children_db?retryWrites=true&w=majority&appName=Sharents
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.children.rule=PathPrefix(`/api/children`) && !PathPrefix(`/api/children/docs`) && !PathPrefix(`/api/children/openapi.json`)"
+      - "traefik.http.routers.children.rule=PathPrefix(`/api/children`) || PathPrefix(`/api/guardians`) || PathPrefix(`/api/members`) || PathPrefix(`/api/invites`)"
       - "traefik.http.routers.children-docs.rule=PathPrefix(`/api/children/docs`) || PathPrefix(`/api/children/openapi.json`)"
       - "traefik.http.services.children.loadbalancer.server.port=8002"
 
@@ -62,7 +62,7 @@ services:
       - ATLAS_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/events_db?retryWrites=true&w=majority&appName=Sharents
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.events.rule=PathPrefix(`/api/events`) && !PathPrefix(`/api/events/docs`) && !PathPrefix(`/api/events/openapi.json`)"
+      - "traefik.http.routers.events.rule=PathPrefix(`/api/events`) || PathPrefix(`/api/wishlists`) || PathPrefix(`/api/wishlistItems`)"
       - "traefik.http.routers.events-docs.rule=PathPrefix(`/api/events/docs`) || PathPrefix(`/api/events/openapi.json`)"
       - "traefik.http.services.events.loadbalancer.server.port=8003"
 
@@ -77,19 +77,19 @@ services:
       - TEST_MODE=true
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.milestones.rule=PathPrefix(`/api/milestones`) && !PathPrefix(`/api/milestones/docs`) && !PathPrefix(`/api/milestones/openapi.json`)"
+      - "traefik.http.routers.milestones.rule=PathPrefix(`/api/milestones`) || PathPrefix(`/api/categories`) || PathPrefix(`/api/media`) || PathPrefix(`/api/comments`) || PathPrefix(`/media/children`) || PathPrefix(`/milestones/children`) || PathPrefix(`/milestone`) || PathPrefix(`/comments`)"
       - "traefik.http.routers.milestones-docs.rule=PathPrefix(`/api/milestones/docs`) || PathPrefix(`/api/milestones/openapi.json`)"
       - "traefik.http.services.milestones.loadbalancer.server.port=8004"
 
   frontend_service:
     build:
       context: ./frontend_app
-      dockerfile: Dockerfile.dev # Specify Dockerfile here if it's not named 'Dockerfile'
+      dockerfile: Dockerfile.dev
     volumes:
       - ./frontend_app:/app
       - /app/node_modules
     ports:
-      - "3000:3000" # Map port 3000 on host to port 80 in the container where Nginx serves the app
+      - "3000:3000"
     depends_on:
       - users_service
       - children_service
@@ -97,3 +97,33 @@ services:
       - milestones_media_service
     environment:
       - CHOKIDAR_USEPOLLING=true
+
+  brain:
+    image: ollama/ollama:latest
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./ollama_data:/root/.ollama
+    command: run llama2:7b-chat
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.brain.rule=PathPrefix(`/api/brain`)"
+      - "traefik.http.services.brain.loadbalancer.server.port=11434"
+
+  openwebui:
+    image: ghcr.io/open-webui/open-webui:main
+    ports:
+      - "3001:8080"
+    environment:
+      - OLLAMA_API_BASE_URL=http://brain:11434/api
+    depends_on:
+      - brain
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.openwebui.rule=PathPrefix(`/webui`)"
+      - "traefik.http.services.openwebui.loadbalancer.server.port=8080"
+
+volumes:
+  ollama_data:

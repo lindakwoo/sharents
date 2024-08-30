@@ -3,76 +3,108 @@ from pydantic import BaseModel, Field, EmailStr
 from pydantic.functional_validators import BeforeValidator
 from typing_extensions import Annotated
 
+# Annotated type for MongoDB ObjectId
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
 
+class LoginModel(BaseModel):
+    username: str
+    password: str
+
+
 class Token(BaseModel):
-    access_token: str
-    token_type: str
+    """Model for the access token returned after successful authentication."""
+
+    access_token: str  # The JWT access token
+    token_type: str  # The type of token, typically 'bearer'
 
 
 class TokenData(BaseModel):
-    username: Optional[str] = None
+    """Model for the data contained in the token."""
+
+    username: Optional[str] = None  # The username associated with the token
 
 
-class GuardianModelCreate(BaseModel):
-    name: str = Field(...)
-    email: EmailStr = Field(...)
-    username: str = Field(...)
-    password: str = Field(...)
+class UserBase(BaseModel):
+    """Base model for user-related information."""
+
+    name: str = Field(...)  # The name of the user
+    email: EmailStr = Field(...)  # The email address of the user
+    username: str = Field(...)  # The username of the user
 
 
-class GuardianModel(BaseModel):
-    id: Optional[PyObjectId] = Field(alias="_id", default=None)
-    name: str = Field(...)
-    email: EmailStr = Field(...)
-    username: str = Field(...)
-    hashed_password: str = Field(...)
+class UserCreate(UserBase):
+    """Model for creating a new user, including password."""
+
+    password: str = Field(...)  # The plaintext password for the user
 
 
-class GuardianCollection(BaseModel):
-    guardians: List[GuardianModel]
+class UserModel(UserBase):
+    """Model representing a user stored in the database."""
+
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)  # MongoDB ObjectId
+    hashed_password: str = Field(...)  # The hashed password for the user
+    role: str = Field(...)  # The role of the user (e.g., 'guardian' or 'member')
+
+
+class UserCollection(BaseModel):
+    """Model for a collection of users."""
+
+    users: List[UserModel]  # List of user models
 
 
 class EmailModel(BaseModel):
-    address: str
+    """Model for email addresses."""
 
-
-class MemberModelCreate(BaseModel):
-    name: str = Field(...)
-    email: EmailStr = Field(...)
+    address: str  # The email address
 
 
 class MemberModelUpdate(BaseModel):
-    name: Optional[str] = Field(default=None)
-    email: Optional[EmailStr] = Field(default=None)
-    accepted_invitation: Optional[bool] = Field(default=None)
-    username: Optional[str] = Field(default=None)
-    password: Optional[str] = Field(default=None)
-    hashed_password: Optional[str] = Field(default=None)
+    """Model for updating member information."""
+
+    name: Optional[str] = Field(default=None)  # Optional new name
+    email: Optional[EmailStr] = Field(default=None)  # Optional new email
+    accepted_invitation: Optional[bool] = Field(
+        default=None
+    )  # Invitation acceptance status
+    username: Optional[str] = Field(default=None)  # Optional new username
+    password: Optional[str] = Field(default=None)  # Optional new plaintext password
 
 
-class MemberModel(BaseModel):
-    id: Optional[PyObjectId] = Field(alias="_id", default=None)
-    name: str = Field(...)
-    email: EmailStr = Field(...)
-    username: str = Field(...)
-    hashed_password: str = Field(...)
-    invited_by: str = Field(...)
-    accepted_invitation: bool = Field(...)
+class MemberModel(UserModel):
+    """Model representing a member stored in the database."""
 
-
-class MemberCollection(BaseModel):
-    members: List[GuardianModel]
+    invited_by: str = Field(...)  # The ID of the guardian who invited the member
+    accepted_invitation: bool = Field(
+        ...
+    )  # Indicates if the member accepted the invitation
 
 
 class InviteModel(BaseModel):
-    id: Optional[PyObjectId] = Field(alias="_id", default=None)
-    child: str = Field(...)
-    member: str = Field(...)
-    guardian: str = Field(...)
-    accepted: bool = Field(...)
+    """Model for an invitation to a member."""
+
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)  # MongoDB ObjectId
+    child: str = Field(...)  # The ID of the child being invited
+    member: str = Field(...)  # The ID of the member being invited
+    guardian: str = Field(...)  # The ID of the guardian sending the invite
+    accepted: bool = Field(...)  # Indicates if the invitation has been accepted
 
 
 class InviteCollection(BaseModel):
-    invites: List[InviteModel]
+    """Model for a collection of invitations."""
+
+    invites: List[InviteModel]  # List of invite models
+
+
+""""
+Explanation of the Code:
+Token and TokenData: Models for handling JWT tokens, including the access token and associated username.
+UserBase: A base model containing common fields for user information such as name, email, and username.
+UserCreate: Extends UserBase to include a password field for user registration.
+UserModel: Represents the user as stored in the database, including an ID, hashed password, and role.
+UserCollection: A model for a collection of users, useful for returning multiple users in a response.
+EmailModel: A simple model for handling email addresses.
+MemberModelUpdate: A model for updating existing members with optional fields.
+MemberModel: Extends UserModel to include member-specific fields such as the inviter's ID and invitation acceptance status.
+InviteModel: Represents an invitation, including the IDs of the child, member, and guardian, along with acceptance status.
+InviteCollection: A model for a collection of invitations."""

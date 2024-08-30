@@ -93,6 +93,18 @@ http:
       entryPoints:
         - web
 
+    brain:
+      rule: "PathPrefix(`/api/brain`)"
+      service: brain
+      entryPoints:
+        - web
+
+    openwebui:
+      rule: "PathPrefix(`/webui`)"
+      service: openwebui
+      entryPoints:
+        - web
+
   services:
     users:
       loadBalancer:
@@ -110,6 +122,14 @@ http:
       loadBalancer:
         servers:
           - url: "http://milestones_media_service:8004"
+    brain:
+      loadBalancer:
+        servers:
+          - url: "http://brain:11434"
+    openwebui:
+      loadBalancer:
+        servers:
+          - url: "http://openwebui:8080"
 
 log:
   level: INFO # You can change this to DEBUG for more detailed logs
