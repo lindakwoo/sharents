@@ -24,7 +24,13 @@ const GuardianSignup = ({ open, handleClose }) => {
     }
     try {
       console.log("user: ", user);
-      const response = await axios.post("http://localhost/auth/register/", user, {
+      const userData = {
+        "name": user.name,
+        "username": user.username,
+        "email": user.email,
+        "password": user.password
+      }
+      const response = await axios.post("http://localhost/auth/register/", userData, {
         headers: {
           "Content-Type": "application/json",
         },
