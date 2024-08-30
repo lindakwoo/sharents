@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import customFetch from "../../fetchWrapper";
 
@@ -68,18 +69,31 @@ const MemberSignup = () => {
     // waiting until Caleb does his thing...
     const url = `http://localhost/auth/members/${id}/signup`;
 
-    const data = { member: member, password: passwordData.password };
-    const options = { body: JSON.stringify(data), method: "PUT" };
-
+    const data = { name: member.name, username: member.username, email: member.email, password: passwordData.password };
+    console.log(data);
     try {
-      // const response = await customFetch(url, options);
-      // console.log("success!!!", response);
-      console.log("Form submitted successfully");
+      // const response = await axios.put(url, data, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // });
+      // if (response.status === 200) {
+      //  login(response.data.access_token, id, "member")
       login("some Access token", id, "member");
       navigate("/member_landing");
     } catch (error) {
-      console.error("Error signing up member: ", error);
+      console.log("Error signing up member", error.reponse.data.detail);
     }
+
+    // try {
+    //   // const response = await customFetch(url, options);
+    //   // console.log("success!!!", response);
+    //   console.log("Form submitted successfully");
+    //   login("some Access token", id, "member");
+    //   navigate("/member_landing");
+    // } catch (error) {
+    //   console.error("Error signing up member: ", error);
+    // }
   };
 
   useEffect(() => {
