@@ -1,4 +1,4 @@
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 const AuthContext = createContext();
@@ -26,6 +26,7 @@ const AuthProvider = ({ children }) => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user");
     localStorage.removeItem("role");
+    localStorage.removeItem("selectedChildId");
     setIsAuth(false);
     setUser(null);
     setRole("");
@@ -44,7 +45,7 @@ const AuthProvider = ({ children }) => {
       setRole(storedRole || false);
     } else {
       // Redirect to homepage if no authentication
-      navigate("/");
+      // navigate("/");
     }
   }, [navigate]);
 

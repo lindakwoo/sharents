@@ -389,7 +389,8 @@ async def send_invite(member: MemberModelCreate, guardian_id: str, children: Lis
     token = create_safe_token({"email": email})
     link = f"http://{os.getenv('DOMAIN')}/member_signup/{new_member.id}/{token}"
     html = f"""
-    <h1>Welcome to the app</h1>
+    <h1>Welcome to the Sharents app</h1>
+    <p> You have been invited to join by "{guardian['name']}"</p>
     <p> Click here <a href="{link}"> link<a/> to accept your invitation <p/>"""
     message = create_message(
         recipients=[email], subject="Accept your invitation", body=html

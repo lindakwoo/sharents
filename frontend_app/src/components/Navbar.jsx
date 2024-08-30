@@ -26,7 +26,7 @@ const Button = styled("button")({
 });
 
 const Navbar = () => {
-  const { user, role, logout, setIsLogin, setIsSignup } = useContext(AuthContext);
+  const { user, role, logout, setIsLogin, setIsSignup, isAuth } = useContext(AuthContext);
   const { selectChild, child, selectedChildId } = useContext(ChildContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [childrenList, setChildrenList] = useState([]);
@@ -111,7 +111,7 @@ const Navbar = () => {
           </Typography>
         </Box>
 
-        {childrenList.length > 0 && (
+        {childrenList.length > 0 && isAuth && (
           <Box sx={{ minWidth: 120, mr: { xs: "100px", md: "0px" } }}>
             <StyledSelect sx={{ border: "none" }} value={selectedChildId || ""} onChange={handleChildChange}>
               <option value=''>Select Child</option>
