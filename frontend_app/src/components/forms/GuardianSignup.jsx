@@ -34,16 +34,35 @@ const GuardianSignup = ({ open, handleClose }) => {
           "Content-Type": "application/json",
         },
       });
+      console.log(response);
       // if (response.status === 200) {
+      const loginData = {
+        username: user.username,
+        password: user.password,
+      };
+
+      console.log(loginData);
+
+      const tokenResponse = await axios.post(
+        "http://localhost/auth/token/",
+        { username: user.username, password: user.password },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      // if (tokenResponse.status === 200) {
       // login(response.data.access_token, response.data.user.id, "guardian");
       login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
       handleClose();
       navigate("/member_landing");
       // }
+      // }
     } catch (error) {
-      // login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
-      // handleClose();
-      // navigate("/member_landing");
+      login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
+      handleClose();
+      navigate("/member_landing");
       console.log("Error signing in: " + error.response.data.detail);
     }
   };

@@ -78,11 +78,28 @@ const MemberSignup = () => {
       //   },
       // });
       // if (response.status === 200) {
-      //  login(response.data.access_token, response.data.user.id, "member")
+      const loginData = {
+        username: member.username,
+        password: passwordData.password,
+      };
+
+      const tokenResponse = await axios.post("http://localhost/auth/token/", loginData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      // if(tokenResponse.status===200){
+      //    //  login(response.data.access_token, response.data.user.id, "member")
+
+      // }
+
       login("some Access token", id, "member");
       navigate("/member_landing");
     } catch (error) {
-      console.log("Error signing up member", error.reponse.data.detail);
+      // console.log("Error signing up member", error.tokenResponse.data.detail);
+      login("some Access token", id, "member");
+      navigate("/member_landing");
     }
   };
 
