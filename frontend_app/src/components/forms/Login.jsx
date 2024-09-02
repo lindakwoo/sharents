@@ -25,7 +25,7 @@ function Login({ open, handleClose }) {
         },
       });
       if (response.status === 200) {
-        // login(response.data.access_token, response.data.user, response.data.role);
+        // login(response.data.access_token, response.data.user.id, response.data.user.role);
         login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
         navigate("/member_landing");
       }

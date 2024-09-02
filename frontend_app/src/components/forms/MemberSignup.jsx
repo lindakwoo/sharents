@@ -78,22 +78,12 @@ const MemberSignup = () => {
       //   },
       // });
       // if (response.status === 200) {
-      //  login(response.data.access_token, id, "member")
+      //  login(response.data.access_token, response.data.user.id, "member")
       login("some Access token", id, "member");
       navigate("/member_landing");
     } catch (error) {
       console.log("Error signing up member", error.reponse.data.detail);
     }
-
-    // try {
-    //   // const response = await customFetch(url, options);
-    //   // console.log("success!!!", response);
-    //   console.log("Form submitted successfully");
-    //   login("some Access token", id, "member");
-    //   navigate("/member_landing");
-    // } catch (error) {
-    //   console.error("Error signing up member: ", error);
-    // }
   };
 
   useEffect(() => {
