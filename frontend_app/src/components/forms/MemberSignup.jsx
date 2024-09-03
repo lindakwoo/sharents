@@ -29,7 +29,6 @@ const MemberSignup = () => {
     const url = `http://localhost/auth/verify_invite/${id}/${token}/`;
     try {
       const response = await customFetch(url);
-      console.log("response", response);
       setInviteTokenIsVerified(true);
     } catch (error) {
       console.error("Error fetching comments", error);
@@ -41,7 +40,6 @@ const MemberSignup = () => {
     const options = { method: "PUT" };
     try {
       const response = await customFetch(url, options);
-      console.log("response", response);
       setAccepted(true);
       setMember(response);
     } catch (error) {
@@ -71,7 +69,6 @@ const MemberSignup = () => {
     const url = `http://localhost/auth/members/${id}/signup`;
 
     const data = { name: member.name, username: member.username, email: member.email, password: passwordData.password };
-    console.log(data);
     try {
       // const response = await axios.put(url, data, {
       //   headers: {

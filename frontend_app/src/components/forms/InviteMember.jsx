@@ -18,7 +18,6 @@ const InviteMember = () => {
     const url = `http://localhost/api/children/`;
     try {
       const response = await customFetch(url);
-      console.log("children", response);
       setAllChildren(response.children);
     } catch (error) {
       console.error("Error fetching children", error);
@@ -46,7 +45,6 @@ const InviteMember = () => {
 
       try {
         const response = await customFetch(url, options);
-        console.log(response);
         navigate("/home");
       } catch (error) {
         console.error("Error creating and sending invite: ", error);
