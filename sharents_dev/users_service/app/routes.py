@@ -10,6 +10,7 @@ from .schemas import (
     MemberModelUpdate,
     InviteCollection,
     Token,
+    CreateInviteModel,
     LoginModel,
 )
 from .auth import (
@@ -119,7 +120,6 @@ async def create_member_route(member: MemberModelUpdate, inviting_user_id: str):
     return await create_member(member, inviting_user_id)
 
 
-# Route to create invites
 @router.post(
     "/invites/", response_model=InviteCollection, response_model_by_alias=False
 )
@@ -129,7 +129,11 @@ async def create_invites_route(
     """
     Create invites for a member.
     """
-    return await create_invites(inviting_user_id, member_id, children)
+    invites_to_create = [
+        CreateInviteModel(child=child, guardian=inviting_user_id, member=member_id)
+        for child in children
+    ]
+    return await create_invites(invites_to_create)
 
 
 # Route to send an invite

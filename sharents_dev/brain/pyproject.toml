@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "brain"
+version = "0.1.0"
+description = ""
+authors = ["Caleb Pierre <calebsaunders@gmail.com>"]
+license = "MIT License"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python_version = "^3.8"
+markers = "python_full_version >= '3.8'"
+torch = { version = ">=2.4.0,<3.0.0" }
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

@@ -25,30 +25,11 @@ class BaseUserModel(BaseModel):
     name: str = Field(...)
     email: EmailStr = Field(...)
     username: str = Field(...)
-    hashed_password: str = Field(...)
-
-
-class Role(BaseModel):
-    value: str
-    type_: str = Field(alias="type")
-
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate_role
-
-    @classmethod
-    def validate_role(cls, v):
-        if not isinstance(v, str) or v.lower() not in ["guardian", "member"]:
-            raise ValueError("Invalid role value")
-        return cls(value=v.lower(), type_="string")
 
 
 class User(BaseUserModel):
     role: str = Field(...)
-
-
-class UserModel(BaseUserModel):
-    role: str = Field(...)
+    hashed_password: str = Field(...)
 
 
 class GuardianModel(User):
@@ -72,7 +53,7 @@ class UserCreate(BaseModel):
     name: str = Field(...)
     email: EmailStr = Field(...)
     username: str = Field(...)
-    password: str = Field(...)  # Plain text password for creation
+    password: str = Field(...)
     role: str = Field(...)
 
 
@@ -100,13 +81,22 @@ class MemberModelUpdate(BaseModel):
     password: Optional[str] = Field(default=None)
 
 
-"""Key changes made:
-Added Token and TokenData models for authentication.
-Updated User and UserModel to use a string for the role instead of the Role class.
-Renamed CreateUserModel to UserCreate for consistency with the routes.
-Updated UserCreate to use a string for the role instead of the Role class.
-Added EmailModel for handling email addresses.
-Added MemberModelUpdate for partial updates to member information.
-Kept GuardianModel, MemberModel, InviteModel, CreateMemberModel, UserCollection, and InviteCollection as they were.
-These changes align the models with the updated user management approach and make them consistent with the routes and schemas used in the application.
-"""
+class CreateInviteModel(BaseModel):
+    child: str
+    guardian: str
+    member: str
+
+
+class Role(BaseModel):
+    value: str
+    type_: str = Field(alias="type")
+
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate_role
+
+    @classmethod
+    def validate_role(cls, v):
+        if not isinstance(v, str) or v.lower() not in ["guardian", "member"]:
+            raise ValueError("Invalid role value")
+        return cls(value=v.lower(), type_="string")
