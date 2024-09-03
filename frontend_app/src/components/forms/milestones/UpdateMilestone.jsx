@@ -9,6 +9,11 @@ const UpdateMilestone = ({ fetchMilestone, milestone, open, handleClose, id }) =
     description: milestone.description,
     category: milestone.category,
   });
+  const [originalMilestoneData, setOriginalMilestoneData] = useState({
+    name: milestone.name,
+    description: milestone.description,
+    category: milestone.category,
+  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,9 +26,11 @@ const UpdateMilestone = ({ fetchMilestone, milestone, open, handleClose, id }) =
     const options = { body: JSON.stringify(milestoneData), method: "PUT" };
 
     try {
-      const response = await customFetch(url, options);
-      console.log(response);
-      fetchMilestone();
+      if (JSON.stringify(milestoneData) !== JSON.stringify(originalMilestoneData)) {
+        const response = await customFetch(url, options);
+        fetchMilestone();
+        setOriginalMilestoneData(milestoneData);
+      }
       handleClose();
     } catch (error) {
       console.error("Error updating milestone: ", error);

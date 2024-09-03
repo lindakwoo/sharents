@@ -7,6 +7,7 @@ import { Button } from "../../typography/Styled";
 
 const UpdateChild = ({ child, open, handleClose }) => {
   const [childData, setChildData] = useState({});
+  const [originalChildData, setOriginalChildData] = useState({});
   const { updateChild } = useContext(ChildContext);
 
   const handleChange = (e) => {
@@ -20,9 +21,11 @@ const UpdateChild = ({ child, open, handleClose }) => {
     const options = { body: JSON.stringify(childData), method: "PUT" };
 
     try {
-      const response = await customFetch(url, options);
-      console.log(response);
-      updateChild(response);
+      if (JSON.stringify(childData) !== JSON.stringify(originalChildData)) {
+        const response = await customFetch(url, options);
+        updateChild(response);
+        setOriginalChildData(childData);
+      }
       handleClose();
     } catch (error) {
       console.error("Error updating child: ", error);

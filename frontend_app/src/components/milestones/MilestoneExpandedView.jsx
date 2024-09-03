@@ -22,22 +22,17 @@ const MilestoneExpandedView = () => {
     const url = `http://localhost/api/milestones/${id}/`;
     try {
       const response = await customFetch(url);
-      console.log("response", response);
       setMilestone(response);
-      console.log(response);
     } catch (error) {
       console.error("Error fetching milestone", error);
     }
   };
 
   const deleteComment = async (commentId) => {
-    console.log(commentId);
     const url = `http://localhost/api/comments/${commentId}`;
     const options = { method: "DELETE" };
-    console.log(url);
     try {
       const response = await customFetch(url, options);
-      console.log(response);
     } catch (error) {
       console.error("Error deleting comment: ", error);
     }
@@ -56,7 +51,6 @@ const MilestoneExpandedView = () => {
         }
       }
       const response = await customFetch(url, options);
-      console.log(response);
       navigate("/milestones");
     } catch (error) {
       console.error("Error deleting milestone: ", error);

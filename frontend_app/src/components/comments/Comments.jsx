@@ -21,7 +21,6 @@ const Comments = ({ id, type }) => {
     const url = `http://localhost/api/${urlType}/${id}/comments/`;
     try {
       const response = await customFetch(url);
-      console.log("response", response);
       setComments(response.comments);
     } catch (error) {
       console.error("Error fetching comments", error);
@@ -46,7 +45,6 @@ const Comments = ({ id, type }) => {
     const options = { method: "DELETE" };
     try {
       const response = await customFetch(url, options);
-      console.log(response);
       fetchComments();
     } catch (error) {
       console.error("Error deleting comment: ", error);

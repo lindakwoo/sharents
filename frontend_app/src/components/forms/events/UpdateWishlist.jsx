@@ -7,7 +7,9 @@ import { Button } from "../../typography/Styled";
 
 const UpdateWishlist = () => {
   const [wishlistData, setWishlistData] = useState({});
+  const [originalWishlistData, setOriginalWishlistData] = useState({});
   const [items, setItems] = useState([]);
+  const [originalItems, setOriginalItems] = useState([]);
   const [addedItems, setAddedItems] = useState([]);
   const { event_id, title, id } = useParams();
   const navigate = useNavigate();
@@ -56,8 +58,8 @@ const UpdateWishlist = () => {
     const url = `http://localhost/api/wishlists/${id}/`;
     try {
       const response = await customFetch(url);
-      console.log("response", response);
       setWishlistData(response);
+      setOriginalWishlistData(response);
     } catch (error) {
       console.error("Error fetching event", error);
     }
@@ -67,8 +69,8 @@ const UpdateWishlist = () => {
     const url = `http://localhost/api/wishlists/${id}/wishlistItems/`;
     try {
       const response = await customFetch(url);
-      console.log("response", response);
       setItems(response.wishlistItems);
+      setOriginalItems(response.wishlistItems);
     } catch (error) {
       console.error("Error fetching wishlists", error);
       setItems([]);
@@ -91,20 +93,26 @@ const UpdateWishlist = () => {
       method: "PUT",
     };
     try {
-      const response = await customFetch(url, options);
-      console.log("response", response);
+      if (JSON.stringify(wishlistData) !== JSON.stringify(originalWishlistData)) {
+        const response = await customFetch(url, options);
+        setOriginalWishlistData(wishlistData);
+      }
     } catch (error) {
       console.error("Error updating wishlist", error);
     }
     // update the old items in the wishlist.
     for (let item of items) {
+      const originalItem = originalItems.find((originalItem) => originalItem.id === item.id);
       const itemUrl = `http://localhost/api/wishlistItems/${item.id}/`;
       const itemOptions = {
         body: JSON.stringify(item),
         method: "PUT",
       };
       try {
-        await customFetch(itemUrl, itemOptions);
+        if (JSON.stringify(item) !== JSON.stringify(originalItem)) {
+          await customFetch(itemUrl, itemOptions);
+          setOriginalItems(items);
+        }
       } catch (error) {
         console.error("Error updating wishlist item", error);
       }
@@ -118,7 +126,6 @@ const UpdateWishlist = () => {
       };
       try {
         const response = await customFetch(newItemUrl, itemOptions);
-        console.log("response", response);
       } catch (error) {
         console.error("Error creating wishlist item", error);
       }

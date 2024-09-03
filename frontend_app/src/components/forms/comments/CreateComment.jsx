@@ -23,7 +23,6 @@ const CreateComment = ({ fetchComments, open, handleClose, type, id }) => {
       role === "guardian" ? `http://localhost/api/guardians/${user}/` : `http://localhost/api/members/${user}/`;
     try {
       const userResponse = await customFetch(getUserUrl);
-      console.log("user", userResponse);
       commentData.creator_name = userResponse.name;
     } catch (error) {
       console.error("Error getting user: ", error);
@@ -41,7 +40,6 @@ const CreateComment = ({ fetchComments, open, handleClose, type, id }) => {
 
     try {
       const response = await customFetch(url, options);
-      console.log("success", response);
       fetchComments();
       handleClose();
     } catch (error) {
