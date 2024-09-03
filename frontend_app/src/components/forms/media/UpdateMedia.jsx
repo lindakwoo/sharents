@@ -5,6 +5,7 @@ import { Button } from "../../typography/Styled";
 
 const UpdateMedia = ({ fetchMedia, media, open, handleClose, id }) => {
   const [mediaData, setMediaData] = useState({ description: media.description, category: media.category });
+  const [originalMediaData, setOriginalMediaData] = useState({ description: media.description, category: media.category });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,9 +18,11 @@ const UpdateMedia = ({ fetchMedia, media, open, handleClose, id }) => {
     const options = { body: JSON.stringify(mediaData), method: "PUT" };
 
     try {
-      const response = await customFetch(url, options);
-      console.log(response);
-      fetchMedia();
+      if (JSON.stringify(mediaData) !== JSON.stringify(originalMediaData)) {
+        const response = await customFetch(url, options);
+        fetchMedia();
+        setOriginalMediaData(mediaData);
+      }
       handleClose();
     } catch (error) {
       console.error("Error updating media: ", error);

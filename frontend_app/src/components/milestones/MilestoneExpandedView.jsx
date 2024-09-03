@@ -22,22 +22,17 @@ const MilestoneExpandedView = () => {
     const url = `http://localhost/api/milestones/${id}/`;
     try {
       const response = await customFetch(url);
-      console.log("response", response);
       setMilestone(response);
-      console.log(response);
     } catch (error) {
       console.error("Error fetching milestone", error);
     }
   };
 
   const deleteComment = async (commentId) => {
-    console.log(commentId);
     const url = `http://localhost/api/comments/${commentId}`;
     const options = { method: "DELETE" };
-    console.log(url);
     try {
       const response = await customFetch(url, options);
-      console.log(response);
     } catch (error) {
       console.error("Error deleting comment: ", error);
     }
@@ -56,7 +51,6 @@ const MilestoneExpandedView = () => {
         }
       }
       const response = await customFetch(url, options);
-      console.log(response);
       navigate("/milestones");
     } catch (error) {
       console.error("Error deleting milestone: ", error);
@@ -82,8 +76,23 @@ const MilestoneExpandedView = () => {
     >
       {milestone && (
         <>
-          <Box sx={{ display: "flex", justifyContent: "space-between", width: "70%" }}>
-            <Box sx={{ display: "flex", justifyContent: "start", alignItems: "center" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              flexDirection: { xs: "column", lg: "row" },
+              width: "70%",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "start",
+                alignItems: "center",
+                mt: { xs: "10px" },
+                mb: { xs: "10px" },
+              }}
+            >
               <Button
                 onClick={() => navigate("/milestones")}
                 sx={{
@@ -106,13 +115,13 @@ const MilestoneExpandedView = () => {
                       border: "none",
                       backgroundColor: "orange",
                       mx: "16px",
-
                       padding: "16px",
                       borderRadius: "10px",
                       "& p": { my: 0 },
 
                       "&:hover": {
                         backgroundColor: "red",
+                        color: "white",
                       },
                     }}
                     onClick={deleteMilestone}
@@ -127,9 +136,10 @@ const MilestoneExpandedView = () => {
 
                       borderRadius: "10px",
                       "& p": { my: 0 },
-
                       "&:hover": {
                         backgroundColor: "yellow",
+                        color: "#0288d1",
+                        fontWeight: "bold",
                       },
                     }}
                     onClick={handleOpen}

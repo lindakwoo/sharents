@@ -4,11 +4,13 @@ import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, 
 import customFetch from "../../fetchWrapper";
 import { ChildContext } from "../../context/ChildContext";
 import { formatDate } from "../../utils";
+import { AuthContext } from "../../context/AuthContext";
 
 const EventsPage = () => {
   const [events, setEvents] = useState([]);
   const { child } = useContext(ChildContext);
   const navigate = useNavigate();
+  const { isAuth } = useContext(AuthContext);
 
   const fetchEvents = async () => {
     const url = `http://localhost/api/events/children/${child.id}`;
@@ -19,7 +21,6 @@ const EventsPage = () => {
         ...event,
         datetime: new Date(event.datetime), // Convert to Date object
       }));
-      console.log("processedEvents", processedEvents);
       const futureEvents = processedEvents.filter((event) => event.datetime >= today);
       futureEvents.sort((a, b) => a.datetime - b.datetime);
       setEvents(futureEvents);
@@ -35,10 +36,18 @@ const EventsPage = () => {
   };
 
   useEffect(() => {
-    fetchEvents(); // Fetch events when child changes
+    if (child) {
+      fetchEvents(); // Fetch events when child changes
+    }
   }, [child]);
 
-  return (
+  useEffect(() => {
+    if (!isAuth) {
+      navigate("/");
+    }
+  }, [isAuth]);
+
+  return child ? (
     <Box
       sx={{
         backgroundColor: "#f8f8f8",
@@ -67,7 +76,7 @@ const EventsPage = () => {
         <Box
           sx={{ marginBottom: "64px", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}
         >
-          <TableContainer sx={{ width: "60%" }} component={Paper}>
+          <TableContainer sx={{ width: { xs: "100%", lg: "60%" } }} component={Paper}>
             <Table sx={{ wdith: "100%" }}>
               <TableHead>
                 <TableRow>
@@ -98,7 +107,7 @@ const EventsPage = () => {
         </Box>
       </Box>
     </Box>
-  );
+  ) : null;
 };
 
 export default EventsPage;

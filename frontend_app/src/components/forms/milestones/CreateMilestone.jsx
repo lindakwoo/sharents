@@ -22,7 +22,6 @@ const CreateMilestone = () => {
 
     try {
       const response = await customFetch(url, options);
-      console.log(response);
       navigate("/milestones");
     } catch (error) {
       console.error("Error creating milestone: ", error);

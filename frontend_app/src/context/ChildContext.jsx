@@ -19,6 +19,7 @@ const ChildProvider = ({ children }) => {
       try {
         const response = await customFetch(`http://localhost/api/children/${id}`);
         setChild(response); // Assuming the response contains the child's details
+        navigate("/home");
       } catch (error) {
         console.error("Error fetching child details", error);
       }
@@ -40,9 +41,9 @@ const ChildProvider = ({ children }) => {
   }, [selectedChildId]);
 
   useEffect(() => {
-    if (isAuth && child === null) {
-      navigate("/member_landing");
-    }
+    // if (isAuth && !child) {
+    //   navigate("/member_landing");
+    // }
   }, [child, isAuth]);
 
   return (

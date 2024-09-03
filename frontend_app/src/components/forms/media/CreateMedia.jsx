@@ -22,7 +22,6 @@ const CreateMedia = () => {
 
     try {
       const response = await customFetch(url, options);
-      console.log(response);
       navigate("/media");
     } catch (error) {
       console.error("Error creating media: ", error);

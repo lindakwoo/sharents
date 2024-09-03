@@ -99,7 +99,7 @@ const HomeEvents = () => {
           sx={{ marginBottom: "64px", width: "100%", display: "flex", justifyContent: "center", alignItems: "center" }}
         >
           {events.length > 0 && (
-            <TableContainer sx={{ width: "60%" }} component={Paper}>
+            <TableContainer sx={{ width: { xs: "100%", lg: "60%" } }} component={Paper}>
               <Table sx={{ wdith: "100%" }}>
                 <TableHead>
                   <TableRow>
