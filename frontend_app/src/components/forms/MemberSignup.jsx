@@ -129,7 +129,17 @@ const MemberSignup = () => {
             </Box>
             <Button
               onClick={acceptInvite}
-              sx={{ p: "16px", border: "none", backgroundColor: "orange", borderRadius: "10px", m: "8px" }}
+              sx={{
+                p: "16px",
+                border: "none",
+                backgroundColor: "orange",
+                borderRadius: "10px",
+                m: "8px",
+                "&:hover": {
+                  backgroundColor: "#0288d1",
+                  color: "white",
+                },
+              }}
             >
               {" "}
               I accept this invitation{" "}
