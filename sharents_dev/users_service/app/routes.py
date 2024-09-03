@@ -55,7 +55,12 @@ async def login_for_access_token(login_data: LoginModel):
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": user,
+        "hi": "hi",
+    }
 
 
 # Route to verify user token
@@ -131,8 +136,7 @@ async def create_invites_route(
     Create invites for a member.
     """
     invites_to_create = [
-        CreateInviteModel(
-            child=child, guardian=inviting_user_id, member=member_id)
+        CreateInviteModel(child=child, guardian=inviting_user_id, member=member_id)
         for child in children
     ]
     return await create_invites(invites_to_create)

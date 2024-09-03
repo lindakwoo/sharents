@@ -6,25 +6,16 @@ from typing_extensions import Annotated
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
 
-class LoginModel(BaseModel):
-    username: str
-    password: str
-
-
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-
-
-class TokenData(BaseModel):
-    username: Optional[str] = None
-
-
 class BaseUserModel(BaseModel):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)
     name: str = Field(...)
     email: EmailStr = Field(...)
     username: str = Field(...)
+
+
+class LoginModel(BaseModel):
+    username: str
+    password: str
 
 
 class User(BaseUserModel):
@@ -34,6 +25,16 @@ class User(BaseUserModel):
 
 class UserModel(BaseUserModel):
     pass
+
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+    user: UserModel
+
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
 
 
 class GuardianModel(User):
