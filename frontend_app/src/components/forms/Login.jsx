@@ -19,22 +19,19 @@ function Login({ open, handleClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost/auth/token/",
-        userData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await axios.post("http://localhost/auth/token/", userData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
       if (response.status === 200) {
-        // login(response.data.access_token, response.data.user.id, response.data.user.role);
-        login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
+        console.log(response);
+        login(response.data.access_token, "some id", "guardian");
+        // login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
         navigate("/member_landing");
       }
     } catch (error) {
-      login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
+      // login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
       console.log("Error logging in:", error.response.data.detail);
     }
   };
@@ -53,41 +50,41 @@ function Login({ open, handleClose }) {
           boxShadow: 24,
           borderRadius: 2,
         }}
-        className="shadow p-4 mt-4"
+        className='shadow p-4 mt-4'
       >
-        <Box sx={{ width: "100%" }} className="shadow p-4 mt-4">
+        <Box sx={{ width: "100%" }} className='shadow p-4 mt-4'>
           <h1>Login</h1>
           <form onSubmit={handleSubmit}>
             <Box
               sx={{
                 mt: "16px",
               }}
-              className="form-group"
+              className='form-group'
             >
               <label>Username</label>
               <input
-                type="text"
-                className="form-control"
+                type='text'
+                className='form-control'
                 value={userData.username}
-                name="username"
+                name='username'
                 onChange={(e) => handleChange(e)}
-                placeholder="Enter username"
+                placeholder='Enter username'
               />
             </Box>
             <Box
               sx={{
                 mt: "16px",
               }}
-              className="form-group"
+              className='form-group'
             >
               <label>Password</label>
               <input
-                type="password"
-                className="form-control"
+                type='password'
+                className='form-control'
                 value={userData.password}
-                name="password"
+                name='password'
                 onChange={(e) => handleChange(e)}
-                placeholder="enter password"
+                placeholder='enter password'
               />
             </Box>
 
@@ -95,8 +92,8 @@ function Login({ open, handleClose }) {
               sx={{
                 mt: "16px",
               }}
-              type="submit"
-              className="btn btn-primary"
+              type='submit'
+              className='btn btn-primary'
             >
               Login
             </Button>
