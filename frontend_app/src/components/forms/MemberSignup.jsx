@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import customFetch from "../../fetchWrapper";
+import { Img, H1 } from "../typography/Styled";
 
 import { Box, styled } from "@mui/material";
 
@@ -116,13 +117,26 @@ const MemberSignup = () => {
           <Box>Your invitation token is invalid. Please contact the guardian to ask them to re-invite you.</Box>
         )}
         {inviteTokenIsVerified && !accepted && (
-          <Button
-            onClick={acceptInvite}
-            sx={{ p: "16px", border: "none", backgroundColor: "orange", borderRadius: "10px", m: "64px" }}
-          >
-            {" "}
-            I accept this invitation{" "}
-          </Button>
+          <>
+            <Button
+              onClick={acceptInvite}
+              sx={{ p: "16px", border: "none", backgroundColor: "orange", borderRadius: "10px", m: "64px" }}
+            >
+              {" "}
+              I accept this invitation{" "}
+            </Button>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mt: "128px" }}>
+                <Img src='./logo.png' />
+                <Box sx={{ width: "50%" }}>
+                  <H1 sx={{ fontSize: "64px" }}>Welcome to Sharents</H1>
+                  <Box sx={{ fontSize: "32px" }}>
+                    Share your children's milestones and memories with all your loved ones
+                  </Box>
+                </Box>
+              </Box>
+            </Box>
+          </>
         )}
         {inviteTokenIsVerified && accepted && (
           <Box sx={{ width: "50%" }} className='shadow p-4 mt-4'>
