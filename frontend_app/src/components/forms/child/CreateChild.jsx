@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import customFetch from "../../../fetchWrapper";
 import { Box, styled } from "@mui/material";
 import { AuthContext } from "../../../context/AuthContext";
+import { ChildContext } from "../../../context/ChildContext";
 
 const Button = styled("button")({});
 
@@ -15,9 +16,9 @@ const CreateChild = () => {
     current_thing: "",
   });
   const { user, role } = useContext(AuthContext);
+  const { selectChild } = useContext(ChildContext);
   const navigate = useNavigate();
 
-  console.log(user);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setChildData({ ...childData, [name]: value });
@@ -29,7 +30,7 @@ const CreateChild = () => {
 
     try {
       const response = await customFetch(url, options);
-      console.log(response);
+      selectChild(response.id);
       navigate("/home");
     } catch (error) {
       console.error("Error creating child: ", error);

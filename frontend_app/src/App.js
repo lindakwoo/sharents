@@ -40,7 +40,7 @@ function App() {
             <Route path='/updateWishlist/:event_id/:title/:id' element={<UpdateWishlist />} />
           </Route>
           <Route path='unauthorized' element={<UnauthorizedPage />} />
-          <Route path='member_signup/:id/:token' element={<MemberSignup />} />
+          <Route path='member_signup/:id/:token/:guardian' element={<MemberSignup />} />
 
 
           {/* <Route path='inventory/manufacturers'>

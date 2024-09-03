@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from "react";
+import axios from "axios";
 import { useParams, useNavigate } from "react-router-dom";
 import customFetch from "../../fetchWrapper";
+import { Img, H1 } from "../typography/Styled";
 
 import { Box, styled } from "@mui/material";
 
@@ -19,7 +21,7 @@ const MemberSignup = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const { id, token } = useParams();
+  const { id, token, guardian } = useParams();
 
   const { login } = useContext(AuthContext);
 
@@ -27,7 +29,6 @@ const MemberSignup = () => {
     const url = `http://localhost/auth/verify_invite/${id}/${token}/`;
     try {
       const response = await customFetch(url);
-      console.log("response", response);
       setInviteTokenIsVerified(true);
     } catch (error) {
       console.error("Error fetching comments", error);
@@ -39,7 +40,6 @@ const MemberSignup = () => {
     const options = { method: "PUT" };
     try {
       const response = await customFetch(url, options);
-      console.log("response", response);
       setAccepted(true);
       setMember(response);
     } catch (error) {
@@ -68,17 +68,36 @@ const MemberSignup = () => {
     // waiting until Caleb does his thing...
     const url = `http://localhost/auth/members/${id}/signup`;
 
-    const data = { member: member, password: passwordData.password };
-    const options = { body: JSON.stringify(data), method: "PUT" };
-
+    const data = { name: member.name, username: member.username, email: member.email, password: passwordData.password };
     try {
-      // const response = await customFetch(url, options);
-      // console.log("success!!!", response);
-      console.log("Form submitted successfully");
+      // const response = await axios.put(url, data, {
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      // });
+      // if (response.status === 200) {
+      const loginData = {
+        username: member.username,
+        password: passwordData.password,
+      };
+
+      const tokenResponse = await axios.post("http://localhost/auth/token/", loginData, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      // if(tokenResponse.status===200){
+      //    //  login(tokenResponse.data.access_token, response.data.user.id, "member")
+
+      // }
+
       login("some Access token", id, "member");
       navigate("/member_landing");
     } catch (error) {
-      console.error("Error signing up member: ", error);
+      // console.log("Error signing up member", error.tokenResponse.data.detail);
+      login("some Access token", id, "member");
+      navigate("/member_landing");
     }
   };
 
@@ -95,13 +114,34 @@ const MemberSignup = () => {
           <Box>Your invitation token is invalid. Please contact the guardian to ask them to re-invite you.</Box>
         )}
         {inviteTokenIsVerified && !accepted && (
-          <Button
-            onClick={acceptInvite}
-            sx={{ p: "16px", border: "none", backgroundColor: "orange", borderRadius: "10px", m: "64px" }}
-          >
-            {" "}
-            I accept this invitation{" "}
-          </Button>
+          <>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mt: "32px" }}>
+                <Img src='/logo.png' />
+                <Box sx={{ width: "50%" }}>
+                  <H1 sx={{ fontSize: "64px" }}>Welcome to Sharents</H1>
+                  <Box sx={{ fontSize: "32px" }}>You have been invited by {guardian} to view their children</Box>
+                </Box>
+              </Box>
+            </Box>
+            <Button
+              onClick={acceptInvite}
+              sx={{
+                p: "16px",
+                border: "none",
+                backgroundColor: "orange",
+                borderRadius: "10px",
+                m: "8px",
+                "&:hover": {
+                  backgroundColor: "#0288d1",
+                  color: "white",
+                },
+              }}
+            >
+              {" "}
+              I accept this invitation{" "}
+            </Button>
+          </>
         )}
         {inviteTokenIsVerified && accepted && (
           <Box sx={{ width: "50%" }} className='shadow p-4 mt-4'>

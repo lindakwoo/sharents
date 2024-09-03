@@ -5,19 +5,37 @@ import { getAge } from "../../utils";
 import { AuthContext } from "../../context/AuthContext";
 import UpdateChild from "../forms/child/UpdateChild";
 import { H1, H2, Img, Button } from "../typography/Styled";
+import customFetch from "../../fetchWrapper";
+import { useNavigate } from "react-router-dom";
 
 const HomeHero = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { child } = useContext(ChildContext);
+  const { child, selectChild } = useContext(ChildContext);
   const { role } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
 
+  const deleteChild = async () => {
+    const url = `http://localhost/api/children/${child.id}`;
+    const options = { method: "DELETE" };
+
+    try {
+      const response = await customFetch(url, options);
+      console.log(response);
+      selectChild("");
+      navigate("/member_landing");
+    } catch (error) {
+      console.error("Error updating child: ", error);
+    }
+  };
+
   const age = getAge(child.birthdate);
 
   const years = age.years === 0 ? "" : age.years === 1 ? `${age.years} year and` : `${age.years} years and`;
-  const months = age.months === 1 ? `${age.months} month old` : `${age.months} months old`;
+  const months = age.months === 1 ? `${age.months} month old` : age.months > 0 ? `${age.months} months old` : "";
+  const days = age.months === 0 && age.years === 0 ? `${age.days} days old` : ``;
 
   return (
     <Box
@@ -33,26 +51,51 @@ const HomeHero = () => {
       }}
     >
       {role === "guardian" && (
-        <Button
+        <Box
           sx={{
             position: "absolute",
-            top: "16px", // Distance from the top
-            right: "16px", // Distance from the right
-            border: "none",
-            backgroundColor: "orange",
-            padding: "16px",
-
-            borderRadius: "10px",
-            "& p": { my: 0 },
-
-            "&:hover": {
-              backgroundColor: "yellow",
-            },
+            top: "0px",
+            right: "16px",
           }}
-          onClick={handleOpen}
         >
-          Update Child
-        </Button>
+          <Button
+            sx={{
+              border: "none",
+              backgroundColor: "orange",
+              padding: "16px",
+              mr: "16px",
+              borderRadius: "10px",
+              "& p": { my: 0 },
+
+              "&:hover": {
+                backgroundColor: "red",
+                color: "white",
+              },
+            }}
+            onClick={deleteChild}
+          >
+            Remove Child
+          </Button>
+          <Button
+            sx={{
+              border: "none",
+              backgroundColor: "orange",
+              padding: "16px",
+
+              borderRadius: "10px",
+              "& p": { my: 0 },
+
+              "&:hover": {
+                backgroundColor: "yellow",
+                color: "#0288d1",
+                fontWeight: "bold",
+              },
+            }}
+            onClick={handleOpen}
+          >
+            Update Child
+          </Button>
+        </Box>
       )}
       <Box
         sx={{ width: "50%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center" }}
@@ -83,7 +126,7 @@ const HomeHero = () => {
           <H1 sx={{ fontSize: "64px", fontWeight: "bold", color: "#0088d1" }}>{child.name}</H1>
 
           <h2>
-            {years} {months}
+            {years} {months} {days}
           </h2>
           <Box
             sx={{

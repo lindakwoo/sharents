@@ -52,8 +52,6 @@ const CreateWishlist = ({ eventId, open, handleClose, updatingEvent = false, fet
         };
         await customFetch(itemUrl, itemOptions);
       }
-
-      console.log("Wishlist and items created successfully");
       if (updatingEvent) {
         fetchWishlists();
         handleClose();
@@ -64,9 +62,6 @@ const CreateWishlist = ({ eventId, open, handleClose, updatingEvent = false, fet
       console.error("Error creating wishlist or items: ", error);
     }
   };
-
-  console.log("updating", updatingEvent);
-  console.log(destination);
 
   return (
     <Modal open={open} onClose={handleClose}>

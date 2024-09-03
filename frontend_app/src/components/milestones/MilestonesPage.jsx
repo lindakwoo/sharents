@@ -3,6 +3,7 @@ import customFetch from "../../fetchWrapper";
 import { ChildContext } from "../../context/ChildContext";
 import { Box } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/AuthContext";
 
 import MilestoneBox from "./MilestoneBox";
 import { StyledSelect } from "../typography/Styled";
@@ -10,8 +11,12 @@ import { StyledSelect } from "../typography/Styled";
 const MilestonesPage = () => {
   const [milestones, setMilestones] = useState([]);
   const { child } = useContext(ChildContext);
+  const { isAuth } = useContext(AuthContext);
   const [category, setCategory] = useState("");
+  const navigate = useNavigate();
   const [filteredMilestones, setFilteredMilestones] = useState([]);
+
+
 
   const fetchMilestones = async () => {
     const url = `http://localhost/api/milestones/children/${child.id}`;
@@ -39,13 +44,23 @@ const MilestonesPage = () => {
     }
   };
 
+
+
   useEffect(() => {
-    fetchMilestones(); // Fetch milestone when id changes
+    if (child) {
+      fetchMilestones(); // Fetch milestone when id changes
+    }
   }, [child]);
 
   useEffect(() => {
     filterByCategory(); // Filter milestones when category changes
   }, [category, milestones]);
+
+  useEffect(() => {
+    if (!isAuth) {
+      navigate("/");
+    }
+  }, [isAuth]);
 
   return child ? (
     <Box

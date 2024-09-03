@@ -19,12 +19,11 @@ const MemberLanding = () => {
     } else if (user && role === "guardian") {
       url = `http://localhost/api/children/guardians/${user}/`;
     } else {
-      console.log("there is no user");
+      return;
     }
 
     try {
       const response = await customFetch(url);
-      console.log("children", response);
       setChildrenList(response.children);
     } catch (error) {
       console.error("Error fetching children", error);
@@ -38,7 +37,6 @@ const MemberLanding = () => {
   };
 
   useEffect(() => {
-    console.log();
     fetchChildren();
   }, [user]);
 
@@ -87,6 +85,7 @@ const MemberLanding = () => {
           {childrenList.map((child) => {
             return (
               <Box
+                key={child.id}
                 onClick={() => handleSelectChild(child.id)}
                 sx={{
                   display: "flex",

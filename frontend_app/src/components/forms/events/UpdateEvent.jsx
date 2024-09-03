@@ -5,6 +5,8 @@ import { Button } from "../../typography/Styled";
 
 const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
   const [eventData, setEventData] = useState({ ...event });
+  const [originalEventData, setOriginalEventData] = useState({ ...event });
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,9 +24,11 @@ const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
     const options = { body: JSON.stringify(eventData), method: "PUT" };
 
     try {
-      const response = await customFetch(url, options);
-      console.log(response);
-      fetchEvent();
+      if (JSON.stringify(eventData) !== JSON.stringify(originalEventData)) {
+        const response = await customFetch(url, options);
+        fetchEvent();
+        setOriginalEventData(eventData);
+      }
       handleClose();
     } catch (error) {
       console.error("Error updating event: ", error);

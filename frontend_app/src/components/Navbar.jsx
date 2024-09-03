@@ -10,9 +10,11 @@ import Box from "@mui/material/Box";
 import { AuthContext } from "../context/AuthContext";
 import { ChildContext } from "../context/ChildContext";
 import customFetch from "../fetchWrapper";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import { styled } from "@mui/material";
-import { StyledLink, StyledSelect } from "./typography/Styled";
+import { StyledLink, StyledSelect, Img } from "./typography/Styled";
+import DesktopMenuItem from "./DesktopMenuItem";
+import MobileMenuItem from "./MobileMeniItem";
 
 const Button = styled("button")({
   border: "none",
@@ -24,11 +26,12 @@ const Button = styled("button")({
 });
 
 const Navbar = () => {
-  const { user, role, logout, setIsLogin, setIsSignup } = useContext(AuthContext);
+  const { user, role, logout, setIsLogin, setIsSignup, isAuth } = useContext(AuthContext);
   const { selectChild, child, selectedChildId } = useContext(ChildContext);
   const [anchorEl, setAnchorEl] = useState(null);
   const [childrenList, setChildrenList] = useState([]);
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -83,20 +86,34 @@ const Navbar = () => {
     if (user) {
       fetchChildren();
     }
-  }, [user]);
+  }, [user, child]);
 
   return (
     <AppBar position='static' sx={{ backgroundColor: "#0288d1" }}>
       <Toolbar>
-        <Typography variant='h6' sx={{ flexGrow: 1, fontWeight: "bold", fontSize: "24px" }}>
-          <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/'>
-            Sharents
-          </StyledLink>
-        </Typography>
+        <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "start", alignItems: "center" }}>
+          <Img src='/logo.png' sx={{ height: "70px", width: "auto" }} />
+          <Typography
+            variant='h6'
+            sx={{
+              fontWeight: "bold",
+              fontSize: "24px",
+            }}
+          >
+            <StyledLink
+              sx={{
+                "&:hover": { color: "yellow" },
+              }}
+              to='/'
+            >
+              Sharents
+            </StyledLink>
+          </Typography>
+        </Box>
 
-        {childrenList.length > 0 && (
-          <Box sx={{ minWidth: 120 }}>
-            <StyledSelect value={selectedChildId || ""} onChange={handleChildChange}>
+        {childrenList.length > 0 && isAuth && (
+          <Box sx={{ minWidth: 120, mr: { xs: "100px", md: "0px" } }}>
+            <StyledSelect sx={{ border: "none" }} value={selectedChildId || ""} onChange={handleChildChange}>
               <option value=''>Select Child</option>
               {childrenList.map((child) => (
                 <option key={child.id} value={child.id}>
@@ -106,45 +123,21 @@ const Navbar = () => {
             </StyledSelect>
           </Box>
         )}
-        <Box sx={{ display: { xs: "none", md: "block" } }}>
-          {child && (
-            <Button color='inherit'>
-              {" "}
-              <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/home'>
-                Home
-              </StyledLink>
-            </Button>
-          )}
-
+        <Box
+          sx={{
+            display: { xs: "none", md: "block" },
+          }}
+        >
+          {child && <DesktopMenuItem path='/home' onClickHandler={() => {}} title='Home' />}
           {!user && (
-            <Button color='inherit' onClick={() => setIsSignup(true)}>
-              {" "}
-              <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/'>
-                Signup
-              </StyledLink>
-            </Button>
+            <DesktopMenuItem path='/' onClickHandler={() => setIsSignup(true)} title='Signup' highlight={false} />
           )}
           {!user && (
-            <Button color='inherit' onClick={() => setIsLogin(true)}>
-              {" "}
-              <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='/'>
-                Login
-              </StyledLink>
-            </Button>
+            <DesktopMenuItem path='/' onClickHandler={() => setIsLogin(true)} title='Login' highlight={false} />
           )}
-          {user && (
-            <Button color='inherit' onClick={handleLogout}>
-              {" "}
-              <StyledLink sx={{ "&:hover": { color: "yellow" } }} to='#'>
-                Logout
-              </StyledLink>
-            </Button>
-          )}
+          {user && <DesktopMenuItem path='#' onClickHandler={handleLogout} title='Logout' />}
           {role === "guardian" && child && (
-            <Button sx={{ "&:hover": { color: "yellow" } }}>
-              {" "}
-              <StyledLink to='/guardian_dashboard'>Dashboard</StyledLink>
-            </Button>
+            <DesktopMenuItem path='/guardian_dashboard' onClickHandler={() => {}} title='Dashboard' />
           )}
         </Box>
         <Box sx={{ display: { xs: "block", md: "none" } }}>
@@ -153,35 +146,13 @@ const Navbar = () => {
           </IconButton>
         </Box>
         <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-          {child && (
-            <MenuItem onClick={handleMenuClose}>
-              {" "}
-              <StyledLink to='/home'>Home</StyledLink>
-            </MenuItem>
-          )}
-          {!user && (
-            <MenuItem onClick={handleSignup}>
-              {" "}
-              <StyledLink to='/signup'>Signup</StyledLink>
-            </MenuItem>
-          )}
-          {!user && (
-            <MenuItem onClick={handleLogin}>
-              {" "}
-              <StyledLink>Login</StyledLink>
-            </MenuItem>
-          )}
-          {user && (
-            <MenuItem onClick={handleLogout}>
-              {" "}
-              <StyledLink>Logout</StyledLink>
-            </MenuItem>
-          )}
+          {child && <MobileMenuItem path='/home' onClickHandler={handleMenuClose} title='Home' />}
+
+          {!user && <MobileMenuItem path='/' onClickHandler={handleSignup} title='Signup' highlight={false} />}
+          {!user && <MobileMenuItem path='/' onClickHandler={handleLogin} title='Login' highlight={false} />}
+          {user && <MobileMenuItem path='/' onClickHandler={handleLogout} title='Logout' highlight={false} />}
           {role === "guardian" && child && (
-            <MenuItem onClick={handleMenuClose}>
-              {" "}
-              <StyledLink to='/guardian_dashboard'>Dashboard</StyledLink>
-            </MenuItem>
+            <MobileMenuItem path='/guardian_dashboard' onClickHandler={handleMenuClose} title='Dashboard' />
           )}
         </Menu>
       </Toolbar>

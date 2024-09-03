@@ -108,7 +108,8 @@ async def list_users_route(current_user: UserModel = Depends(get_current_user)):
     List all users.
     """
     users = await list_users()
-    return UserCollection(users=users)  # Wrap the list of users in a UserCollection
+    # Wrap the list of users in a UserCollection
+    return UserCollection(users=users)
 
 
 # Route to create a new member
@@ -130,7 +131,8 @@ async def create_invites_route(
     Create invites for a member.
     """
     invites_to_create = [
-        CreateInviteModel(child=child, guardian=inviting_user_id, member=member_id)
+        CreateInviteModel(
+            child=child, guardian=inviting_user_id, member=member_id)
         for child in children
     ]
     return await create_invites(invites_to_create)
