@@ -32,6 +32,10 @@ class User(BaseUserModel):
     hashed_password: str = Field(...)
 
 
+class UserModel(BaseUserModel):
+    pass
+
+
 class GuardianModel(User):
     pass
 
@@ -84,7 +88,7 @@ class MemberModelUpdate(BaseModel):
 class CreateInviteModel(BaseModel):
     child: str
     guardian: str
-    member: str
+    member_email: EmailStr
 
 
 class Role(BaseModel):

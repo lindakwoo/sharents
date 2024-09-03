@@ -7,6 +7,22 @@ from typing_extensions import Annotated
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
 
+class UserBase(BaseModel):
+    """Base model for user-related information."""
+
+    name: str = Field(...)  # The name of the user
+    email: EmailStr = Field(...)  # The email address of the user
+    username: str = Field(...)  # The username of the user
+
+
+class UserModel(UserBase):
+    """Model representing a user stored in the database."""
+
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)  # MongoDB ObjectId
+    hashed_password: str = Field(...)  # The hashed password for the user
+    role: str = Field(...)  # The role of the user (e.g., 'guardian' or 'member')
+
+
 class EmailModel(BaseModel):
     """Model for email addresses."""
 
@@ -68,14 +84,6 @@ class TokenData(BaseModel):
     username: Optional[str] = None  # The username associated with the token
 
 
-class UserBase(BaseModel):
-    """Base model for user-related information."""
-
-    name: str = Field(...)  # The name of the user
-    email: EmailStr = Field(...)  # The email address of the user
-    username: str = Field(...)  # The username of the user
-
-
 class UserCollection(BaseModel):
     """Model for a collection of users."""
 
@@ -86,14 +94,6 @@ class UserCreate(UserBase):
     """Model for creating a new user, including password."""
 
     password: str = Field(...)  # The plaintext password for the user
-
-
-class UserModel(UserBase):
-    """Model representing a user stored in the database."""
-
-    id: Optional[PyObjectId] = Field(alias="_id", default=None)  # MongoDB ObjectId
-    hashed_password: str = Field(...)  # The hashed password for the user
-    role: str = Field(...)  # The role of the user (e.g., 'guardian' or 'member')
 
 
 class CreateInviteModel(BaseModel):
