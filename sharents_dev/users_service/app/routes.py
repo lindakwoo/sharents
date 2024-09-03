@@ -387,7 +387,7 @@ async def send_invite(member: MemberModelCreate, guardian_id: str, children: Lis
     print("we hit here 2")
     email = member.email
     token = create_safe_token({"email": email})
-    link = f"http://{os.getenv('DOMAIN')}/member_signup/{new_member.id}/{token}"
+    link = f"http://{os.getenv('DOMAIN')}/member_signup/{new_member.id}/{token}/{guardian['name']}"
     html = f"""
     <h1>Welcome to the Sharents app</h1>
     <p> You have been invited to join by "{guardian['name']}"</p>

@@ -21,7 +21,7 @@ const MemberSignup = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
-  const { id, token } = useParams();
+  const { id, token, guardian } = useParams();
 
   const { login } = useContext(AuthContext);
 
@@ -118,22 +118,22 @@ const MemberSignup = () => {
         )}
         {inviteTokenIsVerified && !accepted && (
           <>
+            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mt: "32px" }}>
+                <Img src='/logo.png' />
+                <Box sx={{ width: "50%" }}>
+                  <H1 sx={{ fontSize: "64px" }}>Welcome to Sharents</H1>
+                  <Box sx={{ fontSize: "32px" }}>You have been invited by {guardian} to view their children</Box>
+                </Box>
+              </Box>
+            </Box>
             <Button
               onClick={acceptInvite}
-              sx={{ p: "16px", border: "none", backgroundColor: "orange", borderRadius: "10px", m: "64px" }}
+              sx={{ p: "16px", border: "none", backgroundColor: "orange", borderRadius: "10px", m: "8px" }}
             >
               {" "}
               I accept this invitation{" "}
             </Button>
-            <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mt: "128px" }}>
-                <Img src='/logo.png' />
-                <Box sx={{ width: "50%" }}>
-                  <H1 sx={{ fontSize: "64px" }}>Welcome to Sharents</H1>
-                  <Box sx={{ fontSize: "32px" }}>View your friend and family's children</Box>
-                </Box>
-              </Box>
-            </Box>
           </>
         )}
         {inviteTokenIsVerified && accepted && (
