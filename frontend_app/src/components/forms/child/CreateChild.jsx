@@ -19,7 +19,6 @@ const CreateChild = () => {
   const { selectChild } = useContext(ChildContext);
   const navigate = useNavigate();
 
-  console.log(user);
   const handleChange = (e) => {
     const { name, value } = e.target;
     setChildData({ ...childData, [name]: value });
@@ -31,7 +30,6 @@ const CreateChild = () => {
 
     try {
       const response = await customFetch(url, options);
-      console.log(response);
       selectChild(response.id);
       navigate("/home");
     } catch (error) {
