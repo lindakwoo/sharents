@@ -25,10 +25,7 @@ const EventExpandedView = () => {
     const url = `http://localhost/api/events/${id}/`;
     try {
       const response = await customFetch(url);
-      console.log("response", response);
-
       setEvent(response);
-      console.log(response);
     } catch (error) {
       console.error("Error fetching event", error);
     }
@@ -38,7 +35,6 @@ const EventExpandedView = () => {
     const url = `http://localhost/api/events/${id}/wishlists/`;
     try {
       const response = await customFetch(url);
-      console.log("response", response);
       setWishlists(response.wishlists);
     } catch (error) {
       console.error("Error fetching wishlists", error);
@@ -66,18 +62,14 @@ const EventExpandedView = () => {
         const promises = wishlistItems.map((item) => {
           const url = `http://localhost/api/wishlistItems/${item.id}`;
           const deleteItemReponse = customFetch(url, options);
-          console.log(deleteItemReponse);
           return deleteItemReponse;
         });
         await Promise.all(promises);
         // delete wishlist
-
         const deleteWishlistResponse = await customFetch(wishListUrl, options);
-        console.log(deleteWishlistResponse);
       }
       // delete event
       const deleteEventReponse = await customFetch(url, options);
-      console.log(deleteEventReponse);
       navigate("/events");
     } catch (error) {
       console.error("Error deleting event: ", error);

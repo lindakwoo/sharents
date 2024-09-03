@@ -5,6 +5,7 @@ import { Button } from "../../typography/Styled";
 
 const UpdateComment = ({ fetchComments, comment, open, handleClose }) => {
   const [commentData, setCommentData] = useState({});
+  const [originalCommentData, setOriginalCommentData] = useState({});
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -17,9 +18,11 @@ const UpdateComment = ({ fetchComments, comment, open, handleClose }) => {
     const options = { body: JSON.stringify(commentData), method: "PUT" };
 
     try {
-      const response = await customFetch(url, options);
-      console.log(response);
-      fetchComments();
+      if (JSON.stringify(commentData) !== JSON.stringify(originalCommentData)) {
+        const response = await customFetch(url, options);
+        fetchComments();
+        setOriginalCommentData(commentData);
+      }
       handleClose();
     } catch (error) {
       console.error("Error updating comment: ", error);

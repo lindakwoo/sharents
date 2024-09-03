@@ -23,7 +23,6 @@ const MediaPage = () => {
     const url = `http://localhost/api/media/children/${child.id}`;
     try {
       const response = await customFetch(url);
-      console.log("response: ", response);
       const processedMedia = response.media.map((media) => ({
         ...media,
         created_at: new Date(media.created_at),

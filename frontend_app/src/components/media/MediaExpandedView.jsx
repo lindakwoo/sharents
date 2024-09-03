@@ -22,9 +22,7 @@ const MediaExpandedView = () => {
     const url = `http://localhost/api/media/${id}/`;
     try {
       const response = await customFetch(url);
-      console.log("response", response);
       setMedia(response);
-      console.log(response);
     } catch (error) {
       console.error("Error fetching media", error);
     }
@@ -43,7 +41,6 @@ const MediaExpandedView = () => {
         }
       }
       const response = await customFetch(url, options);
-      console.log(response);
       navigate("/media");
     } catch (error) {
       console.error("Error deleting media: ", error);

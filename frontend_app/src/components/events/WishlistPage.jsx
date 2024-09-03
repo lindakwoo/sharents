@@ -17,9 +17,7 @@ const WishlistPage = () => {
     const url = `http://localhost/api/wishlists/${id}/`;
     try {
       const response = await customFetch(url);
-      console.log("response", response);
       setWishlist(response);
-      console.log(response);
     } catch (error) {
       console.error("Error fetching event", error);
     }
@@ -29,7 +27,6 @@ const WishlistPage = () => {
     const url = `http://localhost/api/wishlists/${id}/wishlistItems/`;
     try {
       const response = await customFetch(url);
-      console.log("response", response);
       setWishlistItems(response.wishlistItems);
     } catch (error) {
       console.error("Error fetching wishlists", error);
@@ -73,11 +70,9 @@ const WishlistPage = () => {
       const promises = wishlistItems.map((item) => {
         const itemUrl = `http://localhost/api/wishlistItems/${item.id}/`;
         const itemResponse = customFetch(itemUrl, options);
-        console.log(itemResponse);
       });
       await Promise.all(promises);
       const response = await customFetch(wistlistUrl, options);
-      console.log("response", response);
       navigate(`/events/${event_id}`);
     } catch (error) {
       console.error("Error deleting wishlist and items", error);
@@ -91,7 +86,6 @@ const WishlistPage = () => {
     const url = `http://localhost/api/wishlistItems/${item.id}/`;
     try {
       const response = await customFetch(url, options);
-      console.log("response", response);
       setWishlistItems((prevItems) => {
         const newItems = [...prevItems];
         newItems[index] = response;
