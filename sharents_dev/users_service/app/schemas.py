@@ -76,6 +76,7 @@ class Token(BaseModel):
 
     access_token: str  # The JWT access token
     token_type: str  # The type of token, typically 'bearer'
+    user: UserModel
 
 
 class TokenData(BaseModel):
