@@ -45,7 +45,7 @@ const Landing = () => {
       {" "}
       <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
         <Box sx={{ display: "flex", alignItems: "center", justifyContent: "center", mt: "128px" }}>
-          <Img src='./logo.png' />
+          <Img src='/logo.png' />
           <Box sx={{ width: "50%" }}>
             <H1 sx={{ fontSize: "64px" }}>Welcome to Sharents</H1>
             <Box sx={{ fontSize: "32px" }}>Share your children's milestones and memories with all your loved ones</Box>

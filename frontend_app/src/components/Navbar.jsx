@@ -92,7 +92,7 @@ const Navbar = () => {
     <AppBar position='static' sx={{ backgroundColor: "#0288d1" }}>
       <Toolbar>
         <Box sx={{ flexGrow: 1, display: "flex", justifyContent: "start", alignItems: "center" }}>
-          <Img src='./logo.png' sx={{ height: "70px", width: "auto" }} />
+          <Img src='/logo.png' sx={{ height: "70px", width: "auto" }} />
           <Typography
             variant='h6'
             sx={{
