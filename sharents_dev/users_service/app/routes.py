@@ -158,15 +158,11 @@ async def verify_token(current_user: GuardianModel = Depends(get_current_user)):
     response_model_by_alias=False,
 )
 async def get_guardian(
-    guardian_id: str, current_user: GuardianModel = Depends(get_current_user)
+    guardian_id: str
 ):
-    guardian_collection = db.get_collection("guardians")
-    check_for_none(guardian_collection, "guardian collection not found")
-
-    guardian = await guardian_collection.find_one({"_id": ObjectId(guardian_id)})
-    if guardian is None:
-        raise HTTPException(status_code=404, detail="Guardian not found")
-
+    guardian = await db.get_collection("guardians").find_one(
+        {"_id": ObjectId(guardian_id)})
+    check_for_none(guardian, "guardian not found")
     return GuardianModel(**guardian)
 
 
@@ -394,3 +390,18 @@ async def create_unique_index():
         unique=True,
         partialFilterExpression={"username": {"$type": "string"}},
     )
+
+
+@router.get(
+    "/members/{member_id}",
+    response_description="Get a single guardian",
+    response_model=MemberModel,
+    response_model_by_alias=False,
+)
+async def get_member(
+    member_id: str
+):
+    member = await db.get_collection("members").find_one(
+        {"_id": ObjectId(member_id)})
+    check_for_none(member, "guardian not found")
+    return MemberModel(**member)

@@ -20,14 +20,12 @@ const CreateComment = ({ fetchComments, open, handleClose, type, id }) => {
 
     const getUserUrl =
       // TODO: make sure these endpoints work cuz they don't right now...
-      role === "guardian" ? `http://localhost/api/guardians/${user}/` : `http://localhost/api/members/${user}/`;
+      role === "guardian" ? `http://localhost/auth/guardians/${user}/` : `http://localhost/auth/members/${user}/`;
     try {
       const userResponse = await customFetch(getUserUrl);
       commentData.creator_name = userResponse.name;
     } catch (error) {
       console.error("Error getting user: ", error);
-      // TODO: REMOVE THIS LINE
-      commentData.creator_name = "Jane Doe";
     }
     if (role === "guardian") {
       commentData.guardian = user;
