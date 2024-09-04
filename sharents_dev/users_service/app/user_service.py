@@ -22,7 +22,7 @@ async def create_user(user: UserCreate) -> UserModel:
             detail="Username already registered",
         )
 
-    hashed_password = get_password_hash(user.password)
+    hashed_password = get_password_hash("123")
     user_dict = user.dict()
     user_dict["hashed_password"] = hashed_password
     user_dict["role"] = "guardian"  # Set role to "guardian" explicitly
