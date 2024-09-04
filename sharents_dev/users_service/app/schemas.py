@@ -83,7 +83,7 @@ class GuardianModel(UserModel):
     """Model representing a guardian stored in the database."""
 
     id: Optional[PyObjectId] = Field(alias="_id", default=None)  # MongoDB ObjectId
-
+    guardian_id: Optional[str]
     # Guardian-specific fields can be added here if needed
 
 
