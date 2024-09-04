@@ -1,0 +1,48 @@
+# Use an official Python runtime as a parent image
+FROM python:3.10-slim
+
+# Set environment variables
+ENV MAIL_USERNAME="lindakwoo"
+ENV MAIL_PASSWORD="fpzn olgi iybc ixwo"
+ENV MAIL_FROM="lindakwoo@gmail.com"
+ENV MAIL_PORT=587
+ENV MAIL_SERVER="smtp.gmail.com"
+ENV MAIL_FROM_NAME="Sharents"
+ENV DOMAIN=localhost:3000
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+ENV ATLAS_URI="mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/?retryWrites=true&w=majority&appName=Sharents"
+
+# Set work directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    build-essential \
+    libssl-dev \
+    libffi-dev \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Poetry
+RUN pip install --no-cache-dir poetry
+
+# Copy only requirements to cache them in docker layer
+COPY poetry.lock pyproject.toml /app/
+
+# Project initialization:
+RUN poetry config virtualenvs.create false \
+    && poetry install --no-interaction --no-ansi
+
+# Explicitly install itsdangerous
+RUN pip install itsdangerous
+
+# Copy project
+COPY . /app
+
+# Expose the port the app runs on
+EXPOSE 8001
+
+# Command to run the application
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8001"]
