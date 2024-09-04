@@ -184,7 +184,7 @@ async def create_guardian_route(guardian: GuardianModel):
     response_model_by_alias=False,
 )
 async def get_guardian_route(
-    guardian_id: str, current_user: UserModel = Depends(get_current_user)
+    guardian_id: str, current_user: UserModel = Depends()
 ):
     """
     Retrieve a guardian by their ID.
