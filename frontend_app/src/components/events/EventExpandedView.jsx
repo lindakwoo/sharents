@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useContext } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import customFetch from "../../fetchWrapper";
-import { Box, styled } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box } from "@mui/material";
 import { ArrowBack } from "@mui/icons-material";
 import { ArrowForward } from "@mui/icons-material";
 import { AuthContext } from "../../context/AuthContext";
@@ -14,7 +13,6 @@ import { Button, H1, H2, H3 } from "../typography/Styled";
 const EventExpandedView = () => {
   const [event, setEvent] = useState({});
   const [wishlists, setWishlists] = useState([]);
-  const [wishlistItems, setWishlistItems] = useState([]);
   const { role } = useContext(AuthContext);
   const [modalOpen, setModalOpen] = useState(false);
   const [wishListModalOpen, setWishlistModalOpen] = useState(false);

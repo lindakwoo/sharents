@@ -5,6 +5,7 @@ from .utils import (
     check_delete_result,
     check_update_result,
     check_for_none,
+    check_list_not_empty
 )
 from .schemas import (
     MediaCollection,
@@ -37,10 +38,11 @@ router = APIRouter()
     response_model_by_alias=False,
 )
 async def list_media_for_child(child_id: str):
-    media_collection = (
-        await db.get_collection("media").find({"child": child_id}).to_list(length=1000)
-    )
-    return MediaCollection(media=media_collection)
+    media_collection = db.get_collection("media")
+    media_cursor = media_collection.find({"child": child_id})
+    media = await media_cursor.to_list(length=1000)
+    check_list_not_empty(media, "No media found for child")
+    return MediaCollection(media=media)
 
 
 # post media for a child
@@ -53,13 +55,16 @@ async def list_media_for_child(child_id: str):
     response_model_by_alias=False,
 )
 async def post_media_for_child(child_id: str, media: MediaModelCreate):
+    media_collection = db.get_collection("media")
+    check_for_none(media_collection, "media collections not found")
     media_dict = media.model_dump()
     media_dict["child"] = child_id
     media_dict["created_at"] = datetime.now()
-    result = await db.get_collection("media").insert_one(media_dict)
+    result = await media_collection.insert_one(media_dict)
     inserted_media = await db.get_collection("media").find_one(
         {"child": child_id, "_id": result.inserted_id}
     )
+    check_for_none(inserted_media, "media not found after creation")
     return MediaModel(**inserted_media)
 
 
@@ -80,6 +85,7 @@ async def post_milestone_for_child(child_id: str, milestone: MilestoneModelCreat
     inserted_milestone = await db.get_collection("milestones").find_one(
         {"child": child_id, "_id": result.inserted_id}
     )
+    check_for_none(inserted_milestone, "milestone not found after creation")
     return MilestoneModel(**inserted_milestone)
 
 
@@ -93,12 +99,11 @@ async def post_milestone_for_child(child_id: str, milestone: MilestoneModelCreat
     response_model_by_alias=False,
 )
 async def list_milestones_for_child(child_id: str):
-    milestones_collection = (
-        await db.get_collection("milestones")
-        .find({"child": child_id})
-        .to_list(length=1000)
-    )
-    return MilestoneCollection(milestones=milestones_collection)
+    milestones_collection = db.get_collection("milestones")
+    milestones_cursor = milestones_collection.find({"child": child_id})
+    milestones = await milestones_cursor.to_list(length=1000)
+    check_list_not_empty(milestones, "No milestones found for child")
+    return MilestoneCollection(milestones=milestones)
 
 
 # get a specific media
@@ -112,6 +117,7 @@ async def list_milestones_for_child(child_id: str):
 )
 async def get_media(media_id: str):
     media = await db.get_collection("media").find_one({"_id": ObjectId(media_id)})
+    check_for_none(media, "media not found")
     return MediaModel(**media)
 
 
@@ -164,6 +170,7 @@ async def get_milestone(milestone_id: str):
     milestone = await db.get_collection("milestones").find_one(
         {"_id": ObjectId(milestone_id)}
     )
+    check_for_none(milestone, "milestone not found")
     return MilestoneModel(**milestone)
 
 
@@ -255,6 +262,7 @@ async def post_comment_on_media(media_id: str, comment: CommentModelCreate):
     inserted_comment = await db.get_collection("comments").find_one(
         {"media": media_id, "_id": result.inserted_id}
     )
+    check_for_none(inserted_comment, "comment not found after creation")
     return inserted_comment
 
 
@@ -275,6 +283,7 @@ async def post_comment_on_milestone(milestone_id: str, comment: CommentModelCrea
     inserted_comment = await db.get_collection("comments").find_one(
         {"milestone": milestone_id, "_id": result.inserted_id}
     )
+    check_for_none(inserted_comment, "comment not found after creation")
     return inserted_comment
 
 

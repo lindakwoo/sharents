@@ -1,7 +1,6 @@
 import React from "react";
 import { StyledLink } from "./typography/Styled";
 import { useLocation } from "react-router-dom";
-import { styled } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 
 const MobileMenuItem = ({ path, onClickHandler, title, highlight = true }) => {

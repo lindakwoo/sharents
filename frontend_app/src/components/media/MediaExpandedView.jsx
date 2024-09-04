@@ -51,8 +51,8 @@ const MediaExpandedView = () => {
   const handleClose = () => setModalOpen(false);
 
   useEffect(() => {
-    fetchMedia(); // Fetch media when id changes
-  }, [id]); // Dependency array ensures this runs only when `id` changes
+    fetchMedia();
+  }, [id]);
 
   return (
     <Box
