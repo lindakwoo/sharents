@@ -7,7 +7,6 @@ import Category from "../Category";
 import { IFrame, Img, StyledLink } from "../typography/Styled";
 import { StyledSelect } from "../typography/Styled";
 import { useNavigate } from "react-router-dom";
-// This is the page that will render a bunch of little Media boxes to click on for expanded view
 
 const MediaPage = () => {
   const [media, setMedia] = useState([]);
@@ -16,8 +15,6 @@ const MediaPage = () => {
   const { child } = useContext(ChildContext);
   const { isAuth } = useContext(AuthContext);
   const navigate = useNavigate();
-
-
 
   const fetchMedia = async () => {
     const url = `http://localhost/api/media/children/${child.id}`;
@@ -61,9 +58,7 @@ const MediaPage = () => {
     }
   }, [isAuth]);
 
-
   return child ? (
-
     <Box
       sx={{
         padding: "16px",
@@ -146,9 +141,9 @@ const MediaPage = () => {
             {filteredMedia.map((media) => (
               <Box
                 sx={{
-                  display: "flex", // Add this line to enable flexbox
-                  justifyContent: "center", // Centers content horizontally
-                  alignItems: "center", // Centers content vertically
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                   position: "relative",
                   height: "100%",
                   width: "100%",
@@ -217,7 +212,6 @@ const MediaPage = () => {
         {media.length === 0 && <Box>There are no photos or videos for this child</Box>}
       </Box>
     </Box>
-
   ) : null;
 };
 

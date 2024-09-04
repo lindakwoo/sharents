@@ -29,7 +29,7 @@ const HomeMilestones = () => {
   };
 
   useEffect(() => {
-    fetchMilestones(); // Fetch milestone when id changes
+    fetchMilestones();
   }, [child]);
 
   return (

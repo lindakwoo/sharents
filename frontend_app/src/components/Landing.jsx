@@ -8,10 +8,7 @@ import { H1 } from "./typography/Styled";
 import { Img } from "./typography/Styled";
 
 const Landing = () => {
-  // This page has sign up and login buttons and is just a SHARENTS overview
-  //   page with our logo and some marketing language
   const { isLogin, setIsLogin, isSignup, setIsSignup, user } = useContext(AuthContext);
-  const [comments, setComments] = useState([]);
   const [loginModalOpen, setLoginModalOpen] = useState(isLogin);
   const [signupModalOpen, setSignupModalOpen] = useState(true);
   const navigate = useNavigate();
