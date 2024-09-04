@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import customFetch from "../../../fetchWrapper";
 import { useNavigate } from "react-router-dom";
 import { Box, Modal } from "@mui/material";
@@ -9,7 +9,6 @@ const CreateWishlist = ({ eventId, open, handleClose, updatingEvent = false, fet
   const [name, setName] = useState(null);
   const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
-  const destination = updatingEvent ? `/events/${eventId}` : `/events`;
 
   const handleWishlistNameChange = (e) => {
     setName(e.target.value);

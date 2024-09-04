@@ -7,16 +7,10 @@ const UpdateEvent = ({ fetchEvent, event, open, handleClose, id }) => {
   const [eventData, setEventData] = useState({ ...event });
   const [originalEventData, setOriginalEventData] = useState({ ...event });
 
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setEventData({ ...eventData, [name]: value });
   };
-
-  let myDate = "";
-  if (event.datetime !== undefined && event.datetime !== "") {
-    myDate = event.datetime.substring(0, 16);
-  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();

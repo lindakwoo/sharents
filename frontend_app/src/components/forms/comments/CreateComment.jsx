@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import customFetch from "../../../fetchWrapper";
-import { Box, styled, Modal } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 import { AuthContext } from "../../../context/AuthContext";
 import { Button } from "../../typography/Styled";
 
