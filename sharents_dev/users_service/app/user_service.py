@@ -37,7 +37,6 @@ async def create_user(user: UserCreate) -> UserModel:
     # Create a corresponding guardian object in the guardians collection
     guardian_collection = db.get_collection("guardians")
     guardian_data = {
-        "_id": new_user["_id"],
         "name": user.name,
         "email": user.email,
         "username": user.username,
