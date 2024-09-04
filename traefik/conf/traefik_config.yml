@@ -107,6 +107,14 @@ http:
       entryPoints:
         - web
 
+    members:
+      rule: "PathPrefix(`/api/members`)"
+      service: members
+      #middlewares:
+      #  - auth-middleware
+      entryPoints:
+        - web
+
   services:
     users:
       loadBalancer:
@@ -132,6 +140,10 @@ http:
       loadBalancer:
         servers:
           - url: "http://openwebui:8080"
+    members:
+      loadBalancer:
+        servers:
+          - url: "http://members_service:8006"
 
 log:
   level: INFO # You can change this to DEBUG for more detailed logs
