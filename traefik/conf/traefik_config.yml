@@ -35,7 +35,7 @@ http:
         - web
 
     children:
-      rule: "PathPrefix(`/api/children`) || PathPrefix(`/api/guardians`) || PathPrefix(`/api/members`) || PathPrefix(`/api/invites`)"
+      rule: "PathPrefix(`/api/children`) || PathPrefix(`/api/members`) || PathPrefix(`/api/invites`)"
       service: children
       #middlewares:
       #  - auth-middleware
@@ -45,6 +45,14 @@ http:
     children-docs:
       rule: "PathPrefix(`/api/children/docs`) || PathPrefix(`/api/children/openapi.json`)"
       service: children
+      entryPoints:
+        - web
+
+    guardians:
+      rule: "PathPrefix(`/api/guardians`)"
+      service: guardians
+      #middlewares:
+      #  - auth-middleware
       entryPoints:
         - web
 
@@ -93,12 +101,6 @@ http:
       entryPoints:
         - web
 
-    brain:
-      rule: "PathPrefix(`/api/brain`)"
-      service: brain
-      entryPoints:
-        - web
-
     openwebui:
       rule: "PathPrefix(`/webui`)"
       service: openwebui
@@ -114,6 +116,10 @@ http:
       loadBalancer:
         servers:
           - url: "http://children_service:8002"
+    guardians:
+      loadBalancer:
+        servers:
+          - url: "http://guardians_service:8005"
     events:
       loadBalancer:
         servers:
@@ -122,10 +128,6 @@ http:
       loadBalancer:
         servers:
           - url: "http://milestones_media_service:8004"
-    brain:
-      loadBalancer:
-        servers:
-          - url: "http://brain:11434"
     openwebui:
       loadBalancer:
         servers:
