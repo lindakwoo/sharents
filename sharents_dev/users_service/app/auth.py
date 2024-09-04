@@ -1,9 +1,8 @@
 from jose import JWTError, jwt
 from datetime import datetime, timedelta
 from fastapi import HTTPException, status
-from .models import User, GuardianModel, MemberModel, UserModel, CreateMemberModel
 
-from .schemas import TokenData
+from .schemas import TokenData, GuardianModel, MemberModel, UserModel
 from .security_utils import verify_password, get_password_hash
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi import Depends
@@ -33,6 +32,7 @@ async def get_user(username: str):
     if user:
         if user["role"] == "guardian":
             return GuardianModel(**user)
+
         elif user["role"] == "member":
             return MemberModel(**user)
     return None
@@ -40,10 +40,12 @@ async def get_user(username: str):
 
 async def authenticate_user(username: str, password: str):
     user = await get_user(username)
+
     if not user:
         return False
     if not verify_password(password, user.hashed_password):
         return False
+
     return user
 
 

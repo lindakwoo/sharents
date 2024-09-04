@@ -47,10 +47,10 @@ class UserModel(UserBase):
     role: str = Field(...)
     member: Optional[MemberModel] = None  # Optional member data for the user
     guardian_id: Optional[PyObjectId] = Field(
-        alias="_guardian_id", default=None
+        alias="guardian_id", default=None
     )  # ID of the guardian
     member_id: Optional[PyObjectId] = Field(
-        alias="_member_id", default=None
+        alias="member_id", default=None
     )  # ID of the member
 
 
@@ -90,7 +90,7 @@ class GuardianModel(UserModel):
 
     id: Optional[PyObjectId] = Field(
         alias="_id", default=None)  # MongoDB ObjectId
-    guardian_id: Optional[str]
+
     # Guardian-specific fields can be added here if needed
 
 
