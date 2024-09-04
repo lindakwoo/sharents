@@ -48,9 +48,35 @@ services:
       - ATLAS_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/children_db?retryWrites=true&w=majority&appName=Sharents
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.children.rule=PathPrefix(`/api/children`) || PathPrefix(`/api/guardians`) || PathPrefix(`/api/members`) || PathPrefix(`/api/invites`)"
+      - "traefik.http.routers.children.rule=PathPrefix(`/api/children`) || PathPrefix(`/api/invites`)"
       - "traefik.http.routers.children-docs.rule=PathPrefix(`/api/children/docs`) || PathPrefix(`/api/children/openapi.json`)"
       - "traefik.http.services.children.loadbalancer.server.port=8002"
+
+  guardians_service:
+    build:
+      context: ./sharents_dev/guardians_service
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./sharents_dev/guardians_service:/app
+    environment:
+      - ATLAS_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/guardians_db?retryWrites=true&w=majority&appName=Sharents
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.guardians.rule=PathPrefix(`/api/guardians`)"
+      - "traefik.http.services.guardians.loadbalancer.server.port=8005"
+
+  members_service:
+    build:
+      context: ./sharents_dev/members_service
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./sharents_dev/members_service:/app
+    environment:
+      - ATLAS_URI=mongodb+srv://sharents_name:sharents_password@sharents.kf7lh.mongodb.net/members_db?retryWrites=true&w=majority&appName=Sharents
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.members.rule=PathPrefix(`/api/members`)"
+      - "traefik.http.services.members.loadbalancer.server.port=8006"
 
   events_service:
     build:
@@ -95,5 +121,7 @@ services:
       - children_service
       - events_service
       - milestones_media_service
+      - guardians_service
+      - members_service
     environment:
       - CHOKIDAR_USEPOLLING=true

@@ -46,6 +46,8 @@ class InviteCollection(BaseModel):
 
 
 class LoginModel(BaseModel):
+    """Model for login information."""
+
     username: str
     password: str
 
@@ -71,12 +73,27 @@ class MemberModelUpdate(BaseModel):
     password: Optional[str] = Field(default=None)  # Optional new plaintext password
 
 
+class GuardianModel(UserModel):
+    """Model representing a guardian stored in the database."""
+
+    # Guardian-specific fields can be added here if needed
+
+
+class GuardianModelUpdate(BaseModel):
+    """Model for updating guardian information."""
+
+    name: Optional[str] = Field(default=None)  # Optional new name
+    email: Optional[EmailStr] = Field(default=None)  # Optional new email
+    username: Optional[str] = Field(default=None)  # Optional new username
+    password: Optional[str] = Field(default=None)  # Optional new plaintext password
+
+
 class Token(BaseModel):
     """Model for the access token returned after successful authentication."""
 
     access_token: str  # The JWT access token
     token_type: str  # The type of token, typically 'bearer'
-    user: UserModel
+    user: UserModel  # The user information associated with the token
 
 
 class TokenData(BaseModel):
@@ -98,6 +115,8 @@ class UserCreate(UserBase):
 
 
 class CreateInviteModel(BaseModel):
+    """Model for creating an invite."""
+
     child: str
     guardian: str
     member: str

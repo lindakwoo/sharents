@@ -12,6 +12,7 @@ from .schemas import (
     Token,
     CreateInviteModel,
     LoginModel,
+    GuardianModel,
 )
 from .auth import (
     get_current_user,
@@ -28,6 +29,13 @@ from .user_service import (
     create_member,
 )
 from .invite_service import create_invites, send_invite  # verify_member_invite
+from .guardian_service import (
+    create_guardian,
+    get_guardian_by_id,
+    update_guardian,
+    delete_guardian,
+    get_all_guardians,
+)
 from datetime import timedelta
 
 router = APIRouter()
@@ -160,3 +168,69 @@ async def verify_invite_route(member_id: str, token: str):
     Verify a member's invite using a token.
     """
     return await verify_member_invite(member_id, token)
+
+
+# guardian RESTFUL ENDPOINTS:# Route to create a new guardian
+@router.post(
+    "/guardians/", response_model=GuardianModel, status_code=status.HTTP_201_CREATED
+)
+async def create_guardian_route(guardian: GuardianModel):
+    """
+    Create a new guardian.
+    """
+    return await create_guardian(guardian)
+
+
+# Route to retrieve a guardian by ID
+@router.get(
+    "/guardians/{guardian_id}",
+    response_model=GuardianModel,
+    response_model_by_alias=False,
+)
+async def get_guardian_route(
+    guardian_id: str, current_user: UserModel = Depends(get_current_user)
+):
+    """
+    Retrieve a guardian by their ID.
+    """
+    return await get_guardian_by_id(guardian_id)
+
+
+# Route to update a guardian's information
+@router.put(
+    "/guardians/{guardian_id}",
+    response_model=GuardianModel,
+    response_model_by_alias=False,
+)
+async def update_guardian_route(
+    guardian_id: str,
+    guardian_data: GuardianModel,
+    current_user: UserModel = Depends(get_current_user),
+):
+    """
+    Update a guardian's information.
+    """
+    return await update_guardian(guardian_id, guardian_data.dict())
+
+
+# Route to delete a guardian
+@router.delete("/guardians/{guardian_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_guardian_route(
+    guardian_id: str, current_user: UserModel = Depends(get_current_user)
+):
+    """
+    Delete a guardian by their ID.
+    """
+    await delete_guardian(guardian_id)
+    return None
+
+
+# Route to get all guardians
+@router.get(
+    "/guardians/", response_model=List[GuardianModel], response_model_by_alias=False
+)
+async def get_all_guardians_route(current_user: UserModel = Depends(get_current_user)):
+    """
+    Retrieve all guardians.
+    """
+    return await get_all_guardians()
