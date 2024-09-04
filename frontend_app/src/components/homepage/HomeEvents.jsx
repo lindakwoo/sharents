@@ -34,13 +34,12 @@ const HomeEvents = () => {
   };
 
   const handleRowClick = (eventId) => {
-    // Navigate to the event details page
     navigate(`/events/${eventId}`);
   };
 
   useEffect(() => {
     if (child.id) {
-      fetchEvents(); // Fetch milestone when id changes
+      fetchEvents();
     }
   }, [child.id]);
 
