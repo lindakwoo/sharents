@@ -26,7 +26,12 @@ function Login({ open, handleClose }) {
       });
       if (response.status === 200) {
         console.log(response);
-        login(response.data.access_token, "66bf74d0e463457278b2ea36", response.data.user.role);
+        const user_id = response.data.user.guardian_id
+          ? response.data.user.guardian_id
+          : response.data.user.member_id
+            ? response.data.user.member_id
+            : "66bf74d0e463457278b2ea36";
+        login(response.data.access_token, user_id, response.data.user.role);
         navigate("/member_landing");
       }
     } catch (error) {
