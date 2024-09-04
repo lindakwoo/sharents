@@ -128,7 +128,7 @@ async def update_user_route(
 
 # Route to list all users
 @router.get("/users/", response_model=UserCollection, response_model_by_alias=False)
-async def list_users_route(current_user: UserModel = Depends(get_current_user)):
+async def list_users_route(current_user: UserModel = Depends()):
     """
     List all users.
     """
