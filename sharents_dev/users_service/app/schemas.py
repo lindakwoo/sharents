@@ -90,7 +90,7 @@ class GuardianModel(UserModel):
 
     id: Optional[PyObjectId] = Field(
         alias="_id", default=None)  # MongoDB ObjectId
-
+    guardian_id: Optional[str]
     # Guardian-specific fields can be added here if needed
 
 
