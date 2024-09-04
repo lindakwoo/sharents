@@ -31,13 +31,12 @@ const EventsPage = () => {
   };
 
   const handleRowClick = (eventId) => {
-    // Navigate to the event details page
     navigate(`/events/${eventId}`);
   };
 
   useEffect(() => {
     if (child) {
-      fetchEvents(); // Fetch events when child changes
+      fetchEvents();
     }
   }, [child]);
 
