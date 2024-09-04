@@ -8,6 +8,7 @@ const Button = styled("button")({});
 
 function Login({ open, handleClose }) {
   const [userData, setUserData] = useState({ username: "", password: "" });
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
@@ -35,8 +36,9 @@ function Login({ open, handleClose }) {
         navigate("/member_landing");
       }
     } catch (error) {
-      login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
-      console.log("Error logging in:", error);
+      // login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
+      console.log("Error logging in:", error.response.data.detail);
+      setError(error.response.data.detail);
     }
   };
 
@@ -103,6 +105,7 @@ function Login({ open, handleClose }) {
             </Button>
           </form>
         </Box>
+        {error && <p>{error}</p>}
       </Box>
     </Modal>
   );
