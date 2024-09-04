@@ -26,12 +26,17 @@ from .user_service import (
     update_user,
     delete_user,
     list_users,
-    create_member,
     create_member_user,
 )
 from .invite_service import create_invites, send_invite  # verify_member_invite
 
-from .guardian_service import delete_guardian, get_all_guardians, get_guardian_by_id, create_guardian, update_guardian
+from .guardian_service import (
+    delete_guardian,
+    get_all_guardians,
+    get_guardian_by_id,
+    create_guardian,
+    update_guardian,
+)
 from datetime import timedelta
 
 router = APIRouter()
@@ -151,8 +156,7 @@ async def create_invites_route(
     Create invites for a member.
     """
     invites_to_create = [
-        CreateInviteModel(
-            child=child, guardian=inviting_user_id, member=member_id)
+        CreateInviteModel(child=child, guardian=inviting_user_id, member=member_id)
         for child in children
     ]
     return await create_invites(invites_to_create)
@@ -195,9 +199,7 @@ async def create_guardian_route(guardian: GuardianModel):
     response_model=GuardianModel,
     response_model_by_alias=False,
 )
-async def get_guardian_route(
-    guardian_id: str, current_user: UserModel = Depends()
-):
+async def get_guardian_route(guardian_id: str, current_user: UserModel = Depends()):
     """
     Retrieve a guardian by their ID.
     """

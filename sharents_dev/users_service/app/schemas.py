@@ -7,6 +7,18 @@ from typing_extensions import Annotated
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
 
+class MemberModelUpdate(BaseModel):
+    """Model for updating member information."""
+
+    name: Optional[str] = Field(default=None)  # Optional new name
+    email: Optional[EmailStr] = Field(default=None)  # Optional new email
+    accepted_invitation: Optional[bool] = Field(
+        default=None
+    )  # Invitation acceptance status
+    username: Optional[str] = Field(default=None)  # Optional new username
+    password: Optional[str] = Field(default=None)  # Optional new plaintext password
+
+
 class MemberModel(BaseModel):
     """Model representing a member stored in the database."""
 
@@ -30,6 +42,12 @@ class UserModel(UserBase):
     hashed_password: str = Field(...)  # The hashed password for the user
     role: str = Field(...)  # The role of the user (e.g., 'guardian' or 'member')
     member: Optional[MemberModel] = None  # Optional member data for the user
+    guardian_id: Optional[PyObjectId] = Field(
+        alias="_guardian_id", default=None
+    )  # ID of the guardian
+    member_id: Optional[PyObjectId] = Field(
+        alias="_member_id", default=None
+    )  # ID of the member
 
 
 class EmailModel(BaseModel):
@@ -101,6 +119,7 @@ class UserCollection(BaseModel):
 class UserCreate(UserBase):
     """Model for creating a new user, including password."""
 
+    role: Optional[str] = None
     password: str = Field(...)  # The plaintext password for the user
 
 
