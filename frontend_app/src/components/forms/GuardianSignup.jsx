@@ -56,11 +56,9 @@ const GuardianSignup = ({ open, handleClose }) => {
           console.log(tokenResponse);
           const user_id = tokenResponse.data.user.guardian_id
             ? tokenResponse.data.user.guardian_id
-            : tokenResponse.data.user.member_id
-              ? tokenResponse.data.user.member_id
-              : "66bf74d0e463457278b2ea36";
+            : "66bf74d0e463457278b2ea36";
           // login(tokenResponse.data.access_token, tokenResponse.data.user.id, "guardian");
-          login(tokenResponse.data.access_token, user_id, tokenResponse.data.user.role);
+          login(tokenResponse.data.access_token, user_id, "guardian");
           handleClose();
           navigate("/member_landing");
         }
