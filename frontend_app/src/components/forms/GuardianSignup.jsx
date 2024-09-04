@@ -53,8 +53,14 @@ const GuardianSignup = ({ open, handleClose }) => {
           }
         );
         if (tokenResponse.status === 200) {
+          console.log(tokenResponse);
+          const user_id = tokenResponse.data.user.guardian_id
+            ? response.data.user.guardian_id
+            : response.data.user.member_id
+              ? response.data.user.member_id
+              : "66bf74d0e463457278b2ea36";
           // login(tokenResponse.data.access_token, response.data.user.id, "guardian");
-          login(tokenResponse.data.access_token, "66bf74d0e463457278b2ea36", "guardian");
+          login(response.data.access_token, user_id, response.data.user.role);
           handleClose();
           navigate("/member_landing");
         }
@@ -63,7 +69,7 @@ const GuardianSignup = ({ open, handleClose }) => {
       login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
       handleClose();
       navigate("/member_landing");
-      console.log("Error signing in: " + error.response.data.detail);
+      // console.log("Error signing in: " + error.response.data.detail);
     }
   };
 
