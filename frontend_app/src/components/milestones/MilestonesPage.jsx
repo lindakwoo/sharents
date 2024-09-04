@@ -16,8 +16,6 @@ const MilestonesPage = () => {
   const navigate = useNavigate();
   const [filteredMilestones, setFilteredMilestones] = useState([]);
 
-
-
   const fetchMilestones = async () => {
     const url = `http://localhost/api/milestones/children/${child.id}`;
     try {
@@ -44,8 +42,6 @@ const MilestonesPage = () => {
     }
   };
 
-
-
   useEffect(() => {
     if (child) {
       fetchMilestones(); // Fetch milestone when id changes
@@ -71,8 +67,9 @@ const MilestonesPage = () => {
         justifyContent: "center",
         alignItems: "center",
         padding: "64px",
-
         backgroundColor: "#f8f8f8",
+        minHeight: "100vh", // Ensure the Box covers at least the viewport height
+        height: "100%", // Ensure the Box takes full height
       }}
     >
       <Box

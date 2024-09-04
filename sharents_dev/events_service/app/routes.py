@@ -219,11 +219,11 @@ async def get_wishlist_items(wishlist_id: str):
     response_model_by_alias=False,
     status_code=status.HTTP_201_CREATED,
 )
-async def create_wishlistItem(wishlist_id: str, wisthlistItem: WishlistItemModelCreate):
+async def create_wishlistItem(wishlist_id: str, wishlistItem: WishlistItemModelCreate):
     wishlistItems_collection = db.get_collection("wishlist_items")
     check_for_none(wishlistItems_collection,
                    "WishlistItems collections not found")
-    wishlistItem_data = wisthlistItem.model_dump()
+    wishlistItem_data = wishlistItem.model_dump()
     wishlistItem_data["wishlist"] = wishlist_id
     wishlistItem_data["is_purchased"] = False
     result = await wishlistItems_collection.insert_one(wishlistItem_data)
