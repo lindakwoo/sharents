@@ -11,31 +11,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-// const refreshAccessToken = async () => {
-//     const refreshToken = localStorage.getItem("refresh_token");
-//     try {
-//         const response = await fetch("http://localhost:8000/api/token/refresh/", {
-//             method: "POST",
-//             headers: {
-//                 "Content-Type": "application/json",
-//             },
-//             body: JSON.stringify({ refresh: refreshToken }),
-//         });
-//         if (!response.ok) {
-//             throw new Error("Failed to refresh access token");
-//         }
-//         const data = await response.json();
-//         localStorage.setItem("access_token", data.access);
-//         return data.access;
-//     } catch (error) {
-//         console.error("Error refreshing access token:", error);
-//         localStorage.removeItem("access_token");
-//         localStorage.removeItem("refresh_token");
-//         localStorage.removeItem("user");
-//         window.location.href = "/login";  // Redirect to login
-//         throw error;
-//     }
-// };
 var customFetch = function customFetch(url) {
   var options,
       accessToken,
