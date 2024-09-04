@@ -35,7 +35,7 @@ const GuardianSignup = ({ open, handleClose }) => {
         },
       });
       console.log(response);
-      if (response.status === 200) {
+      if (response.status === 201) {
         const loginData = {
           username: user.username,
           password: user.password,

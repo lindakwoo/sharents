@@ -2,6 +2,7 @@ from .database import db
 from .utils import check_for_none
 from .schemas import GuardianModel
 from bson import ObjectId
+from typing import List
 
 
 async def create_guardian(guardian: GuardianModel) -> GuardianModel:
@@ -104,5 +105,6 @@ async def get_all_guardians() -> List[GuardianModel]:
     check_for_none(guardian_collection, "Guardian collection not found")
 
     guardians_cursor = guardian_collection.find({})
-    guardians = await guardians_cursor.to_list(length=None)  # Fetch all documents
+    # Fetch all documents
+    guardians = await guardians_cursor.to_list(length=None)
     return [GuardianModel(**guardian) for guardian in guardians]
