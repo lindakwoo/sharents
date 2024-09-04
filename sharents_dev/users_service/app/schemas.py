@@ -7,6 +7,14 @@ from typing_extensions import Annotated
 PyObjectId = Annotated[str, BeforeValidator(str)]
 
 
+class MemberModel(BaseModel):
+    """Model representing a member stored in the database."""
+
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)  # MongoDB ObjectId
+    name: Optional[str] = Field(default=None)  # Optional member name
+    email: Optional[EmailStr] = Field(default=None)  # Optional member email
+
+
 class UserBase(BaseModel):
     """Base model for user-related information."""
 
@@ -21,6 +29,7 @@ class UserModel(UserBase):
     id: Optional[PyObjectId] = Field(alias="_id", default=None)  # MongoDB ObjectId
     hashed_password: str = Field(...)  # The hashed password for the user
     role: str = Field(...)  # The role of the user (e.g., 'guardian' or 'member')
+    member: Optional[MemberModel] = None  # Optional member data for the user
 
 
 class EmailModel(BaseModel):
@@ -52,29 +61,10 @@ class LoginModel(BaseModel):
     password: str
 
 
-class MemberModel(UserModel):
-    """Model representing a member stored in the database."""
-
-    invited_by: str = Field(...)  # The ID of the guardian who invited the member
-    accepted_invitation: bool = Field(
-        ...
-    )  # Indicates if the member accepted the invitation
-
-
-class MemberModelUpdate(BaseModel):
-    """Model for updating member information."""
-
-    name: Optional[str] = Field(default=None)  # Optional new name
-    email: Optional[EmailStr] = Field(default=None)  # Optional new email
-    accepted_invitation: Optional[bool] = Field(
-        default=None
-    )  # Invitation acceptance status
-    username: Optional[str] = Field(default=None)  # Optional new username
-    password: Optional[str] = Field(default=None)  # Optional new plaintext password
-
-
 class GuardianModel(UserModel):
     """Model representing a guardian stored in the database."""
+
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)  # MongoDB ObjectId
 
     # Guardian-specific fields can be added here if needed
 
@@ -120,3 +110,11 @@ class CreateInviteModel(BaseModel):
     child: str
     guardian: str
     member: str
+
+
+class MemberUserCreate(BaseModel):
+    """Model for creating a member user without requiring username and password initially."""
+
+    name: str = Field(...)  # The name of the member
+    email: EmailStr = Field(...)  # The email address of the member
+    invited_by: str = Field(...)  # The ID of the guardian inviting the member

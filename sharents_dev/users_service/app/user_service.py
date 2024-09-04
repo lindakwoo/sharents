@@ -1,7 +1,7 @@
 from fastapi import HTTPException, status
 from bson import ObjectId
 from .models import User, MemberModel
-from .schemas import UserCreate, UserModel, MemberModelUpdate
+from .schemas import UserCreate, UserModel, MemberModelUpdate, MemberUserCreate
 from .database import db
 from .utils import check_for_none
 from .auth import get_password_hash
@@ -101,26 +101,20 @@ async def list_users() -> list[UserModel]:
     return [UserModel(**user) for user in users]
 
 
-async def create_member(
-    member: MemberModelUpdate, inviting_user_id: str
-) -> MemberModel:
+async def create_member_user(member: MemberUserCreate) -> UserModel:
     user_collection = db.get_collection("users")
     check_for_none(user_collection, "User collection not found")
 
     member_data = member.dict()
-    member_data["invited_by"] = inviting_user_id
+    member_data["invited_by"] = member.invited_by
     member_data["accepted_invitation"] = False
     member_data["role"] = "member"
-
-    hashed_password = get_password_hash(member_data["password"])
-    member_data["hashed_password"] = hashed_password
-    del member_data["password"]
 
     result = await user_collection.insert_one(member_data)
     new_member = await user_collection.find_one({"_id": result.inserted_id})
     check_for_none(new_member, "Member not found after creation")
 
-    return MemberModel(**new_member)
+    return UserModel(**new_member)
 
 
 async def accept_member_invitation(member_id: str) -> MemberModel:
