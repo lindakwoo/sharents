@@ -1,6 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import List
+from pymongo import ASCENDING
+from bson import ObjectId
 
 from .schemas import (
     UserCreate,
@@ -13,6 +15,15 @@ from .schemas import (
     CreateInviteModel,
     LoginModel,
     GuardianModel,
+    GuardianModelUpdate,
+    EmailModel,
+    MemberModel,
+    MemberModelCreate,
+    InviteModel,
+    InviteCollection,
+    Token,
+    TokenData,
+
 )
 from .auth import (
     get_current_user,
@@ -28,7 +39,6 @@ from .user_service import (
     list_users,
     create_member_user,
 )
-from .invite_service import create_invites, send_invite  # verify_member_invite
 
 from .guardian_service import (
     delete_guardian,
@@ -38,6 +48,16 @@ from .guardian_service import (
     update_guardian,
 )
 from datetime import timedelta
+from .database import db
+from .utils import (
+    check_for_none,
+    create_safe_token,
+    decode_url_safe_token,
+)
+from .mail import mail, create_message
+import os
+import logging
+
 
 router = APIRouter()
 
@@ -156,7 +176,8 @@ async def create_invites_route(
     Create invites for a member.
     """
     invites_to_create = [
-        CreateInviteModel(child=child, guardian=inviting_user_id, member=member_id)
+        CreateInviteModel(
+            child=child, guardian=inviting_user_id, member=member_id)
         for child in children
     ]
     return await create_invites(invites_to_create)
@@ -244,3 +265,151 @@ async def get_all_guardians_route(current_user: UserModel = Depends(get_current_
     Retrieve all guardians.
     """
     return await get_all_guardians()
+
+
+@router.post(
+    "/members/",
+    response_description="create member",
+    response_model=MemberModel,
+    response_model_by_alias=False,
+)
+async def create_member(member: MemberModelCreate, guardian_id: str) -> dict:
+    member_collection = db.get_collection("members")
+    check_for_none(member_collection, "Member collections not found")
+
+    member_data = member.model_dump()
+    member_data["invited_by"] = guardian_id
+    member_data["accepted_invitation"] = False
+    member_data["signed_up"] = False
+    member_data["username"] = ""
+    member_data["hashed_password"] = ""
+
+    member_result = await member_collection.insert_one(member_data)
+    new_member = await member_collection.find_one({"_id": member_result.inserted_id})
+    check_for_none(new_member, "Member not found after creation")
+
+    return MemberModel(**new_member)
+
+
+@router.put(
+    "/members/{member_id}/accept",
+    response_description="Accept member invitation",
+    response_model=MemberModel,
+    response_model_by_alias=False,
+)
+async def accept_member_invitation(member_id: str) -> dict:
+    await db.get_collection("members").update_one(
+        {"_id": ObjectId(member_id)}, {"$set": {"accepted_invitation": True}}
+    )
+    updated_member = await db.get_collection("members").find_one(
+        {"_id": ObjectId(member_id)}
+    )
+    check_for_none(updated_member, "Member not found after update")
+    invite_collection = db.get_collection("invites")
+    invites_cursor = invite_collection.find({"member": member_id})
+    invites = await invites_cursor.to_list(length=1000)
+    for invite in invites:
+        invite["accepted"] = True
+        await invite_collection.update_one(
+            {"_id": invite["_id"]}, {"$set": {"accepted": True}}
+        )
+
+    return MemberModel(**updated_member)
+
+
+@router.post(
+    "/invites/",
+    response_description="create invites",
+    response_model=InviteCollection,
+    response_model_by_alias=False,
+)
+async def create_invites(guardian_id: str, member_id: str, children: List[str]):
+    invite_collection = db.get_collection("invites")
+    check_for_none(invite_collection, "Invite collections not found")
+
+    invites = []
+    for child in children:
+        invite = {
+            "child": child,
+            "guardian": guardian_id,
+            "member": member_id,
+            "accepted": False,
+        }
+        invite_result = await invite_collection.insert_one(invite)
+        new_invite = await invite_collection.find_one(
+            {"_id": invite_result.inserted_id}
+        )
+        invite = InviteModel(**new_invite)
+        invites.append(invite)
+
+    return InviteCollection(invites=invites)
+
+
+@router.post("/guardians/{guardian_id}/invite")
+async def send_invite(member: MemberModelCreate, guardian_id: str, children: List[str]):
+    guardian_collection = db.get_collection("guardians")
+    check_for_none(guardian_collection, "guardian collection not found")
+    guardian = await guardian_collection.find_one({"_id": ObjectId(guardian_id)})
+    if guardian is None:
+        raise HTTPException(status_code=404, detail="Guardian not found")
+    new_member = await create_member(member, guardian_id)
+    await create_invites(guardian_id, str(new_member.id), children)
+    print("we hit here 2")
+    email = member.email
+    token = create_safe_token({"email": email})
+    link = f"http://{os.getenv('DOMAIN')}/member_signup/{new_member.id}/{token}/{guardian['name']}"
+    html = f"""
+    <h1>Welcome to the Sharents app</h1>
+    <p> You have been invited to join by "{guardian['name']}"</p>
+    <p> Click here <a href="{link}"> link<a/> to accept your invitation <p/>"""
+    message = create_message(
+        recipients=[email], subject="Accept your invitation", body=html
+    )
+
+    await mail.send_message(message)
+
+    return {"message": "Account created!", "member": email}
+
+
+@router.get("/verify_invite/{member_id}/{token}")
+async def verify_member_invite(member_id: str, token: str):
+    token_data = decode_url_safe_token(token)
+    if token_data:
+        print("token is valid!", token_data)
+        return {"message": "token verified", "member": member_id}
+
+
+@router.on_event("startup")
+async def create_unique_index():
+    guardian_collection = db.get_collection("guardians")
+
+    await guardian_collection.delete_many({"username": None})
+    await guardian_collection.update_many(
+        {"username": ""}, {"$set": {"username": "user_" + str(ObjectId())}}
+    )
+
+    try:
+        await guardian_collection.drop_index("username_1")
+    except:
+        pass
+
+    await guardian_collection.create_index(
+        [("username", ASCENDING)],
+        unique=True,
+        partialFilterExpression={"username": {"$type": "string"}},
+    )
+
+
+@router.get(
+    "/members/{member_id}",
+    response_description="Get a single guardian",
+    response_model=MemberModel,
+    response_model_by_alias=False,
+)
+async def get_member(
+    member_id: str
+):
+    member = await db.get_collection("members").find_one(
+        {"_id": ObjectId(member_id)})
+    check_for_none(member, "guardian not found")
+    return MemberModel(**member)

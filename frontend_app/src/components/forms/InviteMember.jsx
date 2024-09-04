@@ -40,7 +40,7 @@ const InviteMember = () => {
       alert("Please select at least one child");
     } else {
       const data = { member: memberData, children: childrenData };
-      const url = `http://localhost/auth/users/${user}/invite/`;
+      const url = `http://localhost/auth/guardians/${user}/invite/`;
       const options = { body: JSON.stringify(data), method: "POST" };
 
       try {

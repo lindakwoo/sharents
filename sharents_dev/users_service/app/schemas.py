@@ -16,13 +16,15 @@ class MemberModelUpdate(BaseModel):
         default=None
     )  # Invitation acceptance status
     username: Optional[str] = Field(default=None)  # Optional new username
-    password: Optional[str] = Field(default=None)  # Optional new plaintext password
+    # Optional new plaintext password
+    password: Optional[str] = Field(default=None)
 
 
 class MemberModel(BaseModel):
     """Model representing a member stored in the database."""
 
-    id: Optional[PyObjectId] = Field(alias="_id", default=None)  # MongoDB ObjectId
+    id: Optional[PyObjectId] = Field(
+        alias="_id", default=None)  # MongoDB ObjectId
     name: Optional[str] = Field(default=None)  # Optional member name
     email: Optional[EmailStr] = Field(default=None)  # Optional member email
 
@@ -38,9 +40,11 @@ class UserBase(BaseModel):
 class UserModel(UserBase):
     """Model representing a user stored in the database."""
 
-    id: Optional[PyObjectId] = Field(alias="_id", default=None)  # MongoDB ObjectId
+    id: Optional[PyObjectId] = Field(
+        alias="_id", default=None)  # MongoDB ObjectId
     hashed_password: str = Field(...)  # The hashed password for the user
-    role: str = Field(...)  # The role of the user (e.g., 'guardian' or 'member')
+    # The role of the user (e.g., 'guardian' or 'member')
+    role: str = Field(...)
     member: Optional[MemberModel] = None  # Optional member data for the user
     guardian_id: Optional[PyObjectId] = Field(
         alias="_guardian_id", default=None
@@ -59,11 +63,13 @@ class EmailModel(BaseModel):
 class InviteModel(BaseModel):
     """Model for an invitation to a member."""
 
-    id: Optional[PyObjectId] = Field(alias="_id", default=None)  # MongoDB ObjectId
+    id: Optional[PyObjectId] = Field(
+        alias="_id", default=None)  # MongoDB ObjectId
     child: str = Field(...)  # The ID of the child being invited
     member: str = Field(...)  # The ID of the member being invited
     guardian: str = Field(...)  # The ID of the guardian sending the invite
-    accepted: bool = Field(...)  # Indicates if the invitation has been accepted
+    # Indicates if the invitation has been accepted
+    accepted: bool = Field(...)
 
 
 class InviteCollection(BaseModel):
@@ -82,7 +88,8 @@ class LoginModel(BaseModel):
 class GuardianModel(UserModel):
     """Model representing a guardian stored in the database."""
 
-    id: Optional[PyObjectId] = Field(alias="_id", default=None)  # MongoDB ObjectId
+    id: Optional[PyObjectId] = Field(
+        alias="_id", default=None)  # MongoDB ObjectId
 
     # Guardian-specific fields can be added here if needed
 
@@ -93,7 +100,8 @@ class GuardianModelUpdate(BaseModel):
     name: Optional[str] = Field(default=None)  # Optional new name
     email: Optional[EmailStr] = Field(default=None)  # Optional new email
     username: Optional[str] = Field(default=None)  # Optional new username
-    password: Optional[str] = Field(default=None)  # Optional new plaintext password
+    # Optional new plaintext password
+    password: Optional[str] = Field(default=None)
 
 
 class Token(BaseModel):
@@ -137,3 +145,8 @@ class MemberUserCreate(BaseModel):
     name: str = Field(...)  # The name of the member
     email: EmailStr = Field(...)  # The email address of the member
     invited_by: str = Field(...)  # The ID of the guardian inviting the member
+
+
+class MemberModelCreate(BaseModel):
+    name: str = Field(...)
+    email: EmailStr = Field(...)
