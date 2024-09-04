@@ -70,16 +70,12 @@ const MemberSignup = () => {
 
     const data = { name: member.name, username: member.username, email: member.email, password: passwordData.password };
     try {
-      // const response = await axios.put(url, data, {
+      // const response = await axios.post(url, data, {
       //   headers: {
       //     "Content-Type": "application/json",
       //   },
       // });
       // if (response.status === 201) {
-      const loginData = {
-        username: member.username,
-        password: passwordData.password,
-      };
 
       const tokenResponse = await axios.post(
         "http://localhost/auth/token/",
@@ -100,6 +96,7 @@ const MemberSignup = () => {
         login(tokenResponse.data.access_token, user_id, "member");
         navigate("/member_landing");
       }
+      // }
     } catch (error) {
       // console.log("Error signing up member", error.tokenResponse.data.detail);
       login("some Access token", id, "member");

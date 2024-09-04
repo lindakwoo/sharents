@@ -36,13 +36,6 @@ const GuardianSignup = ({ open, handleClose }) => {
       });
       console.log(response);
       if (response.status === 201) {
-        const loginData = {
-          username: user.username,
-          password: user.password,
-        };
-
-        console.log(loginData);
-
         const tokenResponse = await axios.post(
           "http://localhost/auth/token/",
           { username: user.username, password: user.password },
