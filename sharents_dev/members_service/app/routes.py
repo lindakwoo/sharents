@@ -1,21 +1,15 @@
 from fastapi import APIRouter, HTTPException, status
 from typing import List
 
-from .models import User, MemberModel, InviteModel
-from .schemas import (
-    UserCreate,
-    UserModel,
-    UserCollection,
-    MemberModelUpdate,
-    InviteCollection,
-    Token,
-    CreateInviteModel,
-    LoginModel,
-    GuardianModel,
+from .schemas import MemberModel, MemberModelUpdate
+from .member_service import (
+    create_member,
+    get_member_by_id,
+    get_all_members,
+    update_member,
+    delete_member,
+    accept_member_invitation,
 )
-
-
-from datetime import timedelta
 
 router = APIRouter()
 
@@ -24,11 +18,18 @@ router = APIRouter()
 @router.post(
     "/members/", response_model=MemberModel, status_code=status.HTTP_201_CREATED
 )
-async def create_member_route(member: MemberCreate):
+async def create_member_route(member: MemberModelUpdate, guardian_id: str):
     """
-    Create a new member.
+    Creates a new member and returns the created member model.
+
+    Args:
+        member: The member data to create.
+        guardian_id: The ID of the guardian inviting the member.
+
+    Returns:
+        The created member model.
     """
-    return await create_member(member)
+    return await create_member(member, guardian_id)
 
 
 # Route to retrieve a member by ID
@@ -37,7 +38,13 @@ async def create_member_route(member: MemberCreate):
 )
 async def get_member_route(member_id: str):
     """
-    Retrieve a member by their ID.
+    Retrieves a member by their ID.
+
+    Args:
+        member_id: The ID of the member to retrieve.
+
+    Returns:
+        The member model.
     """
     return await get_member_by_id(member_id)
 
@@ -48,16 +55,26 @@ async def get_member_route(member_id: str):
 )
 async def update_member_route(member_id: str, member_update: MemberModelUpdate):
     """
-    Update a member's information.
+    Updates a member's information.
+
+    Args:
+        member_id: The ID of the member to update.
+        member_update: The updated member data.
+
+    Returns:
+        The updated member model.
     """
-    return await update_member(member_id, member_update.dict())
+    return await update_member(member_id, member_update)
 
 
 # Route to delete a member
 @router.delete("/members/{member_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_member_route(member_id: str):
     """
-    Delete a member by their ID.
+    Deletes a member by their ID.
+
+    Args:
+        member_id: The ID of the member to delete.
     """
     await delete_member(member_id)
     return None
@@ -69,10 +86,24 @@ async def delete_member_route(member_id: str):
 )
 async def get_all_members_route():
     """
-    Retrieve all members.
+    Retrieves all members.
+
+    Returns:
+        A list of member models.
     """
     return await get_all_members()
 
 
-# Add additional routes for member-specific functionalities (e.g., accepting invites)
-# ...
+# Route to accept a member invitation
+@router.put("/members/{member_id}/accept", response_model=MemberModel)
+async def accept_member_invitation_route(member_id: str):
+    """
+    Accepts a member invitation.
+
+    Args:
+        member_id: The ID of the member to accept.
+
+    Returns:
+        The updated member model.
+    """
+    return await accept_member_invitation(member_id)

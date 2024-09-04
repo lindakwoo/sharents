@@ -55,6 +55,12 @@ class LoginModel(BaseModel):
 class MemberModel(UserModel):
     """Model representing a member stored in the database."""
 
+    id: Optional[PyObjectId] = Field(alias="_id", default=None)  # MongoDB ObjectId
+    hashed_password: str = Field(...)  # The hashed password for the guardian
+    role: str = Field(
+        default="member"
+    )  # The role of the guardian (typically 'guardian')
+
     invited_by: str = Field(...)  # The ID of the guardian who invited the member
     accepted_invitation: bool = Field(
         ...
@@ -120,3 +126,8 @@ class CreateInviteModel(BaseModel):
     child: str
     guardian: str
     member: str
+
+
+class MemberCreate(BaseModel):
+    # Define fields for member creation (e.g., name, email)
+    pass
