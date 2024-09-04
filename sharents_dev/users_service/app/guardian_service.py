@@ -2,6 +2,7 @@ from .database import db
 from .utils import check_for_none
 from .schemas import GuardianModel
 from bson import ObjectId
+from typing import List
 
 
 async def create_guardian(guardian: GuardianModel) -> GuardianModel:

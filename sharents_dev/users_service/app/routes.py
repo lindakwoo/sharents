@@ -2,11 +2,11 @@ from fastapi import APIRouter, HTTPException, Depends, status
 from fastapi.security import OAuth2PasswordRequestForm
 from typing import List
 
-from .models import User, MemberModel, InviteModel
 from .schemas import (
     UserCreate,
     UserModel,
     UserCollection,
+    MemberModel,
     MemberModelUpdate,
     InviteCollection,
     Token,
@@ -27,12 +27,24 @@ from .user_service import (
     delete_user,
     list_users,
     create_member,
+    create_member_user,
 )
 from .invite_service import create_invites, send_invite  # verify_member_invite
 
 from datetime import timedelta
 
 router = APIRouter()
+
+
+# Route for member registration
+@router.post(
+    "/register/member", response_model=UserModel, status_code=status.HTTP_201_CREATED
+)
+async def register(user: UserCreate):
+    """
+    Register a new user.
+    """
+    return await create_member_user(user)
 
 
 # Route for user registration
