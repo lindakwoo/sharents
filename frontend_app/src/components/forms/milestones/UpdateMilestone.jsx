@@ -116,11 +116,4 @@ const UpdateMilestone = ({ fetchMilestone, milestone, open, handleClose, id }) =
   );
 };
 
-// {
-//   "name": "string",
-//     "description": "string",
-//       "category": "growth",
-//         "date": "string"
-// }
-
 export default UpdateMilestone;
