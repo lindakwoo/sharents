@@ -22,7 +22,6 @@ const Home = () => {
   }, [child, navigate]);
 
   if (!child) {
-    // Return null or a loading spinner while redirecting
     return null;
   }
   return (

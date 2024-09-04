@@ -1,8 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import customFetch from "../../fetchWrapper";
 import { ChildContext } from "../../context/ChildContext";
-import { Box, styled } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box } from "@mui/material";
 import { ArrowForward } from "@mui/icons-material";
 import Category from "../Category";
 import { StyledLink, Img, IFrame } from "../typography/Styled";
@@ -31,7 +30,7 @@ const HomeMedia = () => {
 
   useEffect(() => {
     if (child.id) {
-      fetchMedia(); // Fetch media when id changes
+      fetchMedia();
     }
   }, [child.id]);
 
@@ -72,12 +71,12 @@ const HomeMedia = () => {
             {media.map((media) => (
               <Box
                 sx={{
-                  display: "flex", // Add this line to enable flexbox
-                  justifyContent: "start", // Centers content horizontally
-                  alignItems: "center", //
+                  display: "flex",
+                  justifyContent: "start",
+                  alignItems: "center",
                   position: "relative",
-                  width: "100%", // Ensures it takes full width of grid item
-                  height: "100%", //
+                  width: "100%",
+                  height: "100%",
                   transition: "transform 0.3s ease-in-out", // Smooth transition
                   "&:hover": {
                     transform: "scale(1.1)", // Grow the image to 110% of its original size on hover

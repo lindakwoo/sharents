@@ -4,26 +4,15 @@ import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import { AuthContext } from "../context/AuthContext";
 import { ChildContext } from "../context/ChildContext";
 import customFetch from "../fetchWrapper";
-import { Link, useNavigate, useLocation } from "react-router-dom";
-import { styled } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { StyledLink, StyledSelect, Img } from "./typography/Styled";
 import DesktopMenuItem from "./DesktopMenuItem";
 import MobileMenuItem from "./MobileMeniItem";
-
-const Button = styled("button")({
-  border: "none",
-  color: "white",
-  padding: "16px",
-  backgroundColor: "transparent",
-  fontWeight: "bold",
-  "&:hover": { color: "yellow" },
-});
 
 const Navbar = () => {
   const { user, role, logout, setIsLogin, setIsSignup, isAuth } = useContext(AuthContext);
@@ -31,7 +20,6 @@ const Navbar = () => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [childrenList, setChildrenList] = useState([]);
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
