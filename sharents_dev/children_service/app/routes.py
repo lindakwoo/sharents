@@ -7,6 +7,7 @@ from .utils import (
     check_for_none,
     check_update_result,
     check_delete_result,
+    check_list_not_empty
 )
 
 router = APIRouter()
@@ -77,6 +78,7 @@ async def list_children_for_member(member_id: str):
     invite_collection = db_users.get_collection("invites")
     invites_cursor = invite_collection.find({"member": member_id})
     invites = await invites_cursor.to_list(length=1000)
+    check_list_not_empty(invites, "No invites found for member")
     child_ids = []
     for invite in invites:
         child_ids.append(invite["child"])
