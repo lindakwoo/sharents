@@ -64,8 +64,6 @@ const MemberSignup = () => {
       setError("Passwords do not match");
       return;
     }
-    // TODO: this route does not exist yet!!
-    // waiting until Caleb does his thing...
     const url = `http://localhost/auth/register/member/${id}/`;
 
     const data = { name: member.name, username: member.username, email: member.email, password: passwordData.password };

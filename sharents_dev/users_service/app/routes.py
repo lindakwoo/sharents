@@ -64,13 +64,13 @@ router = APIRouter()
 
 # Route for member registration
 @router.post(
-    "/register/member", response_model=UserModel, status_code=status.HTTP_201_CREATED
+    "/register/member/{member_id}", response_model=UserModel, status_code=status.HTTP_201_CREATED
 )
-async def register(user: UserCreate):
+async def register(user: UserCreate, member_id: str):
     """
     Register a new user.
     """
-    return await create_member_user(user)
+    return await create_member_user(user, member_id)
 
 
 # Route for user registration
@@ -95,8 +95,6 @@ async def login_for_access_token(login_data: LoginModel):
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    print(user.guardian_id)
-    print(user)
     return {
         "access_token": access_token,
         "token_type": "bearer",

@@ -18,6 +18,8 @@ class MemberModelUpdate(BaseModel):
     username: Optional[str] = Field(default=None)  # Optional new username
     # Optional new plaintext password
     password: Optional[str] = Field(default=None)
+    signed_up: Optional[bool] = Field(default=None)  # Signup status
+    invited_by: Optional[str] = Field(default=None)  # ID of the guardian
 
 
 class MemberModel(BaseModel):
@@ -27,6 +29,14 @@ class MemberModel(BaseModel):
         alias="_id", default=None)  # MongoDB ObjectId
     name: Optional[str] = Field(default=None)  # Optional member name
     email: Optional[EmailStr] = Field(default=None)  # Optional member email
+    signed_up: Optional[bool] = Field(default=None)  # Signup status
+    invited_by: Optional[str] = Field(default=None)
+    accepted_invitation: Optional[bool] = Field(
+        default=None
+    )
+    username: Optional[str] = Field(default=None)
+    hashed_password: Optional[str] = Field(default=None)
+    role: Optional[str] = Field(default=None)
 
 
 class UserBase(BaseModel):
@@ -45,7 +55,6 @@ class UserModel(UserBase):
     hashed_password: str = Field(...)  # The hashed password for the user
     # The role of the user (e.g., 'guardian' or 'member')
     role: str = Field(...)
-    member: Optional[MemberModel] = None  # Optional member data for the user
     guardian_id: Optional[PyObjectId] = Field(
         alias="guardian_id", default=None
     )  # ID of the guardian

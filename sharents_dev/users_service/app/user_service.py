@@ -2,7 +2,7 @@ from bson import ObjectId
 from .models import User, MemberModel, GuardianModel
 from .schemas import UserCreate, UserModel, MemberModelUpdate, GuardianModel
 from .database import db
-from .utils import check_for_none
+from .utils import check_for_none, check_update_result
 from .auth import get_password_hash
 
 
@@ -124,34 +124,42 @@ async def list_users() -> list[UserModel]:
 
 
 async def create_member_user(
-    member: MemberModelUpdate, guardian_id: str
+    member: MemberModelUpdate, member_id: str
 ) -> MemberModel:
+
+    update_member_data = member.model_dump()
+    hashed_password = get_password_hash(update_member_data["password"])
+    update_member_data["signed_up"] = True
+    update_member_data['hashed_password'] = hashed_password
+    del update_member_data['password']
+    del update_member_data['role']
+
+    update_result = await db.get_collection("members").update_one(
+        {"_id": ObjectId(member_id)}, {
+            "$set": update_member_data}
+    )
+    check_update_result(
+        update_result, "Member not found or no changes applied")
+    updated_member = await db.get_collection("members").find_one({"_id": ObjectId(member_id)})
+    check_for_none(updated_member, "Member not found after update")
+
     user_collection = db.get_collection("users")
     check_for_none(user_collection, "User collection not found")
-
-    member_data = member.dict()
-    member_data["invited_by"] = guardian_id
-    member_data["accepted_invitation"] = False
-    member_data["role"] = "member"
-
-    hashed_password = get_password_hash(member_data["password"])
+    member_data = member.model_dump()
     member_data["hashed_password"] = hashed_password
+    member_data["role"] = "member"
     del member_data["password"]
 
     result = await user_collection.insert_one(member_data)
-    new_member = await user_collection.find_one({"_id": result.inserted_id})
-    check_for_none(new_member, "Member not found after creation")
+    new_user = await user_collection.find_one({"_id": result.inserted_id})
+    check_for_none(new_user, "User not found after creation")
 
-    # Create a corresponding member object in the members collection
-    member_collection = db.get_collection("members")
-    member_data["id"] = new_member["_id"]  # Assign the newly created user's ID
-    member_result = await member_collection.insert_one(member_data)
-    new_member_object = await member_collection.find_one(
-        {"_id": member_result.inserted_id}
+    await user_collection.update_one(
+        {"_id": new_user["_id"]}, {
+            "$set": {"member_id": updated_member["_id"]}}
     )
-    check_for_none(new_member_object, "Member object not found after creation")
 
-    return MemberModel(**new_member_object)
+    return UserModel(**new_user)
 
 
 async def accept_member_invitation(member_id: str) -> MemberModel:
