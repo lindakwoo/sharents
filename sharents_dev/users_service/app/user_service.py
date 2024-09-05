@@ -40,6 +40,7 @@ async def create_user(user: UserCreate) -> UserModel:
         "name": user.name,
         "email": user.email,
         "username": user.username,
+        "hashed_password": hashed_password,
     }
     guardian_result = await guardian_collection.insert_one(guardian_data)
     new_guardian = await guardian_collection.find_one(
@@ -49,7 +50,8 @@ async def create_user(user: UserCreate) -> UserModel:
 
     # Update the user document with the guardian_id
     await user_collection.update_one(
-        {"_id": new_user["_id"]}, {"$set": {"guardian_id": new_guardian["_id"]}}
+        {"_id": new_user["_id"]}, {
+            "$set": {"guardian_id": new_guardian["_id"]}}
     )
 
     return UserModel(**new_user)
@@ -76,7 +78,8 @@ async def update_user(user_id: str, user_update: UserCreate) -> UserModel:
 
     update_data = user_update.dict(exclude_unset=True)
     if "password" in update_data:
-        update_data["hashed_password"] = get_password_hash(update_data["password"])
+        update_data["hashed_password"] = get_password_hash(
+            update_data["password"])
         del update_data["password"]
 
     if (
@@ -95,7 +98,8 @@ async def update_user(user_id: str, user_update: UserCreate) -> UserModel:
         {"_id": ObjectId(user_id)}, {"$set": update_data}
     )
     if result.modified_count == 0:
-        raise HTTPException(status_code=404, detail="User not found or no changes made")
+        raise HTTPException(
+            status_code=404, detail="User not found or no changes made")
 
     updated_user = await user_collection.find_one({"_id": ObjectId(user_id)})
     return UserModel(**updated_user)
