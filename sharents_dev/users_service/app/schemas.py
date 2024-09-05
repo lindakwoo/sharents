@@ -37,6 +37,12 @@ class MemberModel(BaseModel):
     username: Optional[str] = Field(default=None)
     hashed_password: Optional[str] = Field(default=None)
     role: Optional[str] = Field(default=None)
+    guardian_id: Optional[PyObjectId] = Field(
+        alias="guardian_id", default=None
+    )  # ID of the guardian
+    member_id: Optional[PyObjectId] = Field(
+        alias="member_id", default=None
+    )  # ID of the member
 
 
 class UserBase(BaseModel):
