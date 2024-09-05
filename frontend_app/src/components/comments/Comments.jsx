@@ -15,7 +15,7 @@ const Comments = ({ id, type }) => {
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
   const [selectedComment, setSelectedComment] = useState("");
   const urlType = type === "milestone" ? "milestones" : type;
-  const { user } = useContext(AuthContext);
+  const { user, role } = useContext(AuthContext);
 
   const fetchComments = async () => {
     const url = `http://localhost/api/${urlType}/${id}/comments/`;
@@ -114,6 +114,10 @@ const Comments = ({ id, type }) => {
                           handleOpenUpdateModal(comment);
                         }}
                       />
+                    </>
+                  )}
+                  {(role === "guardian" || isCommentOwner) && (
+                    <>
                       <Tooltip placement='top' title='delete comment'>
                         <DeleteForeverIcon
                           sx={{
