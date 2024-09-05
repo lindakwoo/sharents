@@ -8,7 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 import UpdateEvent from "../forms/events/UpdateEvent";
 import CreateWishlist from "../forms/events/CreateWishlist";
 import { Button, H1, H2, H3 } from "../typography/Styled";
-// import moment from "moment";
+import moment from "moment";
 
 const EventExpandedView = () => {
   const [event, setEvent] = useState({});
@@ -73,8 +73,8 @@ const EventExpandedView = () => {
       console.error("Error deleting event: ", error);
     }
   };
-  // const dateObj = moment(event.datetime);
-  // const formattedDate = dateObj.format("MMMM Do YYYY, h:mm a");
+  const dateObj = moment(event.datetime);
+  const formattedDate = dateObj.format("MMMM Do YYYY, h:mm a");
 
   const handleOpen = () => setModalOpen(true);
   const handleClose = () => setModalOpen(false);
@@ -235,7 +235,7 @@ const EventExpandedView = () => {
             }}
           >
             <H1 sx={{ fontSize: "64px", my: "8px" }}>{event.title}</H1>
-            {/* <H2 sx={{ fontSize: "48px", my: "8px" }}>{formattedDate}</H2> */}
+            <H2 sx={{ fontSize: "48px", my: "8px" }}>{formattedDate}</H2>
             <H3 sx={{ fontSize: "32px", my: "8px" }}>{event.description}</H3>
             <H3 sx={{ fontSize: "24px", my: "8px" }}>location: {event.location}</H3>
             <H3 sx={{ fontSize: "24px", my: "8px" }}>special notes: {event.notes}</H3>
