@@ -35,6 +35,7 @@ const Navbar = () => {
     navigate("/home");
   };
   const handleLogout = () => {
+    selectChild(null);
     logout();
     handleMenuClose();
     navigate("/");
