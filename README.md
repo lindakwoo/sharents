@@ -80,7 +80,7 @@ A separate invite is created in the database for each child, member and guardian
 
 ### API Endpoints
 
-The User endpoints can be viewed [here](http://localhost/auth/docs) (after the app is up and running)
+The User endpoints can be viewed for [guardians](http://localhost/api/guardians/docs), [members](http://localhost/api/members/docs) and for [auth / signup](http://localhost/auth/docs) (after the app is up and running)
 
 ## Children Microservice
 

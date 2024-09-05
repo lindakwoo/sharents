@@ -66,7 +66,11 @@ Today I fixed the entire user flow so that when a user comes to any page, if the
 
 ## Monday, August 26, 2024
 
-Today I added filter functionality
+Today I added filter functionality for the milestones and media pages.
+I fixed some styling throughout the app.
+I added a tooltip to the delete button on the comments so someone doesn't inadvertantly hit it.
+
+Fixed navigation after updating wishlist
 
 ## Tuesday, August 27, 2024
 
@@ -74,4 +78,31 @@ Today I added the videos to the site using Iframe and did all the styling for th
 
 ## Wednesday, August 28, 2024
 
-Today I am working on writing the descriptions of the microservices in our readme and adding all endpoints to the tables...
+Today I am working on writing the descriptions of the microservices in our readme and adding all endpoints to the tables...I also added our MIT licence md file.
+I fixed the select child option in the navbar, and i worked on a lot of styling on the whole app.
+
+I changed the schema for the child and create forms. I wrote my unit test. I changed the docker file to run tests upon docker-compose up.
+
+Clarissa and I both worked on making the entire site responsive for mobile devices.
+
+## Thursday, August 29, 2024
+
+made dashboard responsive, added logo to the navbar, added the ability to delete a child, fixed the member sign up flow. Created a separate reusable menu item component for the nav bar (one for desktop and another for mobile)
+
+## Friday, August 30, 2024
+
+## Tuesday, Sept 2, 2024
+
+Today I added the guardian name to the email that the member receives and added this name to the landing page that the member arrives at. I also fixed it so that after a member or guardian signs up, since Caleb will not be passing an access token upon signup, the token endpoint is immediately called afterwards so that we can get an access token so members don't sign up and then have to login as well.
+
+## Wednesday, Sept 3, 2024
+
+Today Clarissa and I removed all unnecessary code and did a general clean up of the code.
+
+I also updated the frontend login, guardian signup and membersignup to accept the new endpoints that Caleb is working on for auth.
+
+I also re-did the member email flow, fixing it back to what it was before Caleb changed it.
+
+FINAL NOTE:
+
+We are waiting for Caleb to finish the member signup backend endpoint, and then we are DONE!! I am making sure the README file is up to day and finalized...
