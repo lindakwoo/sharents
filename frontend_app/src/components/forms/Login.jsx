@@ -29,7 +29,6 @@ function Login({ open, handleClose }) {
         },
       });
       if (response.status === 200) {
-        console.log(response);
         const user_id = response.data.user.guardian_id
           ? response.data.user.guardian_id
           : response.data.user.member_id

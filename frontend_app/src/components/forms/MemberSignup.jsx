@@ -29,7 +29,10 @@ const MemberSignup = () => {
     const url = `http://localhost/auth/verify_invite/${id}/${token}/`;
     try {
       const response = await customFetch(url);
-      setInviteTokenIsVerified(true);
+      if (response.message === "token verified") {
+        console.log(response);
+        setInviteTokenIsVerified(true);
+      }
     } catch (error) {
       console.error("Error fetching comments", error);
     }
