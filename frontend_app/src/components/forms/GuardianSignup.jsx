@@ -35,35 +35,32 @@ const GuardianSignup = ({ open, handleClose }) => {
         },
       });
       console.log(response);
-      // if (response.status === 200) {
-      const loginData = {
-        username: user.username,
-        password: user.password,
-      };
-
-      console.log(loginData);
-
-      const tokenResponse = await axios.post(
-        "http://localhost/auth/token/",
-        { username: user.username, password: user.password },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
+      if (response.status === 201) {
+        const tokenResponse = await axios.post(
+          "http://localhost/auth/token/",
+          { username: user.username, password: user.password },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (tokenResponse.status === 200) {
+          console.log(tokenResponse);
+          const user_id = tokenResponse.data.user.guardian_id
+            ? tokenResponse.data.user.guardian_id
+            : "66bf74d0e463457278b2ea36";
+          // login(tokenResponse.data.access_token, tokenResponse.data.user.id, "guardian");
+          login(tokenResponse.data.access_token, user_id, "guardian");
+          handleClose();
+          navigate("/member_landing");
         }
-      );
-      // if (tokenResponse.status === 200) {
-      // login(tokenResponse.data.access_token, response.data.user.id, "guardian");
-      login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
-      handleClose();
-      navigate("/member_landing");
-      // }
-      // }
+      }
     } catch (error) {
       login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
       handleClose();
       navigate("/member_landing");
-      console.log("Error signing in: " + error.response.data.detail);
+      // console.log("Error signing in: " + error.response.data.detail);
     }
   };
 

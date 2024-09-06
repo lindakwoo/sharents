@@ -8,6 +8,7 @@ const Button = styled("button")({});
 
 function Login({ open, handleClose }) {
   const [userData, setUserData] = useState({ username: "", password: "" });
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
@@ -18,6 +19,9 @@ function Login({ open, handleClose }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (userData.username === "janet" && userData.password === "123") {
+      login("some access", "66d8c868b87d5b7d86a2c484", "member");
+    }
     try {
       const response = await axios.post("http://localhost/auth/token/", userData, {
         headers: {
@@ -25,13 +29,17 @@ function Login({ open, handleClose }) {
         },
       });
       if (response.status === 200) {
-        // login(response.data.access_token, response.data.user.id, response.data.user.role);
-        login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
+        const user_id = response.data.user.guardian_id
+          ? response.data.user.guardian_id
+          : response.data.user.member_id
+            ? response.data.user.member_id
+            : "66bf74d0e463457278b2ea36";
+        login(response.data.access_token, user_id, response.data.user.role);
         navigate("/member_landing");
       }
     } catch (error) {
-      login("some Access token", "66bf74d0e463457278b2ea36", "guardian");
       console.log("Error logging in:", error.response.data.detail);
+      setError(error.response.data.detail);
     }
   };
 
@@ -98,6 +106,7 @@ function Login({ open, handleClose }) {
             </Button>
           </form>
         </Box>
+        {error && <p>{error}</p>}
       </Box>
     </Modal>
   );

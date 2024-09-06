@@ -76,7 +76,8 @@ async def create_child(child: ChildModelCreate, guardian_id: str):
 )
 async def list_children_for_member(member_id: str):
     invite_collection = db_users.get_collection("invites")
-    invites_cursor = invite_collection.find({"member": member_id})
+    invites_cursor = invite_collection.find(
+        {"member": member_id, "accepted": True})
     invites = await invites_cursor.to_list(length=1000)
     check_list_not_empty(invites, "No invites found for member")
     child_ids = []

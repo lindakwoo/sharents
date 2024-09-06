@@ -1,16 +1,21 @@
 from fastapi import APIRouter, HTTPException, Depends, status
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-from jose import JWTError, jwt
-from passlib.context import CryptContext
-from datetime import datetime, timedelta
+from fastapi.security import OAuth2PasswordRequestForm
 from typing import List
-from bson import ObjectId
 from pymongo import ASCENDING
-from .models import Guardian, Member
+from bson import ObjectId
+
 from .schemas import (
-    GuardianCollection,
+    UserCreate,
+    UserModel,
+    UserCollection,
+    MemberModel,
+    MemberModelUpdate,
+    InviteCollection,
+    Token,
+    CreateInviteModel,
+    LoginModel,
     GuardianModel,
-    GuardianModelCreate,
+    GuardianModelUpdate,
     EmailModel,
     MemberModel,
     MemberModelCreate,
@@ -18,7 +23,31 @@ from .schemas import (
     InviteCollection,
     Token,
     TokenData,
+
 )
+from .auth import (
+    get_current_user,
+    create_access_token,
+    authenticate_user,
+    ACCESS_TOKEN_EXPIRE_MINUTES,
+)
+from .user_service import (
+    create_user,
+    get_user_by_id,
+    update_user,
+    delete_user,
+    list_users,
+    create_member_user,
+)
+
+from .guardian_service import (
+    delete_guardian,
+    get_all_guardians,
+    get_guardian_by_id,
+    create_guardian,
+    update_guardian,
+)
+from datetime import timedelta
 from .database import db
 from .utils import (
     check_for_none,
@@ -29,105 +58,33 @@ from .mail import mail, create_message
 import os
 import logging
 
+
 router = APIRouter()
 
-# OAuth2 configuration
-SECRET_KEY = "your-secret-key"  # Change this in production
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
-
-
-def verify_password(plain_password, hashed_password):
-    return pwd_context.verify(plain_password, hashed_password)
-
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
-
-def create_access_token(data: dict, expires_delta: timedelta = None):
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.utcnow() + expires_delta
-    else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
-    return encoded_jwt
-
-
-async def get_user(username: str):
-    guardian_collection = db.get_collection("guardians")
-    user = await guardian_collection.find_one({"username": username})
-    if user:
-        return GuardianModel(**user)
-
-
-async def authenticate_user(username: str, password: str):
-    user = await get_user(username)
-    if not user:
-        return False
-    if not verify_password(password, user.hashed_password):
-        return False
-    return user
-
-
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub")
-        if username is None:
-            raise credentials_exception
-        token_data = TokenData(username=username)
-    except JWTError:
-        raise credentials_exception
-    user = await get_user(username=token_data.username)
-    if user is None:
-        raise credentials_exception
-    return user
-
-
+# Route for member registration
 @router.post(
-    "/register", response_model=GuardianModel, status_code=status.HTTP_201_CREATED
+    "/register/member/{member_id}", response_model=UserModel, status_code=status.HTTP_201_CREATED
 )
-async def register_user(guardian: GuardianModelCreate):
-    guardian_collection = db.get_collection("guardians")
-    check_for_none(guardian_collection, "guardian collections not found")
+async def register(user: UserCreate, member_id: str):
+    """
+    Register a new user.
+    """
+    return await create_member_user(user, member_id)
 
-    if not guardian.username or guardian.username.strip() == "":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail="Username cannot be empty"
-        )
 
-    existing_user = await guardian_collection.find_one({"username": guardian.username})
-    if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username already registered",
-        )
-
-    hashed_password = get_password_hash(guardian.password)
-    guardian_dict = guardian.dict()
-    guardian_dict["hashed_password"] = hashed_password
-    del guardian_dict["password"]
-
-    result = await guardian_collection.insert_one(guardian_dict)
-    new_guardian = await guardian_collection.find_one({"_id": result.inserted_id})
-    check_for_none(new_guardian, "Guardian not found after creation")
-    return GuardianModel(**new_guardian)
+# Route for user registration
+@router.post("/register", response_model=UserModel, status_code=status.HTTP_201_CREATED)
+async def register(user: UserCreate):
+    """
+    Register a new user.
+    """
+    return await create_user(user)
 
 
 @router.post("/token", response_model=Token)
-async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = await authenticate_user(form_data.username, form_data.password)
+async def login_for_access_token(login_data: LoginModel):
+    user = await authenticate_user(login_data.username, login_data.password)
     if not user:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -138,125 +95,176 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
-    return {"access_token": access_token, "token_type": "bearer"}
+    return {
+        "access_token": access_token,
+        "token_type": "bearer",
+        "user": user,
+        "hi": "hi",
+    }
 
 
+# Route to verify user token
 @router.get("/verify")
-async def verify_token(current_user: GuardianModel = Depends(get_current_user)):
+async def verify_token(current_user: UserModel = Depends(get_current_user)):
+    """
+    Verify the current user's token.
+    """
     return {"X-User-ID": str(current_user.id)}
 
 
-# ... (keep your existing imports)
+# Route to get a specific user by ID
+@router.get("/users/{user_id}", response_model=UserModel, response_model_by_alias=False)
+async def get_user(user_id: str, current_user: UserModel = Depends(get_current_user)):
+    """
+    Retrieve a user by their ID.
+    """
+    return await get_user_by_id(user_id)
 
-# ... (keep your existing code)
+
+# Route to delete a user
+@router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user_route(
+    user_id: str, current_user: UserModel = Depends(get_current_user)
+):
+    """
+    Delete a user by their ID.
+    """
+    await delete_user(user_id)
+    return None
 
 
+# Route to update a user's information
+@router.put("/users/{user_id}", response_model=UserModel, response_model_by_alias=False)
+async def update_user_route(
+    user_id: str,
+    user_update: UserCreate,
+    current_user: UserModel = Depends(get_current_user),
+):
+    """
+    Update a user's information.
+    """
+    return await update_user(user_id, user_update)
+
+
+# Route to list all users
+@router.get("/users/", response_model=UserCollection, response_model_by_alias=False)
+async def list_users_route(current_user: UserModel = Depends()):
+    """
+    List all users.
+    """
+    users = await list_users()
+    # Wrap the list of users in a UserCollection
+    return UserCollection(users=users)
+
+
+# Route to create a new member
+@router.post("/members/", response_model=MemberModel, response_model_by_alias=False)
+async def create_member_route(member: MemberModelUpdate, inviting_user_id: str):
+    """
+    Create a new member.
+    """
+    return await create_member(member, inviting_user_id)
+
+
+@router.post(
+    "/invites/", response_model=InviteCollection, response_model_by_alias=False
+)
+async def create_invites_route(
+    inviting_user_id: str, member_id: str, children: List[str]
+):
+    """
+    Create invites for a member.
+    """
+    invites_to_create = [
+        CreateInviteModel(
+            child=child, guardian=inviting_user_id, member=member_id)
+        for child in children
+    ]
+    return await create_invites(invites_to_create)
+
+
+# Route to send an invite
+@router.post("/users/{user_id}/invite")
+async def send_invite_route(
+    member: MemberModelUpdate, user_id: str, children: List[str]
+):
+    """
+    Send an invite to a member.
+    """
+    return await send_invite(member, user_id, children)
+
+
+# Route to verify a member's invite
+@router.get("/verify_invite/{member_id}/{token}")
+async def verify_invite_route(member_id: str, token: str):
+    """
+    Verify a member's invite using a token.
+    """
+    return await verify_member_invite(member_id, token)
+
+
+# guardian RESTFUL ENDPOINTS:# Route to create a new guardian
+@router.post(
+    "/guardians/", response_model=GuardianModel, status_code=status.HTTP_201_CREATED
+)
+async def create_guardian_route(guardian: GuardianModel):
+    """
+    Create a new guardian.
+    """
+    return await create_guardian(guardian)
+
+
+# Route to retrieve a guardian by ID
 @router.get(
     "/guardians/{guardian_id}",
-    response_description="Get a single guardian",
     response_model=GuardianModel,
     response_model_by_alias=False,
 )
-async def get_guardian(
-    guardian_id: str
-):
-    guardian = await db.get_collection("guardians").find_one(
-        {"_id": ObjectId(guardian_id)})
-    check_for_none(guardian, "guardian not found")
-    return GuardianModel(**guardian)
+async def get_guardian_route(guardian_id: str, current_user: UserModel = Depends()):
+    """
+    Retrieve a guardian by their ID.
+    """
+    return await get_guardian_by_id(guardian_id)
 
 
-@router.delete(
-    "/guardians/{guardian_id}",
-    response_description="Delete a guardian",
-    status_code=status.HTTP_204_NO_CONTENT,
-)
-async def delete_guardian(
-    guardian_id: str, current_user: GuardianModel = Depends(get_current_user)
-):
-    guardian_collection = db.get_collection("guardians")
-    check_for_none(guardian_collection, "guardian collection not found")
-
-    delete_result = await guardian_collection.delete_one({"_id": ObjectId(guardian_id)})
-
-    if delete_result.deleted_count == 0:
-        raise HTTPException(status_code=404, detail="Guardian not found")
-
-    return None  # 204 No Content
-
-
+# Route to update a guardian's information
 @router.put(
     "/guardians/{guardian_id}",
-    response_description="Update a guardian",
     response_model=GuardianModel,
     response_model_by_alias=False,
 )
-async def update_guardian(
+async def update_guardian_route(
     guardian_id: str,
-    guardian_update: GuardianModelCreate,
-    current_user: GuardianModel = Depends(get_current_user),
+    guardian_data: GuardianModel,
+    current_user: UserModel = Depends(get_current_user),
 ):
-    guardian_collection = db.get_collection("guardians")
-    check_for_none(guardian_collection, "guardian collection not found")
-
-    # Check if the guardian exists
-    existing_guardian = await guardian_collection.find_one(
-        {"_id": ObjectId(guardian_id)}
-    )
-    if existing_guardian is None:
-        raise HTTPException(status_code=404, detail="Guardian not found")
-
-    # Prepare update data
-    update_data = guardian_update.model_dump(exclude_unset=True)
-
-    # If password is being updated, hash it
-    if "password" in update_data:
-        update_data["hashed_password"] = get_password_hash(
-            update_data["password"])
-        del update_data["password"]
-
-    # Check if username is being updated and if it's already taken
-    if (
-        "username" in update_data
-        and update_data["username"] != existing_guardian["username"]
-    ):
-        existing_user = await guardian_collection.find_one(
-            {"username": update_data["username"]}
-        )
-        if existing_user:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Username already taken",
-            )
-
-    # Perform the update
-    result = await guardian_collection.update_one(
-        {"_id": ObjectId(guardian_id)}, {"$set": update_data}
-    )
-
-    if result.modified_count == 0:
-        raise HTTPException(
-            status_code=404, detail="Guardian not found or no changes made"
-        )
-
-    # Fetch and return the updated guardian
-    updated_guardian = await guardian_collection.find_one(
-        {"_id": ObjectId(guardian_id)}
-    )
-    return GuardianModel(**updated_guardian)
+    """
+    Update a guardian's information.
+    """
+    return await update_guardian(guardian_id, guardian_data.dict())
 
 
+# Route to delete a guardian
+@router.delete("/guardians/{guardian_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_guardian_route(
+    guardian_id: str, current_user: UserModel = Depends(get_current_user)
+):
+    """
+    Delete a guardian by their ID.
+    """
+    await delete_guardian(guardian_id)
+    return None
+
+
+# Route to get all guardians
 @router.get(
-    "/guardians/",
-    response_description="List all guardians",
-    response_model=GuardianCollection,
-    response_model_by_alias=False,
+    "/guardians/", response_model=List[GuardianModel], response_model_by_alias=False
 )
-async def list_guardians(current_user: GuardianModel = Depends(get_current_user)):
-    guardian_collection = db.get_collection("guardians")
-    check_for_none(guardian_collection, "guardian collections not found")
-    guardians = await guardian_collection.find().to_list(1000)
-    return GuardianCollection(guardians=guardians)
+async def get_all_guardians_route(current_user: UserModel = Depends(get_current_user)):
+    """
+    Retrieve all guardians.
+    """
+    return await get_all_guardians()
 
 
 @router.post(

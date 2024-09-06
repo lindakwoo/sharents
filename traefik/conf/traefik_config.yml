@@ -35,7 +35,7 @@ http:
         - web
 
     children:
-      rule: "PathPrefix(`/api/children`) || PathPrefix(`/api/guardians`) || PathPrefix(`/api/members`) || PathPrefix(`/api/invites`)"
+      rule: "PathPrefix(`/api/children`)  || PathPrefix(`/api/invites`)"
       service: children
       #middlewares:
       #  - auth-middleware
@@ -45,6 +45,14 @@ http:
     children-docs:
       rule: "PathPrefix(`/api/children/docs`) || PathPrefix(`/api/children/openapi.json`)"
       service: children
+      entryPoints:
+        - web
+
+    guardians:
+      rule: "PathPrefix(`/api/guardians`)"
+      service: guardians
+      #middlewares:
+      #  - auth-middleware
       entryPoints:
         - web
 
@@ -93,6 +101,20 @@ http:
       entryPoints:
         - web
 
+    openwebui:
+      rule: "PathPrefix(`/webui`)"
+      service: openwebui
+      entryPoints:
+        - web
+
+    members:
+      rule: "PathPrefix(`/api/members`)"
+      service: members
+      #middlewares:
+      #  - auth-middleware
+      entryPoints:
+        - web
+
   services:
     users:
       loadBalancer:
@@ -102,6 +124,10 @@ http:
       loadBalancer:
         servers:
           - url: "http://children_service:8002"
+    guardians:
+      loadBalancer:
+        servers:
+          - url: "http://guardians_service:8005"
     events:
       loadBalancer:
         servers:
@@ -110,6 +136,14 @@ http:
       loadBalancer:
         servers:
           - url: "http://milestones_media_service:8004"
+    openwebui:
+      loadBalancer:
+        servers:
+          - url: "http://openwebui:8080"
+    members:
+      loadBalancer:
+        servers:
+          - url: "http://members_service:8006"
 
 log:
   level: INFO # You can change this to DEBUG for more detailed logs

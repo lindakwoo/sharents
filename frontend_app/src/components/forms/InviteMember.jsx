@@ -15,7 +15,7 @@ const InviteMember = () => {
   const navigate = useNavigate();
 
   const fetchChildren = async () => {
-    const url = `http://localhost/api/children/`;
+    const url = `http://localhost/api/children/guardians/${user}/`;
     try {
       const response = await customFetch(url);
       setAllChildren(response.children);

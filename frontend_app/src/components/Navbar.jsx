@@ -35,6 +35,7 @@ const Navbar = () => {
     navigate("/home");
   };
   const handleLogout = () => {
+    selectChild(null);
     logout();
     handleMenuClose();
     navigate("/");
@@ -74,7 +75,7 @@ const Navbar = () => {
     if (user) {
       fetchChildren();
     }
-  }, [user, child]);
+  }, [user, child, logout]);
 
   return (
     <AppBar position='static' sx={{ backgroundColor: "#0288d1" }}>

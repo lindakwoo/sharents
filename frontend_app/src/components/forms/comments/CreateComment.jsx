@@ -19,7 +19,7 @@ const CreateComment = ({ fetchComments, open, handleClose, type, id }) => {
     e.preventDefault();
 
     const getUserUrl =
-      role === "guardian" ? `http://localhost/auth/guardians/${user}/` : `http://localhost/auth/members/${user}/`;
+      role === "guardian" ? `http://localhost/api/guardians/${user}/` : `http://localhost/api/members/${user}/`;
     try {
       const userResponse = await customFetch(getUserUrl);
       commentData.creator_name = userResponse.name;

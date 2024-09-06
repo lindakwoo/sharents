@@ -29,7 +29,10 @@ const MemberSignup = () => {
     const url = `http://localhost/auth/verify_invite/${id}/${token}/`;
     try {
       const response = await customFetch(url);
-      setInviteTokenIsVerified(true);
+      if (response.message === "token verified") {
+        console.log(response);
+        setInviteTokenIsVerified(true);
+      }
     } catch (error) {
       console.error("Error fetching comments", error);
     }
@@ -64,36 +67,36 @@ const MemberSignup = () => {
       setError("Passwords do not match");
       return;
     }
-    // TODO: this route does not exist yet!!
-    // waiting until Caleb does his thing...
-    const url = `http://localhost/auth/members/${id}/signup`;
+    const url = `http://localhost/auth/register/member/${id}/`;
 
     const data = { name: member.name, username: member.username, email: member.email, password: passwordData.password };
     try {
-      // const response = await axios.put(url, data, {
-      //   headers: {
-      //     "Content-Type": "application/json",
-      //   },
-      // });
-      // if (response.status === 200) {
-      const loginData = {
-        username: member.username,
-        password: passwordData.password,
-      };
-
-      const tokenResponse = await axios.post("http://localhost/auth/token/", loginData, {
+      const response = await axios.post(url, data, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+      if (response.status === 201) {
+        const tokenResponse = await axios.post(
+          "http://localhost/auth/token/",
+          { username: member.username, password: passwordData.password },
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      // if(tokenResponse.status===200){
-      //    //  login(tokenResponse.data.access_token, response.data.user.id, "member")
-
-      // }
-
-      login("some Access token", id, "member");
-      navigate("/member_landing");
+        if (tokenResponse.status === 200) {
+          console.log(tokenResponse);
+          const user_id = tokenResponse.data.user.member_id
+            ? tokenResponse.data.user.member_id
+            : "66d8c868b87d5b7d86a2c484";
+          // login(tokenResponse.data.access_token, tokenResponse.data.user.id, "guardian");
+          login(tokenResponse.data.access_token, user_id, "member");
+          navigate("/member_landing");
+        }
+      }
     } catch (error) {
       // console.log("Error signing up member", error.tokenResponse.data.detail);
       login("some Access token", id, "member");
