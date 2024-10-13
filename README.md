@@ -49,7 +49,7 @@ We're committed to clean, efficient code. Our toolkit includes:
 
 ## Design
 
-Sharets is made up of a React frontend and four backend microservices which interact with one another
+Sharents is made up of a React frontend and four backend microservices which interact with one another
 
 - **Users**
 - **Children**
